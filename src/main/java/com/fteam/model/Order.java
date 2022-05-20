@@ -1,4 +1,4 @@
-package com.FTeamWatch.model;
+package com.fteam.model;
 
 import java.util.Date;
 import java.util.List;
@@ -45,6 +45,5 @@ public class Order {
 	
 	@OneToMany(mappedBy = "order")
 	private List<OrderDetail> orderDetails;
-	
 
 }

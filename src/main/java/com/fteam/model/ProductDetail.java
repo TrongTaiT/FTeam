@@ -1,13 +1,12 @@
-package com.FTeamWatch.model;
-
-import java.util.List;
+package com.fteam.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -18,17 +17,22 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "nations")
-public class Nation {
+@Table(name = "product_details")
+public class ProductDetail {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(length = 64, nullable = false) // 56 is the longest
-	private String name;
-
-	@OneToMany(mappedBy = "nation")
-	private List<Brand> brands;
+	@Column(name = "in_stock")
+	private Boolean inStock;
+	
+	@ManyToOne
+	@JoinColumn(name = "color_id")
+	private Color color;
+	
+	@ManyToOne
+	@JoinColumn(name = "product_id")
+	private Product product;
 
 }

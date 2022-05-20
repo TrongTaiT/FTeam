@@ -1,4 +1,4 @@
-package com.FTeamWatch.model;
+package com.fteam.model;
 
 import java.util.List;
 
@@ -18,8 +18,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "face_shapes")
-public class FaceShape {
+@Table(name = "watch_faces")
+public class WatchFace {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +28,7 @@ public class FaceShape {
 	@Column(length = 50, nullable = false)
 	private String name;
 	
-	@OneToMany(mappedBy = "faceShape")
+	@OneToMany(mappedBy = "watchFace")
 	private List<Product> products;
 
 }

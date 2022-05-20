@@ -1,12 +1,13 @@
-package com.FTeamWatch.model;
+package com.fteam.model;
+
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -17,22 +18,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "product_details")
-public class ProductDetail {
-
+@Table(name = "categories")
+public class Category {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(name = "in_stock")
-	private Boolean inStock;
-	
-	@ManyToOne
-	@JoinColumn(name = "color_id")
-	private Color color;
-	
-	@ManyToOne
-	@JoinColumn(name = "product_id")
-	private Product product;
+	@Column(length = 50, nullable = false)
+	private String name;
+
+	@OneToMany(mappedBy = "category")
+	private List<Product> products;
 
 }

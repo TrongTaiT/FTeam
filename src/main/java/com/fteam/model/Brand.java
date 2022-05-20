@@ -1,6 +1,6 @@
-package com.FTeamWatch.model;
+package com.fteam.model;
 
-import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -19,28 +20,24 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "ratings")
-public class Rating {
+@Table(name = "brands")
+public class Brand {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
-	@Column(nullable = false)
-	private Integer rating;
-	
-	@Column(name = "rated_date", nullable = false)
-	private Date ratedDate;
-	
+
+	@Column(length = 50, nullable = false)
+	private String name;
+
 	@Column(length = 255)
-	private String content;
-	
+	private String logo;
+
 	@ManyToOne
-	@JoinColumn(name = "product_id")
-	private Product product;
-	
-	@ManyToOne
-	@JoinColumn(name = "customer_id")
-	private Customer customer;
-	
+	@JoinColumn(name = "nation_id")
+	private Nation nation;
+
+	@OneToMany(mappedBy = "brand")
+	private List<Product> products;
+
 }

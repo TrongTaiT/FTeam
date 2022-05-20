@@ -1,4 +1,4 @@
-package com.FTeamWatch;
+package com.fteam;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;

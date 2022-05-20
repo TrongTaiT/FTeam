@@ -1,4 +1,4 @@
-package com.FTeamWatch;
+package com.fteam;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,4 +1,4 @@
-package com.FTeamWatch.model;
+package com.fteam.model;
 
 import java.util.List;
 
@@ -18,17 +18,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "shell_materials")
-public class ShellMaterial {
-
+@Table(name = "statuses")
+public class Status {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-
+	
 	@Column(length = 50, nullable = false)
 	private String name;
-
-	@OneToMany(mappedBy = "shellMaterial")
-	private List<Product> products;
+	
+	@OneToMany(mappedBy = "status")
+	private List<Order> orders;
 
 }

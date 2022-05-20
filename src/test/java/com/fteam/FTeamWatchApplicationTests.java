@@ -1,4 +1,4 @@
-package com.FTeamWatch;
+package com.fteam;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

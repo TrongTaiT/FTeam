@@ -1,5 +1,8 @@
-package com.FTeamWatch.model;
+package com.fteam.model;
 
+import java.util.Date;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,23 +19,28 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "order_details")
-public class OrderDetail {
+@Table(name = "ratings")
+public class Rating {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-
-	private Float price;
-
-	private Integer quantity;
-
-	@ManyToOne
-	@JoinColumn(name = "order_id")
-	private Order order;
+	
+	@Column(nullable = false)
+	private Integer rating;
+	
+	@Column(name = "rated_date", nullable = false)
+	private Date ratedDate;
+	
+	@Column(length = 255)
+	private String content;
 	
 	@ManyToOne
 	@JoinColumn(name = "product_id")
 	private Product product;
-
+	
+	@ManyToOne
+	@JoinColumn(name = "customer_id")
+	private Customer customer;
+	
 }

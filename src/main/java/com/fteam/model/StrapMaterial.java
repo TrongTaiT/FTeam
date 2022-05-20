@@ -1,4 +1,4 @@
-package com.FTeamWatch.model;
+package com.fteam.model;
 
 import java.util.List;
 
