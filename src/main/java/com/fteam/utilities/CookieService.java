@@ -69,11 +69,11 @@ public class CookieService {
 	 */
 	public void remove(String name) {
 		Cookie cookie = this.get(name);
-		if (cookie == null) {
-			return;
-		}
-		
-		cookie.setMaxAge(0);;
+		if (cookie != null) {
+			cookie.setPath("/");
+			cookie.setMaxAge(0);
+			response.addCookie(cookie);
+		}			
 	}
 
 }
