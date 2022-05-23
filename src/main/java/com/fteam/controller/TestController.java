@@ -8,7 +8,12 @@ public class TestController {
 	
 	@GetMapping("")
 	public String viewClientHomePage() {
-		return "index";
+		return "client/index";
+	}
+	
+	@GetMapping("admin")
+	public String viewAdminHomePage() {
+		return "admin/index";
 	}
 
 }
