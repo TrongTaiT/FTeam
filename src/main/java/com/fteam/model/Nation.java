@@ -28,7 +28,9 @@ public class Nation {
 	@Column(length = 64, nullable = false) // 56 is the longest
 	private String name;
 
-	@OneToMany(mappedBy = "nation")
-	private List<Brand> brands;
+	public Nation(String name) {
+		super();
+		this.name = name;
+	}
 
 }
