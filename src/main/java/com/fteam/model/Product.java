@@ -101,7 +101,7 @@ public class Product {
 	
 	@Transient
 	public String getMainImagePath() {
-		return "/images/products/" + this.id + "/" + this.mainImage;
+		return "images/products/" + this.id + "/" + this.mainImage;
 	}
 	
 	@Transient

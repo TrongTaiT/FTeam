@@ -331,7 +331,7 @@
                             <a th:href="@{'/product-details/' + ${product.id}}" class="motsanpham"
                                 style="text-decoration: none; color: black;" data-toggle="tooltip" data-placement="bottom"
                                 th:title="${product.productName}">
-                                <img class="card-img-top anh" th:src="${product.mainImagePath}"
+                                <img class="card-img-top anh" th:src="@{${product.mainImagePath}}"
                                     alt="lap-ke-hoach-kinh-doanh-hieu-qua">
                                 <div class="card-body noidungsp mt-3">
                                     <h3 class="card-title ten">[[${product.productName}]]</h3>
