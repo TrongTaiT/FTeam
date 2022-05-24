@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -39,6 +41,7 @@ public class Product {
 	private Float price;
 
 	@Column(name = "day_of_manufacture", nullable = false)
+	@Temporal(TemporalType.DATE)
 	private Date dayOfManufacture;
 
 	@Column(name = "average_rating")
