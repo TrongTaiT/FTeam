@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -39,6 +41,7 @@ public class Customer {
 	private String phoneNumber;
 	
 	@Column(nullable = false)
+	@Temporal(TemporalType.DATE)
 	private Date birthday;
 	
 	@Column(length = 255, nullable = false)

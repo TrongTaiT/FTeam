@@ -28,10 +28,11 @@ public class Staff {
 	@Column(length = 255, nullable = false)
 	private String fullname;
 	
-	@Column(name = "phone_number", length = 20, nullable = false)
+	@Column(name = "phone_number", length = 20, nullable = false, unique = true)
 	private String phoneNumber;
 	
 	private Boolean enabled;
+	private Boolean admin;
 	
 	@Column(length = 64, nullable = false)
 	private String password;

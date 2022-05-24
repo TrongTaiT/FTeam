@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,6 +32,7 @@ public class Rating {
 	private Integer rating;
 	
 	@Column(name = "rated_date", nullable = false)
+	@Temporal(TemporalType.DATE)
 	private Date ratedDate;
 	
 	@Column(length = 255)
