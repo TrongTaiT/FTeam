@@ -15,6 +15,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+
+import com.fteam.utilities.NumberFormatUtil;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -47,7 +50,7 @@ public class Product {
 	@Column(name = "average_rating")
 	private Float averageRating;
 
-	@Column(name = "main_image")
+	@Column(name = "main_image", nullable = false)
 	private String mainImage;
 
 	@Column(name = "in_stock")
@@ -95,5 +98,21 @@ public class Product {
 	
 	@Column(name = "discount_percent")
 	private float discountPercent;
+	
+	@Transient
+	public String getMainImagePath() {
+		return "/images/products/" + this.id + "/" + this.mainImage;
+	}
+	
+	@Transient
+	public String getOldPrice() {
+		return NumberFormatUtil.formatToVietnamCurrency(this.price);
+	}
+	
+	@Transient
+	public String getNewPrice() {
+		Float realPrice = this.price - (this.price * this.discountPercent / 100);
+		return NumberFormatUtil.formatToVietnamCurrency(realPrice);
+	}
 	
 }
