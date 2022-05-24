@@ -3,6 +3,7 @@ package com.fteam.model;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -31,7 +32,7 @@ public class Product {
 	@Column(name = "product_name", length = 64, nullable = false)
 	private String productName;
 
-	@Column(length = 255, nullable = false)
+	@Column(length = 4096, nullable = false)
 	private String description;
 
 	@Column(nullable = false)
@@ -60,7 +61,7 @@ public class Product {
 	@JoinColumn(name = "brand_id")
 	private Brand brand;
 	
-	@OneToMany(mappedBy = "product")
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProductImage> productImages;
 
 	@ManyToOne
@@ -83,10 +84,13 @@ public class Product {
 	@JoinColumn(name = "style_id")
 	private Style style;
 	
-	@OneToMany(mappedBy = "product")
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProductDetail> productDetails;
 	
 	@OneToMany(mappedBy = "product")
 	private List<Rating> ratings;
+	
+	@Column(name = "discount_percent")
+	private float discountPercent;
 	
 }
