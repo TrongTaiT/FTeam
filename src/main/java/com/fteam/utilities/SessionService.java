@@ -17,8 +17,12 @@ public class SessionService {
 	 * @return giá trị đọc được hoặc null nếu không tồn tại
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> T get(String name) {
-		return (T) session.getAttribute(name);
+	public <T> T get(String name, Object defaultValue) {
+		Object value = session.getAttribute(name);
+		if (value == null) {
+			return (T) defaultValue;
+		}
+		return (T) value;
 	}
 	
 	/**

@@ -11,4 +11,8 @@ public class NumberFormatUtil {
 	    return vn.format(number);
 	}
 	
+	public static String toStringNumber(Object number) {
+		return String.format("%.0f", number);
+	}
+	
 }

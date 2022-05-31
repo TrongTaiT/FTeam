@@ -1,5 +1,6 @@
 package com.fteam.utilities;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -7,12 +8,15 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
 public class FileUploadUtil {
 
 //	private static final Logger LOGGER = LoggerFactory.getLogger(FileUploadUtil.class);
-
+	
 	public static void saveFile(String uploadDir, String fileName, //
 			MultipartFile multipartFile) throws IOException {
 
@@ -47,6 +51,14 @@ public class FileUploadUtil {
 		} catch (Exception e) {
 //			LOGGER.error("Could not list directory: " + dirPath);
 			System.out.println("Could not list directory: " + dirPath);
+		}
+	}
+	
+	public static void deleteFile(HttpServletRequest request, String folder, String fileName) {
+		File dir = new File(request.getServletContext().getRealPath(folder));
+		File fileToDelete = new File(dir, fileName);
+		if (fileToDelete.isFile()) {
+			fileToDelete.delete();
 		}
 	}
 
