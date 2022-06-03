@@ -52,8 +52,7 @@
                 <!-- form tìm kiếm  -->
                 <form class="form-inline ml-auto my-2 my-lg-0 mr-3">
                     <div class="input-group" style="width: 520px;">
-                        <input type="text" class="form-control" aria-label="Small"
-                            placeholder="Tìm kiếm...">
+                        <input type="text" class="form-control" aria-label="Small" placeholder="Tìm kiếm...">
                         <div class="input-group-append">
                             <button type="button" class="btn" style="background-color: #CF111A; color: white;">
                                 <i class="fa fa-search"></i>
@@ -80,7 +79,7 @@
                             <a class="dropdown-item nutdangnhap text-center" href="#" data-toggle="modal"
                                 data-target="#formdangnhap">Đăng nhập</a>
                         </div>
-				        <!-- </th:block> -->
+                        <!-- </th:block> -->
                         <!-- <th:block sec:authorize="isAuthenticated()"></th:block> -->
                         <!-- <div>
                             <a href="@{/account_details}"></a>
@@ -101,7 +100,7 @@
             </div>
         </div>
     </nav>
-    
+
 
     <!-- form dang ky khi click vao button tren header-->
     <div class="modal fade mt-5" id="formdangky" data-backdrop="static" tabindex="-1" aria-labelledby="dangky_tieude"
@@ -127,23 +126,23 @@
                     <form th:action="@{/signup}" method="post" id="form-signup" class="form-signin mt-2">
                         <div class="form-label-group">
                             <label for="fullname" class="form-label">Họ và tên:</label>
-                            <input name="fullname" id="fullname" type="text" class="form-control" placeholder="Nhập họ và tên" required
-                                autofocus>
+                            <input name="fullname" id="fullname" type="text" class="form-control"
+                                placeholder="Nhập họ và tên" required autofocus>
                         </div>
                         <div class="form-label-group">
                             <label for="phoneNumber" class="form-label">Số điện thoại:</label>
-                            <input name="phoneNumber" id="phoneNumber" type="text" class="form-control" placeholder="Nhập số điện thoại"
-                                required>
+                            <input name="phoneNumber" id="phoneNumber" type="text" class="form-control"
+                                placeholder="Nhập số điện thoại" required>
                         </div>
                         <div class="form-label-group">
                             <label for="email" class="form-label">Email:</label>
-                            <input name="email" id="email" type="email" class="form-control" placeholder="Nhập địa chỉ email"
-                                required>
+                            <input name="email" id="email" type="email" class="form-control"
+                                placeholder="Nhập địa chỉ email" required>
                         </div>
                         <div class="form-label-group">
                             <label for="password" class="form-label">Mật khẩu:</label>
-                            <input name="password" id="password" type="password" class="form-control" placeholder="Nhập mật khẩu"
-                                required>
+                            <input name="password" id="password" type="password" class="form-control"
+                                placeholder="Nhập mật khẩu" required>
                         </div>
                         <div class="form-label-group mb-4">
                             <label for="confirmPassword" class="form-label">Nhập lại mật khẩu:</label>
@@ -156,7 +155,8 @@
                         </div>
                         <div class="form-label-group mb-4">
                             <label for="address" class="form-label">Địa chỉ:</label>
-                            <input name="address" id="address" type="text" class="form-control" placeholder="Nhập địa chỉ" required>
+                            <input name="address" id="address" type="text" class="form-control"
+                                placeholder="Nhập địa chỉ" required>
                         </div>
 
                         <button class="btn btn-lg btn-block btn-signin text-uppercase text-white mt-3" type="submit"
@@ -208,7 +208,8 @@
                         <div class="custom-control custom-checkbox mb-3">
                             <input name="remember" type="checkbox" class="custom-control-input" id="customCheck1">
                             <label class="custom-control-label" for="customCheck1">Nhớ mật khẩu</label>
-                            <a href="@{forget-password}" class="float-right text-decoration-none" style="color: #F5A623">Quên mật
+                            <a href="@{forget-password}" class="float-right text-decoration-none"
+                                style="color: #F5A623">Quên mật
                                 khẩu</a>
                         </div>
 
@@ -259,19 +260,23 @@
                 <div class="col-md-3" style="margin-right: -15px;">
                     <!-- CATEGORIES -->
                     <div class="categorycontent">
-                        <!-- <ul th:each="product : ${newProducts}">
-
-                        </ul> -->
-                        <!-- <li> <a href="sach-kinh-te.html"> Sách Kinh Tế - Kỹ Năng</a><i class="fa fa-chevron-right float-right"></i>
+                        <ul>
+                            <li th:each="category : ${categories}">
+                                <a th:href="@{/product?cat=${category.id}}">[[${category.name}]]</a>
+                            </li>
+                        </ul>
+                        <!-- <li><a href="#">Nghệ Thuật Sống - Tâm Lý </a><i class="fa fa-chevron-right float-right"></i>
                             <ul>
-                                <li class="liheader"><a href="#" class="header text-uppercase">Sách Kinh Tế - Kỹ
-                                        Năng</a></li>
+                                <li class="liheader"><a href="#" class="header text-uppercase">Nghệ Thuật Sống - Tâm
+                                        Lý</a></li>
                                 <div class="content trai">
-                                    <li><a href="#">Kinh Tế - Chính Trị</a></li>
-                                    <li><a href="#">Sách Khởi Nghiệp</a></li>
-                                    <li><a href="#">Sách Tài Chính, Kế Toán</a></li>
-                                    <li><a href="#">Sách Quản Trị Nhân Sự</a></li>
-                                    <li><a href="#">Sách Kỹ Năng Làm Việc</a></li>
+                                    <li><a href="#">Sách Nghệ Thuật Sống</a></li>
+                                    <li><a href="#">Sách Tâm Lý</a></li>
+                                    <li><a href="#">Sách Hướng Nghiệp</a></li>
+                                </div>
+                                <div class="content phai">
+                                    <li><a href="#">Sách Nghệ Thuật Sống Đẹp</a></li>
+                                    <li><a href="#">Sách Tư Duy </a></li>
                                 </div>
                             </ul>
                         </li> -->
@@ -284,19 +289,29 @@
                             <li data-target="#carouselId" data-slide-to="0" class="active"></li>
                             <li data-target="#carouselId" data-slide-to="1"></li>
                             <li data-target="#carouselId" data-slide-to="2"></li>
+                            <li data-target="#carouselId" data-slide-to="3"></li>
+                            <li data-target="#carouselId" data-slide-to="4"></li>
                         </ol>
                         <div class="carousel-inner">
                             <div class="carousel-item active">
-                                <a href="#"><img src="images/banner-sach-moi.jpg" class="img-fluid"
+                                <a href="#"><img src="images/banner/banner-1.jpg" class="img-fluid"
                                         style="height: 386px;" width="900px" alt="First slide"></a>
                             </div>
                             <div class="carousel-item">
-                                <a href="#"><img src="images/banner-beethoven.jpg" class="img-fluid"
+                                <a href="#"><img src="images/banner/banner-2.jpg" class="img-fluid"
                                         style="height: 386px;" width="900px" alt="Second slide"></a>
                             </div>
                             <div class="carousel-item">
-                                <a href="#"><img src="images/neu-toi-biet-duoc-khi-20-full-banner.jpg" class="img-fluid"
+                                <a href="#"><img src="images/banner/banner-3.jpg" class="img-fluid"
                                         style="height: 386px;" alt="Third slide"></a>
+                            </div>                            
+                            <div class="carousel-item">
+                                <a href="#"><img src="images/banner/banner-4.jpg" class="img-fluid"
+                                        style="height: 386px;" alt="Fourth slide"></a>
+                            </div>
+                            <div class="carousel-item">
+                                <a href="#"><img src="images/banner/banner-5.jpg" class="img-fluid"
+                                        style="height: 386px;" alt="Fifth slide"></a>
                             </div>
                         </div>
                         <a class="carousel-control-prev" href="#carouselId" data-slide="prev">
@@ -329,8 +344,8 @@
                     <div th:each="product : ${newProducts}">
                         <div class="card">
                             <a th:href="@{'/product-details/' + ${product.id}}" class="motsanpham"
-                                style="text-decoration: none; color: black;" data-toggle="tooltip" data-placement="bottom"
-                                th:title="${product.productName}">
+                                style="text-decoration: none; color: black;" data-toggle="tooltip"
+                                data-placement="bottom" th:title="${product.productName}">
                                 <img class="card-img-top anh" th:src="@{${product.mainImagePath}}"
                                     alt="lap-ke-hoach-kinh-doanh-hieu-qua">
                                 <div class="card-body noidungsp mt-3">

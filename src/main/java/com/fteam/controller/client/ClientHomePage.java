@@ -1,4 +1,4 @@
-package com.fteam.controller;
+package com.fteam.controller.client;
 
 import java.util.List;
 
