@@ -20,10 +20,12 @@ import javax.persistence.Transient;
 import com.fteam.utilities.NumberFormatUtil;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -58,7 +60,7 @@ public class Product {
 
 	@Column(nullable = false)
 	private Integer insurance;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "category_id")
 	private Category category;
@@ -66,7 +68,7 @@ public class Product {
 	@ManyToOne
 	@JoinColumn(name = "brand_id")
 	private Brand brand;
-	
+
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProductImage> productImages;
 
@@ -85,34 +87,39 @@ public class Product {
 	@ManyToOne
 	@JoinColumn(name = "face_shape_id")
 	private FaceShape faceShape;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "style_id")
 	private Style style;
-	
+
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProductDetail> productDetails;
-	
+
 	@OneToMany(mappedBy = "product")
 	private List<Rating> ratings;
-	
+
 	@Column(name = "discount_percent")
 	private float discountPercent;
-	
+
 	@Transient
 	public String getMainImagePath() {
 		return "images/products/" + this.id + "/" + this.mainImage;
 	}
-	
+
 	@Transient
 	public String getOldPrice() {
 		return NumberFormatUtil.formatToVietnamCurrency(this.price);
 	}
-	
+
 	@Transient
 	public String getNewPrice() {
 		Float realPrice = this.price - (this.price * this.discountPercent / 100);
 		return NumberFormatUtil.formatToVietnamCurrency(realPrice);
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Product [id=" + id + ", productName=" + productName + ", price=" + price + "]";
+	}
+
 }

@@ -10,16 +10,20 @@ import com.fteam.repository.ProductRepository;
 
 @Service
 public class ProductService {
-	
+
 	@Autowired
 	private ProductRepository repo;
-	
+
 	public List<Product> listAll() {
 		return (List<Product>) repo.findAll();
 	}
-	
-	public List<Product> list8NewProducts() {
-		return null;
+
+	public List<Product> listTop8ByDOM() {
+		return repo.listTop8ByDateOfManufacture();
+	}
+
+	public List<Product> listTop8ByRandom() {
+		return repo.listTop8ByRandom();
 	}
 
 }

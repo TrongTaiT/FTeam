@@ -12,18 +12,23 @@ import com.fteam.service.ProductService;
 
 @Controller
 public class ClientHomePage {
-	
+
 	@Autowired
 	private ProductService service;
-	
+
 	@GetMapping("")
 	public String viewClientHomePage() {
 		return "client/index";
 	}
-	
+
 	@ModelAttribute("newProducts")
 	public List<Product> getNewProducts() {
-		return service.listAll();
+		return service.listTop8ByDOM();
+	}
+
+	@ModelAttribute("randomProducts")
+	public List<Product> getRandomProducts() {
+		return service.listTop8ByRandom();
 	}
 
 }
