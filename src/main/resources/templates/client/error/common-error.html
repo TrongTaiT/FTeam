@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:replace="/client/fragments :: common_head('Lỗi')"></div>
+    <link rel="stylesheet" th:href="@{/assets/css/home.css}">
+</head>
+
+<body>
+    <nav th:replace="/client/fragments :: page_navbar"></nav>
+
+    <section style="min-height: 60vh;">
+        <h3 class="alert alert-warning" role="alert">
+            [[${message}]]
+        </h3>
+    </section>
+
+    <div th:replace="/client/fragments :: page_footer"></div>
+</body>
+
+</html>

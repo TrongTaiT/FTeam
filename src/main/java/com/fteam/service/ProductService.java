@@ -1,10 +1,12 @@
 package com.fteam.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fteam.exception.ProductNotFoundException;
 import com.fteam.model.Product;
 import com.fteam.repository.ProductRepository;
 
@@ -24,6 +26,14 @@ public class ProductService {
 
 	public List<Product> listTop8ByRandom() {
 		return repo.listTop8ByRandom();
+	}
+	
+	public Product getProduct(Integer id) throws ProductNotFoundException {
+		try {
+			return repo.findById(id).get();
+		} catch (NoSuchElementException e) {
+			throw new ProductNotFoundException("Không tìm thấy sản phẩm có Id: " + id);
+		}
 	}
 
 }
