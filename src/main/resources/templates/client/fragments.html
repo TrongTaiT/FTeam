@@ -2,8 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <!-- <div th:replace="/client/fragments :: common_head('')"></div> -->
-    <div th:fragment="common_head(title)">
+    <!-- <th:block th:replace="/client/fragments :: common_head('Lỗi')"></th:block> -->
+    <th:block th:fragment="common_head(title)">
         <title>FTeam - [[${title}]]</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,7 +29,7 @@
             src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
         <link rel="icon" type="image/png" sizes="16x16" th:href="@{/assets/images/favicon-16x16.png}">
         <link rel="manifest" th:href="@{/assets/favicon_io/site.webmanifest}">
-    </div>
+    </th:block>
 </head>
 
 <body>
@@ -99,32 +99,6 @@
                 </div>
             </div>
         </nav>
-
-        <!-- thanh tieu de "danh muc sach" + hotline + ho tro truc tuyen -->
-        <section class="duoinavbar">
-            <div class="container text-white">
-                <div class="row justify">
-                    <div class="col-md-3">
-                        <div class="categoryheader">
-                            <div class="noidungheader text-white">
-                                <i class="fa fa-bars"></i>
-                                <span class="text-uppercase font-weight-bold ml-1">Danh mục</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-9">
-                        <div class="benphai float-right">
-                            <div class="hotline">
-                                <i class="fa fa-phone"></i>
-                                <span>Hotline:<b>1900 1999</b> </span>
-                            </div>
-                            <i class="fas fa-comments-dollar"></i>
-                            <a href="#">Hỗ trợ trực tuyến </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
 
         <!-- form dang ky khi click vao button tren header-->
         <div class="modal fade mt-5" id="formdangky" data-backdrop="static" tabindex="-1"
@@ -251,6 +225,41 @@
             </div>
         </div>
     </div>
+
+    <!-- thanh "danh muc sach" đã được ẩn bên trong + hotline + ho tro truc tuyen -->
+    <!-- <section th:replace="/client/fragments :: below_navbar_hide_categories"></section> -->
+    <section th:fragment="below_navbar_hide_categories" class="duoinavbar">
+        <div class="container text-white">
+            <div class="row justify">
+                <div class="col-lg-3 col-md-5">
+                    <div class="categoryheader">
+                        <div class="noidungheader text-white">
+                            <i class="fa fa-bars"></i>
+                            <span class="text-uppercase font-weight-bold ml-1">Danh mục sách</span>
+                        </div>
+                        <!-- CATEGORIES -->
+                        <div class="categorycontent h-100 border border-3">
+                            <ul>
+                                <li th:each="category : ${categories}">
+                                    <a th:href="@{/product?cat=${category.id}}">[[${category.name}]]</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5 ml-auto contact d-none d-md-block">
+                    <div class="benphai float-right">
+                        <div class="hotline">
+                            <i class="fa fa-phone"></i>
+                            <span>Hotline:<b>1900 1999</b> </span>
+                        </div>
+                        <i class="fas fa-comments-dollar"></i>
+                        <a href="#">Hỗ trợ trực tuyến </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- footer & abovefooter  -->
     <!-- <div th:replace="/client/fragments :: page_footer"></div> -->

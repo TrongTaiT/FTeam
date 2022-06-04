@@ -2,12 +2,14 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <div th:replace="/client/fragments :: common_head('Lỗi')"></div>
-    <link rel="stylesheet" th:href="@{/assets/css/home.css}">
+    <th:block th:replace="/client/fragments :: common_head('Lỗi')"></th:block>
+    <link rel="stylesheet" th:href="@{/assets/css/product-item.css}">
 </head>
 
 <body>
     <nav th:replace="/client/fragments :: page_navbar"></nav>
+
+    <section th:replace="/client/fragments :: below_navbar_hide_categories"></section>
 
     <section style="min-height: 60vh;">
         <h3 class="alert alert-warning" role="alert">

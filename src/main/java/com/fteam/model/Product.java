@@ -17,7 +17,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import com.fteam.utilities.NumberFormatUtil;
+import com.fteam.utilities.FormatUtil;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -103,18 +103,29 @@ public class Product {
 
 	@Transient
 	public String getMainImagePath() {
-		return "images/products/" + this.id + "/" + this.mainImage;
+		return "/images/products/" + this.id + "/" + this.mainImage;
 	}
 
 	@Transient
 	public String getOldPrice() {
-		return NumberFormatUtil.formatToVietnamCurrency(this.price);
+		return FormatUtil.formatToVietnamCurrency(this.price);
 	}
 
 	@Transient
 	public String getNewPrice() {
 		Float realPrice = this.price - (this.price * this.discountPercent / 100);
-		return NumberFormatUtil.formatToVietnamCurrency(realPrice);
+		return FormatUtil.formatToVietnamCurrency(realPrice);
+	}
+	
+	@Transient
+	public String getDiscountAmount() {
+		Float realPrice = this.price - (this.price * this.discountPercent / 100);
+		return FormatUtil.formatToVietnamCurrency(this.price - realPrice);
+	}
+	
+	@Transient
+	public String getFormatDayOfManufacture() {
+		return FormatUtil.dateToString(this.dayOfManufacture);
 	}
 
 	@Override

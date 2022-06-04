@@ -2,13 +2,39 @@
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <link rel="stylesheet" th:href="@{/assets/css/home.css}">    
     <div th:replace="/client/fragments :: common_head('Đồng hồ sang trọng')"></div>
+    <link rel="stylesheet" th:href="@{/assets/css/home.css}">    
 </head>
 
 <body>
     <!-- navbar -->
     <nav th:replace="/client/fragments :: page_navbar"></nav>
+
+    <!-- thanh tieu de "danh muc sach" + hotline + ho tro truc tuyen -->
+    <section class="duoinavbar">
+        <div class="container text-white">
+            <div class="row justify">
+                <div class="col-md-3">
+                    <div class="categoryheader">
+                        <div class="noidungheader text-white">
+                            <i class="fa fa-bars"></i>
+                            <span class="text-uppercase font-weight-bold ml-1">Danh mục</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="benphai float-right">
+                        <div class="hotline">
+                            <i class="fa fa-phone"></i>
+                            <span>Hotline:<b>1900 1999</b> </span>
+                        </div>
+                        <i class="fas fa-comments-dollar"></i>
+                        <a href="#">Hỗ trợ trực tuyến </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- noi dung danh muc sach(categories) + banner slider -->
     <section class="header bg-light">

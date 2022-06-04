@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class ErrorController {
 	
-	@GetMapping("/client/error/common-error")
+	@GetMapping("/client/error/message")
 	public void renderErrorPage() {
 	}
 

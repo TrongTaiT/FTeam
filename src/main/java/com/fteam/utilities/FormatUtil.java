@@ -1,9 +1,11 @@
 package com.fteam.utilities;
 
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
-public class NumberFormatUtil {
+public class FormatUtil {
 
 	public static String formatToVietnamCurrency(Object number) {
 		Locale localeVN = new Locale("vi", "VN");
@@ -13,6 +15,11 @@ public class NumberFormatUtil {
 	
 	public static String toStringNumber(Object number) {
 		return String.format("%.0f", number);
+	}
+
+	public static String dateToString(Date date) {
+		SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yyyy");
+		return fmt.format(date);
 	}
 	
 }
