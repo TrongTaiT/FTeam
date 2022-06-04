@@ -241,7 +241,7 @@
                         <div class="categorycontent h-100 border border-3">
                             <ul>
                                 <li th:each="category : ${categories}">
-                                    <a th:href="@{/product?cat=${category.id}}">[[${category.name}]]</a>
+                                    <a th:href="@{'/category/' + ${category.id}}">[[${category.name}]]</a>
                                 </li>
                             </ul>
                         </div>
@@ -352,13 +352,15 @@
                 </div>
             </div>
         </footer>
+
+        <!-- nut cuon len dau trang -->
+        <div class="fixed-bottom">
+            <div class="btn btn-warning float-right rounded-circle nutcuonlen" id="backtotop" href="#"
+                style="background:#CF111A;"><i class="fa fa-chevron-up text-white"></i></div>
+        </div>
     </div>
 
-    <!-- nut cuon len dau trang -->
-    <div th:fragment="scroll_to_top" class="fixed-bottom">
-        <div class="btn btn-warning float-right rounded-circle nutcuonlen" id="backtotop" href="#"
-            style="background:#CF111A;"><i class="fa fa-chevron-up text-white"></i></div>
-    </div>
+
 </body>
 
 </html>

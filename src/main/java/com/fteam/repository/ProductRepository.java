@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import com.fteam.model.Category;
 import com.fteam.model.Product;
 
 public interface ProductRepository extends JpaRepository<Product, Integer> {
@@ -20,5 +21,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 	@Query(value = "SELECT * FROM products ORDER BY RAND() LIMIT 8", //
 			nativeQuery = true)
 	public List<Product> listTop8ByRandom();
+	
+	public Page<Product> findAllByCategoryId(Integer categoryId, Pageable pageable);
 
 }

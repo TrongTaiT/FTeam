@@ -45,7 +45,7 @@
                     <div class="categorycontent">
                         <ul>
                             <li th:each="category : ${categories}">
-                                <a th:href="@{/product?cat=${category.id}}">[[${category.name}]]</a>
+                                <a th:href="@{'/category/' + ${category.id}}">[[${category.name}]]</a>
                             </li>
                         </ul>                        
                     </div>
@@ -281,8 +281,6 @@
     </section>
 
     <div th:replace="/client/fragments :: page_footer"></div>
-
-    <div th:replace="/client/fragments :: scroll_to_top"></div>
 
 </body>
 

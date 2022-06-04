@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.fteam.exception.ProductNotFoundException;
@@ -12,6 +15,8 @@ import com.fteam.repository.ProductRepository;
 
 @Service
 public class ProductService {
+	
+	public static final int PRODUCTS_PER_PAGE = 8;
 
 	@Autowired
 	private ProductRepository repo;
@@ -34,6 +39,12 @@ public class ProductService {
 		} catch (NoSuchElementException e) {
 			throw new ProductNotFoundException("Không tìm thấy sản phẩm có Id: " + id);
 		}
+	}
+	
+	public Page<Product> findAllByCategory(Integer categoryId) {
+		Pageable pageable = PageRequest.of(0, PRODUCTS_PER_PAGE);
+		
+		return repo.findAllByCategoryId(categoryId, pageable);
 	}
 
 }
