@@ -36,9 +36,4 @@ public class ProductRepositoryTest {
 
 		assertThat(result.size()).isGreaterThan(0);
 	}
-	
-	@Test
-	public void listProductByCategory() {
-//		Page<Product> page = 
-	}
 }

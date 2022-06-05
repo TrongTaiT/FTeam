@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fteam.exception.CategoryNotFoundException;
 import com.fteam.exception.ProductNotFoundException;
+import com.fteam.model.Category;
 import com.fteam.model.Product;
 import com.fteam.service.CategoryService;
 import com.fteam.service.ProductService;
@@ -20,7 +22,7 @@ public class ProductController {
 	private ProductService productService;
 	
 	@Autowired
-	private CategoryService CategoryService;
+	private CategoryService categoryService;
 
 	@GetMapping("product-details/{id}")
 	public String showProductDetail( //
@@ -39,17 +41,36 @@ public class ProductController {
 			return "redirect:/client/error/message";
 		}
 	}
+	
+	@GetMapping("/category/{category_id}/page/{pageNum}")
+	public String showProductByCategoryByPage( //
+			@PathVariable("category_id") Integer categoryId, //
+			@PathVariable("pageNum") Integer pageNum, //
+			RedirectAttributes ra, //
+			Model model
+	) {
+		try {
+			Category category = categoryService.getCategory(categoryId);
+			
+			Page<Product> page = productService.listByCategory(pageNum, categoryId);
+
+			model.addAttribute("category", category);
+			model.addAttribute("page", page);
+			
+			return "client/products";
+		} catch (CategoryNotFoundException e) {
+			ra.addFlashAttribute("message", e.getMessage());
+			return "redirect:/client/error/message";			
+		}
+	}
 
 	@GetMapping("/category/{category_id}")
-	public String showProductByCategory( //
-			@PathVariable("category_id") Integer id, //
+	public String showProductByCategoryFirstPage( //
+			@PathVariable("category_id") Integer categoryId, //
 			RedirectAttributes ra, //
 			Model model//
 	) {
-		Page<Product> page = productService.findAllByCategory(id);
-		model.addAttribute("page", page);
-
-		return "client/products";
+		return showProductByCategoryByPage(categoryId, 1, ra, model);
 	}
 
 }

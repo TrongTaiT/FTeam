@@ -2,7 +2,7 @@
 <html lang="li" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <th:block th:replace="/client/fragments :: common_head('')"></th:block>
+    <th:block th:replace="/client/fragments :: common_head(title=${product.productName})"></th:block>
     <link rel="stylesheet" th:href="@{/assets/css/product-item.css}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
     <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
@@ -42,7 +42,13 @@
                                     th:alt="${product.productName}" style="width: 100%;">
                             </a>
                         </div>
-                        <div class="list-anhchitiet d-flex mb-4" style="margin-left: 2rem;">
+                        <div class="list-anhchitiet d-flex mb-4" style="margin-left: 1rem;">
+                            <img th:src="@{${product.mainImagePath}}" class="thumb-img thumb1 mr-3 img-fluid"
+                                th:alt="${product.productName}">
+                            <img th:src="@{${product.mainImagePath}}" class="thumb-img thumb1 mr-3 img-fluid"
+                                th:alt="${product.productName}">
+                            <img th:src="@{${product.mainImagePath}}" class="thumb-img thumb1 mr-3 img-fluid"
+                                th:alt="${product.productName}">
                             <img th:src="@{${product.mainImagePath}}" class="thumb-img thumb1 mr-3 img-fluid"
                                 th:alt="${product.productName}">
                         </div>
@@ -69,7 +75,7 @@
                                     <div class="giaban">Giá bán tại FTeam:
                                         <span class="giamoi font-weight-bold">[[${product.newPrice}]]₫</span>
                                     </div>
-                                    <div class="tietkiem">Tiết kiệm:
+                                    <div th:if="${product.discountPercent > 0}" class="tietkiem">Tiết kiệm:
                                         <b>[[${product.discountAmount}]] ₫</b>
                                         <span class="sale">-[[${product.discountPercent}]]%</span>
                                     </div>

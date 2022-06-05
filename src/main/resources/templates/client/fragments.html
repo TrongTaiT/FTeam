@@ -261,6 +261,43 @@
         </div>
     </section>
 
+    <!-- products block -->
+    <div th:fragment="products_block(listProduct)" class="khoisanpham" style="padding-bottom: 2rem;">
+        <!-- 1 san pham -->
+        <div th:each="product : ${listProduct}">
+            <!-- Product card -->
+            <!-- <div th:replace="/client/fragments :: product_card"></div> -->
+            <div th:fragment="product_card" class="card">
+                <a th:href="@{'/product-details/' + ${product.id}}" class="motsanpham"
+                    style="text-decoration: none; color: black;" data-toggle="tooltip" data-placement="bottom"
+                    th:title="${product.productName}">
+                    <img class="card-img-top anh" th:src="@{${product.mainImagePath}}" th:alt="${product.productName}">
+                    <div class="card-body noidungsp mt-3">
+                        <h6 class="card-title ten">[[${product.productName}]]</h6>
+                        <small class="tacgia text-muted">[[${product.brand.name}]]</small>
+                        <div class="gia d-flex align-items-baseline">
+                            <div class="giamoi">[[${product.newPrice}]] ₫</div>
+                            <th:block th:if="${product.discountPercent > 0}">
+                                <div class="giacu text-muted">[[${product.oldPrice}]] ₫</div>
+                                <div class="sale">-[[${product.discountPercent}]]%</div>
+                            </th:block>
+                        </div>
+                        <div class="danhgia">
+                            <ul class="d-flex" style="list-style: none;">
+                                <li class="active"><i class="fa fa-star"></i></li>
+                                <li class="active"><i class="fa fa-star"></i></li>
+                                <li class="active"><i class="fa fa-star"></i></li>
+                                <li class="active"><i class="fa fa-star"></i></li>
+                                <li><i class="fa fa-star"></i></li>
+                                <li><span class="text-muted">0 nhận xét</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
     <!-- footer & abovefooter  -->
     <!-- <div th:replace="/client/fragments :: page_footer"></div> -->
     <div th:fragment="page_footer">

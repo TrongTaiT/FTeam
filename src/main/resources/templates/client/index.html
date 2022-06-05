@@ -107,38 +107,7 @@
                         <a href="sach-moi-tuyen-chon.html" class="btn btn-warning btn-sm text-white">Xem tất cả</a>
                     </div>
                 </div>
-                <div class="khoisanpham" style="padding-bottom: 2rem;">
-                    <!-- 1 san pham -->
-                    <div th:each="product : ${newProducts}">
-                        <div class="card">
-                            <a th:href="@{'/product-details/' + ${product.id}}" class="motsanpham"
-                                style="text-decoration: none; color: black;" data-toggle="tooltip"
-                                data-placement="bottom" th:title="${product.productName}">
-                                <img class="card-img-top anh" th:src="@{${product.mainImagePath}}"
-                                    alt="lap-ke-hoach-kinh-doanh-hieu-qua">
-                                <div class="card-body noidungsp mt-3">
-                                    <h3 class="card-title ten">[[${product.productName}]]</h3>
-                                    <!-- <small class="tacgia text-muted">Tên hãng</small> -->
-                                    <div class="gia d-flex align-items-baseline">
-                                        <div class="giamoi">[[${product.newPrice}]] ₫</div>
-                                        <div class="giacu text-muted">[[${product.oldPrice}]] ₫</div>
-                                        <div class="sale">-[[${product.discountPercent}]]%</div>
-                                    </div>
-                                    <div class="danhgia">
-                                        <ul class="d-flex" style="list-style: none;">
-                                            <li class="active"><i class="fa fa-star"></i></li>
-                                            <li class="active"><i class="fa fa-star"></i></li>
-                                            <li class="active"><i class="fa fa-star"></i></li>
-                                            <li class="active"><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><span class="text-muted">0 nhận xét</span></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+                <div th:replace="/client/fragments :: products_block(${newProducts})"></div>
             </div>
         </div>
     </section>
@@ -154,38 +123,7 @@
                         <a href="sach-moi-tuyen-chon.html" class="btn btn-warning btn-sm text-white">Xem tất cả</a>
                     </div>
                 </div>
-                <div class="khoisanpham" style="padding-bottom: 2rem;">
-                    <!-- 1 san pham -->
-                    <div th:each="product : ${randomProducts}">
-                        <div class="card">
-                            <a th:href="@{'/product-details/' + ${product.id}}" class="motsanpham"
-                                style="text-decoration: none; color: black;" data-toggle="tooltip"
-                                data-placement="bottom" th:title="${product.productName}">
-                                <img class="card-img-top anh" th:src="@{${product.mainImagePath}}"
-                                    alt="lap-ke-hoach-kinh-doanh-hieu-qua">
-                                <div class="card-body noidungsp mt-3">
-                                    <h3 class="card-title ten">[[${product.productName}]]</h3>
-                                    <!-- <small class="tacgia text-muted">Tên hãng</small> -->
-                                    <div class="gia d-flex align-items-baseline">
-                                        <div class="giamoi">[[${product.newPrice}]] ₫</div>
-                                        <div class="giacu text-muted">[[${product.oldPrice}]] ₫</div>
-                                        <div class="sale">-[[${product.discountPercent}]]%</div>
-                                    </div>
-                                    <div class="danhgia">
-                                        <ul class="d-flex" style="list-style: none;">
-                                            <li class="active"><i class="fa fa-star"></i></li>
-                                            <li class="active"><i class="fa fa-star"></i></li>
-                                            <li class="active"><i class="fa fa-star"></i></li>
-                                            <li class="active"><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><span class="text-muted">0 nhận xét</span></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+                <div th:replace="/client/fragments :: products_block(${randomProducts})"></div>
             </div>
         </div>
     </section>

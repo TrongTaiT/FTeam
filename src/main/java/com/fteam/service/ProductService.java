@@ -16,7 +16,7 @@ import com.fteam.repository.ProductRepository;
 @Service
 public class ProductService {
 	
-	public static final int PRODUCTS_PER_PAGE = 8;
+	public static final int PRODUCTS_PER_PAGE = 3;
 
 	@Autowired
 	private ProductRepository repo;
@@ -41,8 +41,8 @@ public class ProductService {
 		}
 	}
 	
-	public Page<Product> findAllByCategory(Integer categoryId) {
-		Pageable pageable = PageRequest.of(0, PRODUCTS_PER_PAGE);
+	public Page<Product> listByCategory(int pageNum, Integer categoryId) {
+		Pageable pageable = PageRequest.of(pageNum - 1, PRODUCTS_PER_PAGE);
 		
 		return repo.findAllByCategoryId(categoryId, pageable);
 	}
