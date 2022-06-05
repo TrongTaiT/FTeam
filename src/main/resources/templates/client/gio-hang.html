@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -68,7 +68,7 @@
                 <!-- ô đăng nhập đăng ký giỏ hàng trên header  -->
                 <ul class="navbar-nav mb-1 ml-auto">
                     <div class="dropdown">
-                        <li class="nav-item account" type="button" class="btn dropdown" data-toggle="dropdown">
+                        <li class="nav-item account btn dropdown" type="button" data-toggle="dropdown">
                             <a href="#" class="btn btn-secondary rounded-circle">
                                 <i class="fa fa-user"></i>
                             </a>
@@ -515,8 +515,8 @@
                                         </a>
                                     </h5>
                                 </div>
-                                <div id="step1contentid" class="collapse in" role="tabpanel"
-                                    aria-labelledby="step1header" class="stepscontent">
+                                <div id="step1contentid" class="collapse in stepscontent" role="tabpanel"
+                                    aria-labelledby="step1header">
                                     <div class="card-body p-0">
                                         <nav>
                                             <div class="nav nav-tabs dangnhap-dangky" id="nav-tab" role="tablist">
