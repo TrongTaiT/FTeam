@@ -10,7 +10,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.fteam.exception.ProductNotFoundException;
+import com.fteam.model.Category;
 import com.fteam.model.Product;
+import com.fteam.repository.CategoryRepository;
 import com.fteam.repository.ProductRepository;
 
 @Service
@@ -19,23 +21,23 @@ public class ProductService {
 	public static final int PRODUCTS_PER_PAGE = 3;
 
 	@Autowired
-	private ProductRepository repo;
+	private ProductRepository productRepo;
 
 	public List<Product> listAll() {
-		return (List<Product>) repo.findAll();
+		return (List<Product>) productRepo.findAll();
 	}
 
 	public List<Product> listTop8ByDOM() {
-		return repo.listTop8ByDateOfManufacture();
+		return productRepo.listTop8ByDateOfManufacture();
 	}
 
 	public List<Product> listTop8ByRandom() {
-		return repo.listTop8ByRandom();
+		return productRepo.listTop8ByRandom();
 	}
 	
 	public Product getProduct(Integer id) throws ProductNotFoundException {
 		try {
-			return repo.findById(id).get();
+			return productRepo.findById(id).get();
 		} catch (NoSuchElementException e) {
 			throw new ProductNotFoundException("Không tìm thấy sản phẩm có Id: " + id);
 		}
@@ -44,7 +46,7 @@ public class ProductService {
 	public Page<Product> listByCategory(int pageNum, Integer categoryId) {
 		Pageable pageable = PageRequest.of(pageNum - 1, PRODUCTS_PER_PAGE);
 		
-		return repo.findAllByCategoryId(categoryId, pageable);
+		return productRepo.findAllByCategoryId(categoryId, pageable);
 	}
 
 }

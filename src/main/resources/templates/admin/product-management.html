@@ -21,19 +21,21 @@
 		<div class="page-wrapper">
 			<div class="container-fluid">
 				<div class="row page-titles">
-					<div class="col-md-5 col-8 align-self-center">
+					<div class="col-md-4 col-6 align-self-center">
 						<h3 class="text-themecolor m-b-0 m-t-0">Table</h3>
 						<ol class="breadcrumb">
 							<li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
 							<li class="breadcrumb-item active">Table</li>
 						</ol>
 					</div>
-					<div class="col-md-7 col-4 align-self-center">
+					<div th:if="${message != null}" class="col-md-2 col-2 align-self-center">>[[${message}]]</div>
+					<div class="col-md-6 col-4 align-self-center">
 						<button type="button" class="btn waves-effect waves-light btn-success pull-right hidden-sm-down" data-toggle="modal" data-target=".bd-example-modal-lg">
                             Form Sản Phẩm
                         </button>
 					</div>
 				</div>
+				
 				<div class="modal fade bd-example-modal-lg" tabindex="-1"
 					role="dialog" aria-labelledby="myLargeModalLabel"
 					aria-hidden="true">

@@ -31,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -40,9 +41,6 @@ public class ProductManagementController {
 
 	@Autowired
 	private ProductService productService;
-	
-	@Autowired
-	private CategoryService categoryService;
 	
 	@Autowired
 	private BrandService brandService;
@@ -66,65 +64,56 @@ public class ProductManagementController {
 	public String index(Model model) {
 		Product product = new Product();
 		model.addAttribute("product", product);
-		
-		List<Brand> brands = brandService.listAll();
-		model.addAttribute("brands", brands);
-		
-		List<Category> categories = categoryService.listAll();
-		model.addAttribute("categories", categories);
-		
-		List<Style> styles = styleService.listAll();
-		model.addAttribute("styles", styles);
-		
-		List<FaceShape> faceShapes = faceShapeService.listAll();
-		model.addAttribute("faceShapes", faceShapes);
-		
-		List<ShellMaterial> shellMaterials = shellMaterialService.listAll();
-		model.addAttribute("shellMaterials", shellMaterials);
-		
-		List<StrapMaterial> strapMaterials = strapMaterialService.listAll();
-		model.addAttribute("strapMaterials", strapMaterials);
-		
-		List<WatchFace> watchFaces = watchFaceService.listAll();
-		model.addAttribute("watchFaces", watchFaces);
-		
-		
-		List<Product> list = productService.listAll();
-		model.addAttribute("products", list);
 		return "admin/product-management";
 	}
 	
 	@GetMapping("product/edit/{id}")
-	public String edit(Model model, @PathVariable("id") Integer id) throws ProductNotFoundException {
-		Product product = productService.getProduct(id);
-		model.addAttribute("product", product);
-		
-		List<Brand> brands = brandService.listAll();
-		model.addAttribute("brands", brands);
-		
-		List<Category> categories = categoryService.listAll();
-		model.addAttribute("categories", categories);
-		
-		List<Style> styles = styleService.listAll();
-		model.addAttribute("styles", styles);
-		
-		List<FaceShape> faceShapes = faceShapeService.listAll();
-		model.addAttribute("faceShapes", faceShapes);
-		
-		List<ShellMaterial> shellMaterials = shellMaterialService.listAll();
-		model.addAttribute("shellMaterials", shellMaterials);
-		
-		List<StrapMaterial> strapMaterials = strapMaterialService.listAll();
-		model.addAttribute("strapMaterials", strapMaterials);
-		
-		List<WatchFace> watchFaces = watchFaceService.listAll();
-		model.addAttribute("watchFaces", watchFaces);
-		
-		List<Product> products = productService.listAll();
-		model.addAttribute("products", products);
-		
+	public String edit(Model model, @PathVariable("id") Integer id) {
+		try {
+			Product product = productService.getProduct(id);
+			model.addAttribute("product", product);
+			
+		} catch (ProductNotFoundException e) {
+			model.addAttribute("product", new Product());
+			model.addAttribute("message", e.getMessage());
+		}
+
 		return "admin/product-management";
-		
+	}
+	
+	@ModelAttribute("products")
+	public List<Product> listAllProducts(){
+		return productService.listAll();
+	}
+	
+	@ModelAttribute("brands")
+	public List<Brand> listAllBrands(){
+		return brandService.listAll();
+	}
+	
+	@ModelAttribute("styles")
+	public List<Style> listAllStyle(){
+		return styleService.listAll();
+	}
+	
+	@ModelAttribute("faceShapes")
+	public List<FaceShape> listAllFaceShapes(){
+		return faceShapeService.listAll();
+	}
+	
+	@ModelAttribute("shellMaterials")
+	public List<ShellMaterial> listAllShellMaterials(){
+		return shellMaterialService.listAll();
+	}
+	
+	@ModelAttribute("strapMaterials")
+	public List<StrapMaterial> listAllStrapMaterials(){
+		return strapMaterialService.listAll();
+	}
+	
+	@ModelAttribute("watchFaces")
+	public List<WatchFace> listAllWatchFaces(){
+		return watchFaceService.listAll();
 	}
 	
 }
