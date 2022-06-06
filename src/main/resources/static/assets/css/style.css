@@ -106,7 +106,11 @@ a.link {
 
 html body .mdi:before, html body .mdi-set {
   line-height: initial; }
-
+.text-logo{
+	font-size: 2.5rem;
+	font-weight: bolder;
+	font-family: Georgia, 'Times New Roman', Times, serif;
+}
 /*******************
 Headings
 *******************/
@@ -1852,8 +1856,8 @@ Layouts
 .card-no-border .sidebar-footer {
   background: #f2f6f8; }
 
-.card-no-border .sidebar-nav > ul > li > a.active {
-  background: #ffffff; }
+/* .card-no-border .sidebar-nav > ul > li > a.active {
+  background: #ffffff; } */
 
 .card-no-border .shadow-none {
   -webkit-box-shadow: none;
@@ -5664,6 +5668,7 @@ When click on sidebar toggler and also for tablet
     .mini-sidebar .sidebar-nav #sidebarnav > li:hover > a i {
       color: #ffffff; }
     .mini-sidebar .sidebar-nav #sidebarnav > li:hover > a .hide-menu {
+      padding-top: 2px;
       display: inline; }
   .mini-sidebar .sidebar-nav #sidebarnav > li.active > a {
     border-color: transparent; }
