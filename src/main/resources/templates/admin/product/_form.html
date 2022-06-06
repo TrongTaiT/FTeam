@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<th:block
+	th:replace="/admin/fragments :: admin_head('Product - Management')"></th:block>
+<link th:href="@{/assets/css/style.css}" rel="stylesheet">
+</head>
+
+<body class="fix-header fix-sidebar card-no-border">
+	<div class="preloader">
+		<svg class="circular" viewBox="25 25 50 50">
+            <circle class="path" cx="50" cy="50" r="20" fill="none"
+				stroke-width="2" stroke-miterlimit="10" /> </svg>
+	</div>
+	<div id="main-wrapper">
+		<div th:replace="/admin/fragments :: top_navbar"></div>
+
+		<div th:replace="/admin/fragments :: left_navbar"></div>
+
+		<div class="page-wrapper">
+			<div class="container-fluid">
+				<div class="row page-titles justify-content-between">
+					<div class="col-md-4 col-6 align-self-center">
+						<h3 class="text-themecolor m-b-0 m-t-0">Table</h3>
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item"><a th:href="@{/admin}">Trang
+									chủ</a></li>
+							<li class="breadcrumb-item"><a
+								th:href="@{/dashboard/product}">Quản lý sản phẩm</a></li>
+							<li class="breadcrumb-item active">Form sản phẩm</li>
+						</ol>
+					</div>
+					<div th:if="${message != null}"
+						class="col-md-2 col-2 align-self-center">[[${message}]]</div>
+					<div class="col-md-6 col-4 align-self-center">
+						<a th:href="@{/dashboard/product}"
+							class="btn waves-effect waves-light btn-success pull-right hidden-sm-down">Danh
+							sách sản phẩm</a>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="card">
+							<div class="card-block">
+								<h4 class="card-title">Form Sản phẩm</h4>
+								<h6 class="card-subtitle">
+									Add class
+									<code>.form</code>
+								</h6>
+								<div class="table-responsive">
+									<form th:action="@{/dashboard/product/save}" method="POST" th:object="${product}">
+										<input hidden th:field="*{id}">
+										<div class="form-group d-flex">
+											<div class="col-9">
+												<label>Tên đồng hồ</label> <input th:field="*{productName}"
+													type="text" class="form-control" placeholder="Tên đồng hồ">
+											</div>
+											<div class="col-3 form-check">
+												<input type="checkbox" th:field="*{inStock}" th:value="true" />
+												<label th:for="*{inStock}">Còn hàng?:</label>
+											</div>
+											<!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+										</div>
+										<div class="form-group d-flex">
+											<div class="col-4">
+												<label>Giá đồng hồ (VNĐ)</label> <input th:field="*{price}"
+													type="number" class="form-control">
+											</div>
+											<div class="col-4">
+												<label>Bảo hành (Tháng)</label> <input
+													th:field="*{insurance}" type="number" class="form-control">
+											</div>
+											<div class="col-4">
+												<label>Giảm giá (%)</label> <input
+													th:field=*{discountPercent} type="number"
+													class="form-control">
+											</div>
+										</div>
+										<div class="form-group d-flex">
+											<div class="col-4">
+												<label for="inputState">Nhãn hiệu</label> <select
+													th:field="*{brand}" id="inputState" class="form-control">
+													<option th:each="brand : ${brands}" th:value=${brand.id}
+														th:text=${brand.name}></option>
+												</select>
+											</div>
+											<div class="col-4">
+												<label for="inputState">Loại đồng hồ</label> <select
+													th:field="*{category}" id="inputState" class="form-control">
+													<option th:each="category : ${categories}"
+														th:value="${category.id}" th:text="${category.name}"></option>
+												</select>
+											</div>
+											<div class="col-4">
+												<label for="inputState">Phong cách</label> <select
+													th:field="*{style}" id="inputState" class="form-control">
+													<option th:each="style : ${styles}" th:value="${style.id}"
+														th:text="${style.name}"></option>
+												</select>
+											</div>
+										</div>
+										<div class="form-group d-flex">
+											<div class="col-4">
+												<label for="inputState">Mặt đồng hồ</label> <select
+													th:field="*{faceShape}" id="inputState"
+													class="form-control">
+													<option th:each="faceShape : ${faceShapes}"
+														th:value="${faceShape.id}" th:text="${faceShape.name}">...</option>
+												</select>
+											</div>
+											<div class="col-4">
+												<label for="inputState">Chất liệu vỏ</label> <select
+													th:field="*{shellMaterial}" id="inputState"
+													class="form-control">
+													<option th:each="shellMaterial : ${shellMaterials}"
+														th:value="${shellMaterial.id}"
+														th:text="${shellMaterial.name}"></option>
+												</select>
+											</div>
+											<div class="col-4">
+												<label for="inputState">Chất liệu dây đeo</label> <select
+													th:field="*{strapMaterial}" id="inputState"
+													class="form-control">
+													<option th:each="strapMaterial : ${strapMaterials}"
+														th:value="${strapMaterial.id}"
+														th:text=${strapMaterial.name}></option>
+												</select>
+											</div>
+										</div>
+										<div class="form-group d-flex">
+											<div class="col-4">
+												<label for="inputState">Kiểu đồng hồ</label> <select
+													th:field="*{watchFace}" id="inputState"
+													class="form-control">
+													<option th:each="watchFace : ${watchFaces}"
+														th:value="${watchFace.id}" th:text=${watchFace.name}></option>
+												</select>
+											</div>
+											<div class="col-4">
+												<label>Ngày sản xuất</label> <input
+													th:field="*{formatDayOfManufacture}" type="date"
+													class="form-control">
+											</div>
+											<div class="col-4">
+												<label>Hình</label> <input th:field="*{mainImagePath}"
+													type="file" class="form-control" name="photo" id="photo"
+													onchange="document.getElementById('output').src = window.URL.createObjectURL(this.files[0])">
+											</div>
+										</div>
+										<div class="form-group d-flex">
+											<div class="col-7">
+												<label for="">Mô tả</label>
+												<textarea th:field="*{description}" class="form-control"
+													name="" id="" cols="30" rows="10"></textarea>
+											</div>
+											<div class="col-5 text-center">
+												<label for="">productImage</label> <img
+													class="border border-danger" id="output" height="220"
+													width="220" alt="product image"
+													th:src="@{${product.mainImagePath}}">
+											</div>
+										</div>
+										<div class="col-12">
+											<button>Lưu</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div th:replace="/admin/fragments :: footer"></div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<th:block
+	th:replace="/admin/fragments :: admin_head('Product - Management')"></th:block>
+	<link th:href="@{/assets/css/style.css}" rel="stylesheet">
+</head>
+
+<body class="fix-header fix-sidebar card-no-border">
+	<div class="preloader">
+		<svg class="circular" viewBox="25 25 50 50">
+            <circle class="path" cx="50" cy="50" r="20" fill="none"
+				stroke-width="2" stroke-miterlimit="10" /> </svg>
+	</div>
+	<div id="main-wrapper">
+		<div th:replace="/admin/fragments :: top_navbar"></div>
+
+		<div th:replace="/admin/fragments :: left_navbar"></div>
+
+		<div class="page-wrapper">
+			<div class="container-fluid">
+				<div class="row page-titles justify-content-between">
+					<div class="col-md-6 col-8 align-self-center">
+						<h3 class="text-themecolor m-b-0 m-t-0">Table</h3>
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item"><a th:href="@{/admin}">Trang chủ</a></li>
+							<li class="breadcrumb-item"><a th:href="@{/dashboard/product}">Quản lý sản phẩm</a></li>
+							<li class="breadcrumb-item active">Danh sách sản phẩm</li>
+						</ol>
+					</div>
+					<div th:if="${message != null}" class="col-md-2 col-2 align-self-center">[[${message}]]</div>
+					<div class="col-md-4 col-2 align-self-center">
+                        <a th:href="@{/dashboard/product/form}" class="btn waves-effect waves-light btn-success pull-right hidden-sm-down">Form Sản phẩm</a>
+					</div>
+				</div>
+				
+				
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="card">
+							<div class="card-block">
+								<h4 class="card-title">Danh sách Đồng Hồ</h4>
+								<h6 class="card-subtitle">
+									Add class
+									<code>.table</code>
+								</h6>
+								<div class="table-responsive">
+									<table class="table">
+										<thead>
+											<tr>
+												<th>#</th>
+												<th>Product Name</th>
+												<th>Procut Image</th>
+												<th>Day Of Manufacture</th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="product : ${products}">
+												<td>[[${product.id}]]</td>
+												<td>[[${product.productName}]]</td>
+												<td><img style="width: 70px; height: 70px"
+													th:src="@{${product.mainImagePath}}"></td>
+												<td>[[${product.dayOfManufacture}]]</td>
+												<td>
+													<a th:href="@{'/dashboard/product/edit/' + ${product.id}}">Sửa</a>
+												</td>
+												<td><a class="text-danger" th:href="@{'/dashboard/product/delete/' + ${product.id}}">Xóa</a></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div th:replace="/admin/fragments :: footer"></div>
+		</div>
+	</div>
+</body>
+</html>
