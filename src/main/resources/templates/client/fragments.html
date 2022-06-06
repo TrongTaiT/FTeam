@@ -62,7 +62,8 @@
 
                     <!-- ô đăng nhập đăng ký giỏ hàng trên header  -->
                     <ul class="navbar-nav mb-1 ml-auto">
-                        <div class="dropdown">
+                        <!-- Chưa đăng nhập -->
+                        <div th:if="${session.customer == null}" class="dropdown">
                             <li class="nav-item account btn dropdown" type="button" data-toggle="dropdown">
                                 <a href="#" class="btn btn-secondary rounded-circle">
                                     <i class="fa fa-user"></i>
@@ -70,24 +71,38 @@
                                 <a class="nav-link text-dark text-uppercase" href="#" style="display:inline-block">Tài
                                     khoản</a>
                             </li>
-
-                            <!-- <th:block sec:authorize="!isAuthenticated()"></th:block> -->
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <!-- <a class="dropdown-item nutdangky text-center mb-2" href="#" data-toggle="modal"
-                                    data-target="#formdangky">Đăng ký</a> -->
-                                <a class="dropdown-item nutdangky text-center mb-2" th:href="@{/account/signup}">Đăng
-                                    ký</a>
-                                <a class="dropdown-item nutdangnhap text-center" href="#" data-toggle="modal"
-                                    data-target="#formdangnhap">Đăng nhập</a>
+                                <a class="dropdown-item nutdangky text-center mb-2" th:href="@{/account/signup}">Đăng ký</a>
+                                <a class="dropdown-item nutdangnhap text-center" th:href="@{/account/signin}">Đăng nhập</a>
                             </div>
-                            <!-- </th:block> -->
-                            <!-- <th:block sec:authorize="isAuthenticated()"></th:block> -->
-                            <!-- <div>
-                            <a href="@{/account_details}"></a>
-                        </div> -->
-                            <!-- </th:block> -->
-
                         </div>
+
+                        <!-- Đã đăng nhập -->
+                        <div th:if="${session.customer != null}" class="dropdown">
+                            <li class="nav-item account btn dropdown" type="button" data-toggle="dropdown">
+                                <a href="#" class="btn btn-secondary rounded-circle">
+                                    <th:block th:if="${session.customer.photo != null}">
+                                        <img th:src="${session.customer.photo}" alt="${session.customer.fullname}">
+                                    </th:block>
+                                    <th:block th:else>
+                                        <i class="fa fa-user"></i>
+                                    </th:block>
+                                </a>
+                                <a class="nav-link text-dark text-uppercase" href="#" style="display:inline-block">
+                                    [[${session.customer.fullname}]]
+                                </a>
+                            </li>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item text-center mb-2" th:href="@{/account/edit}">Chỉnh sửa hồ sơ</a>
+                                <a class="dropdown-item text-center mb-2" th:href="@{/account/change-password}">Đổi mật khẩu</a>
+                                <a class="dropdown-item text-center" href="javascript:void(0)"
+                                    onclick="document.getElementById('form-signout').submit();"> 
+                                    Đăng xuất
+                                    <form th:action="@{/account/signout}" id="form-signout" method="post"></form>
+                                </a>
+                            </div>
+                        </div>
+
                         <li class="nav-item giohang mt-2">
                             <a href="gio-hang.html" class="btn btn-secondary rounded-circle">
                                 <i class="fa fa-shopping-cart"></i>

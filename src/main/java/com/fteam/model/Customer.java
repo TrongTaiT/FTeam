@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -60,6 +61,12 @@ public class Customer {
 	
 	@OneToMany(mappedBy = "customer")
 	private List<Order> orders;
+	
+	@Transient
+	public String getPhotoPath() {
+		// null xử lý ở client
+		return "/images/customers/" + this.id + "/" + this.photo;
+	}
 
 }
 

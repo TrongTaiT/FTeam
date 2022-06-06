@@ -34,7 +34,8 @@
                     <!-- 2 tab: Đăng ký , Đăng nhập  -->
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab">
-                            <a th:href="@{/account/signup}" class="nav-item nav-link active" id="nav-taikhoan-tab">Đăng ký</a>
+                            <a th:href="@{/account/signup}" class="nav-item nav-link active" id="nav-taikhoan-tab">Đăng
+                                ký</a>
                             <a th:href="@{/account/signin}" class="nav-item nav-link" id="nav-donhang-tab">Đăng nhập</a>
                         </div>
                     </nav>
@@ -49,24 +50,27 @@
                                 <h2 class="text-center account-header">ĐĂNG KÝ</h2>
                             </div>
                             <div class="container">
-                                <form th:action="@{/account/signup}" method="post" id="form-signup"
-                                    th:object="${customer}" class="form-signin my-5">
+                                <form th:action="@{/account/signup}" method="post" id="form-signup" class="form-signin my-5"
+                                    th:object="${customer}" onsubmit="return checkEmailUnique(this);">
 
                                     <th:block th:replace="/client/fragments ::
                                         register_row('fullname', 'text', 'Họ và tên', 'Nhập họ và tên')"></th:block>
 
                                     <th:block th:replace="/client/fragments ::
-                                        register_row('phoneNumber', 'text', 'Số điện thoại', 'Nhập số điện thoại')"></th:block>
-                                    
+                                        register_row('phoneNumber', 'text', 'Số điện thoại', 'Nhập số điện thoại')">
+                                    </th:block>
+
                                     <th:block th:replace="/client/fragments ::
                                         register_row('email', 'text', 'Email', 'Nhập địa chỉ email')"></th:block>
 
                                     <th:block th:replace="/client/fragments ::
                                         register_row('password', 'password', 'Mật khẩu', 'Nhập mật khẩu')"></th:block>
-                                        
-                                    <th:block th:replace="/client/fragments ::
-                                        register_row('confirmPassword', 'password', 'Nhập lại mật khẩu', 'Nhập lại mật khẩu')"></th:block>
-                                    
+
+                                    <th:block
+                                        th:replace="/client/fragments ::
+                                        register_row('confirmPassword', 'password', 'Nhập lại mật khẩu', 'Nhập lại mật khẩu')">
+                                    </th:block>
+
                                     <th:block th:replace="/client/fragments ::
                                         register_row('birthday', 'date', 'Ngày sinh', 'Nhập mật khẩu')"></th:block>
 
@@ -95,7 +99,30 @@
     <div th:replace="/client/fragments :: page_footer"></div>
 
     <script>
+        function checkEmailUnique(form) {
+            url = "[[@{/customer/check_email}]]";
+            userId = null;
+            userEmail = form.email.value;
 
+            params = {
+                id: userId,
+                email: userEmail
+            };
+
+            $.post(url, params, function (response) {
+                if (response == "OK") {
+                    form.submit();
+                } else if (response == "Duplicated") {
+                    form.email.setCustomValidity("Email này đã được sử dụng");
+                } else {
+                    alert("Giá trị trả về không đúng");
+                }
+            }).fail(function () {
+                alert("Đã có lỗi xảy ra!\nKhông thể kết nối đến server");
+            });
+
+            return false;
+        }
     </script>
 
 </body>
