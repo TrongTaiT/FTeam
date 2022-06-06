@@ -1,28 +1,24 @@
 package com.fteam.controller.admin;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.servlet.ServletContext;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.fteam.exception.ProductNotFoundException;
-import com.fteam.model.Brand;
-import com.fteam.model.Category;
-import com.fteam.model.FaceShape;
 import com.fteam.model.Product;
-import com.fteam.model.ShellMaterial;
-import com.fteam.model.StrapMaterial;
-import com.fteam.model.Style;
-import com.fteam.model.WatchFace;
-import com.fteam.repository.BrandRepository;
-import com.fteam.repository.CategoryRepository;
-import com.fteam.repository.FaceShapeRepository;
-import com.fteam.repository.ProductRepository;
-import com.fteam.repository.StyleRepository;
 import com.fteam.service.BrandService;
-import com.fteam.service.CategoryService;
 import com.fteam.service.FaceShapeService;
 import com.fteam.service.ProductService;
 import com.fteam.service.ShellMaterialService;
@@ -31,67 +27,57 @@ import com.fteam.service.StyleService;
 import com.fteam.service.WatchFaceService;
 import com.fteam.utilities.FileUploadUtil;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 @Controller
-@RequestMapping("dashboard")
+@RequestMapping("/admin/product")
 public class ProductManagementController {
 
 	@Autowired
 	private ProductService productService;
-	
+
 	@Autowired
 	private BrandService brandService;
-	
+
 	@Autowired
 	private StyleService styleService;
-	
+
 	@Autowired
 	private FaceShapeService faceShapeService;
-	
+
 	@Autowired
 	private ShellMaterialService shellMaterialService;
-	
+
 	@Autowired
 	private StrapMaterialService strapMaterialService;
-	
+
 	@Autowired
 	private WatchFaceService watchFaceService;
-	
+
 	@Autowired
 	ServletContext servletContext;
-	
-	@GetMapping("product")
+
+	@GetMapping("")
 	public String index(Model model) {
-		Product product = new Product();
-		model.addAttribute("product", product);
+		model.addAttribute("product", new Product());
+		model.addAttribute("products", productService.listAll());
+
 		return "admin/product/products";
 	}
-	
-	@GetMapping("product/form")
+
+	@GetMapping("/form")
 	public String form(Model model) {
-		Product product = new Product();
-		model.addAttribute("product", product);
+		getFormModelAttributes(model);
+		model.addAttribute("product", new Product());
+
 		return "admin/product/_form";
 	}
-	
-	@GetMapping("product/edit/{id}")
+
+	@GetMapping("/edit/{id}")
 	public String edit(Model model, @PathVariable("id") Integer id) {
+		getFormModelAttributes(model);
+
 		try {
 			Product product = productService.getProduct(id);
 			model.addAttribute("product", product);
-			
 		} catch (ProductNotFoundException e) {
 			model.addAttribute("product", new Product());
 			model.addAttribute("message", e.getMessage());
@@ -99,61 +85,58 @@ public class ProductManagementController {
 
 		return "admin/product/_form";
 	}
-	
-	@PostMapping("product/save")
-	public String save(RedirectAttributes redirectAttributes,//
+
+	@PostMapping("/save")
+	public String save( //
+			RedirectAttributes ra, //
 			Product product, //
-			@RequestParam("mainImage") MultipartFile multipartFile) throws IOException {
-		if(!multipartFile.isEmpty()) {
+			@RequestParam("photo") MultipartFile multipartFile, //
+			Model model //
+	) throws IOException //
+	{
+		if (!multipartFile.isEmpty()) {
 			String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 			product.setMainImage(fileName);
+			Product savedProduct = productService.save(product);
+
+			String uploadDir = servletContext.getRealPath("/images/products/" //
+					+ savedProduct.getId());
 			
-			String uploadDir = servletContext.getRealPath("/images");
+			FileUploadUtil.cleanDir(uploadDir);
 			FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
-		}else {
-			product.setMainImage(null);
-		}
-		productService.save(product);
-		
-		redirectAttributes.addFlashAttribute("message", "Lưu sản phẩm thành công!");
-		
-		return "redirect:/product/edit" + product.getId();
-		
+		} else {
+			// Tạo mới
+			if (product.getId() == null) {
+				ra.addFlashAttribute("message", "Chưa chọn hình sản phẩm");
+				return "admin/product/_form";				
+			}
+			// Update cũ
+			else {
+				try {
+					Product productInDB = productService.getProduct(product.getId());
+					product.setMainImage(productInDB.getMainImage());
+					
+					productService.save(product);
+				} catch (ProductNotFoundException e) {
+					ra.addAttribute("message", e.getMessage());
+					return "redirect:/admin/product";
+				}
+			}
+		}		
+
+		ra.addFlashAttribute("message", "Lưu sản phẩm thành công!");
+
+		return "redirect:/admin/product/edit/" + product.getId();
+
 	}
-	
-	@ModelAttribute("products")
-	public List<Product> listAllProducts(){
-		return productService.listAll();
+
+	private void getFormModelAttributes(Model model) {
+		model.addAttribute("brands", brandService.listAll());
+		model.addAttribute("styles", styleService.listAll());
+		model.addAttribute("faceShapes", faceShapeService.listAll());
+		model.addAttribute("shellMaterials", shellMaterialService.listAll());
+		model.addAttribute("strapMaterials", strapMaterialService.listAll());
+		model.addAttribute("watchFaces", watchFaceService.listAll());
 	}
-	
-	@ModelAttribute("brands")
-	public List<Brand> listAllBrands(){
-		return brandService.listAll();
-	}
-	
-	@ModelAttribute("styles")
-	public List<Style> listAllStyle(){
-		return styleService.listAll();
-	}
-	
-	@ModelAttribute("faceShapes")
-	public List<FaceShape> listAllFaceShapes(){
-		return faceShapeService.listAll();
-	}
-	
-	@ModelAttribute("shellMaterials")
-	public List<ShellMaterial> listAllShellMaterials(){
-		return shellMaterialService.listAll();
-	}
-	
-	@ModelAttribute("strapMaterials")
-	public List<StrapMaterial> listAllStrapMaterials(){
-		return strapMaterialService.listAll();
-	}
-	
-	@ModelAttribute("watchFaces")
-	public List<WatchFace> listAllWatchFaces(){
-		return watchFaceService.listAll();
-	}
-	
+
 }

@@ -25,13 +25,13 @@
 						<h3 class="text-themecolor m-b-0 m-t-0">Table</h3>
 						<ol class="breadcrumb">
 							<li class="breadcrumb-item"><a th:href="@{/admin}">Trang chủ</a></li>
-							<li class="breadcrumb-item"><a th:href="@{/dashboard/product}">Quản lý sản phẩm</a></li>
+							<li class="breadcrumb-item"><a th:href="@{/admin/product}">Quản lý sản phẩm</a></li>
 							<li class="breadcrumb-item active">Danh sách sản phẩm</li>
 						</ol>
 					</div>
 					<div th:if="${message != null}" class="col-md-2 col-2 align-self-center">[[${message}]]</div>
 					<div class="col-md-4 col-2 align-self-center">
-                        <a th:href="@{/dashboard/product/form}" class="btn waves-effect waves-light btn-success pull-right hidden-sm-down">Form Sản phẩm</a>
+                        <a th:href="@{/admin/product/form}" class="btn waves-effect waves-light btn-success pull-right hidden-sm-down">Form Sản phẩm</a>
 					</div>
 				</div>
 				
@@ -42,8 +42,8 @@
 							<div class="card-block">
 								<h4 class="card-title">Danh sách Đồng Hồ</h4>
 								<h6 class="card-subtitle">
-									Add class
-									<code>.table</code>
+									Quản lý
+									<code>Sản phẩm</code>
 								</h6>
 								<div class="table-responsive">
 									<table class="table">
@@ -64,9 +64,9 @@
 													th:src="@{${product.mainImagePath}}"></td>
 												<td>[[${product.dayOfManufacture}]]</td>
 												<td>
-													<a th:href="@{'/dashboard/product/edit/' + ${product.id}}">Sửa</a>
+													<a th:href="@{'/admin/product/edit/' + ${product.id}}">Sửa</a>
 												</td>
-												<td><a class="text-danger" th:href="@{'/dashboard/product/delete/' + ${product.id}}">Xóa</a></td>
+												<td><a class="text-danger" th:href="@{'/admin/product/delete/' + ${product.id}}">Xóa</a></td>
 											</tr>
 										</tbody>
 									</table>
