@@ -17,7 +17,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(categoryInterceptor) //
 				.addPathPatterns("/**") //
-				.excludePathPatterns("/assets/**", "/images/**");
+				.excludePathPatterns("/assets/**", "/images/**", "/account/**");
 	}
 
 }
