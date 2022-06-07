@@ -12,6 +12,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -42,6 +45,7 @@ public class Customer {
 	
 	@Column(nullable = false)
 	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern ="yyyy-MM-dd")
 	private Date birthday;
 	
 	@Column(length = 255, nullable = false)
@@ -57,6 +61,12 @@ public class Customer {
 	
 	@OneToMany(mappedBy = "customer")
 	private List<Order> orders;
+	
+	@Transient
+	public String getPhotoPath() {
+		// null xử lý ở client
+		return "/images/customers/" + this.id + "/" + this.photo;
+	}
 
 }
 

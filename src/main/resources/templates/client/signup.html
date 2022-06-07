@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:replace="/client/fragments :: common_head('Đăng ký')"></th:block>
+    <link rel="stylesheet" th:href="@{/assets/css/tai-khoan.css}">
+    <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+</head>
+
+<body>
+    <nav th:replace="/client/fragments :: page_navbar"></nav>
+
+    <section th:replace="/client/fragments :: below_navbar_hide_categories"></section>
+
+    <!-- breadcrumb  -->
+    <section class="breadcrumbbar">
+        <div class="container">
+            <ol class="breadcrumb mb-0 p-0 bg-transparent">
+                <li class="breadcrumb-item"><a th:href="@{/}">Trang chủ</a></li>
+                <li class="breadcrumb-item active">
+                    <a th:href="@{/account/signup}">Đăng ký</a>
+                </li>
+            </ol>
+        </div>
+    </section>
+
+    <!-- nội dung của trang  -->
+    <section class="account-page my-3">
+        <div class="container">
+            <div class="page-content bg-white">
+                <div class="account-page-tab-content m-4">
+                    <!-- 2 tab: Đăng ký , Đăng nhập  -->
+                    <nav>
+                        <div class="nav nav-tabs" id="nav-tab">
+                            <a th:href="@{/account/signup}" class="nav-item nav-link active" id="nav-taikhoan-tab">Đăng
+                                ký</a>
+                            <a th:href="@{/account/signin}" class="nav-item nav-link" id="nav-donhang-tab">Đăng nhập</a>
+                        </div>
+                    </nav>
+
+                    <!-- nội dung 2 tab -->
+                    <div class="tab-content">
+
+                        <!-- nội dung tab 1: Đăng ký  -->
+                        <div class="tab-pane fade show active pl-4 " id="nav-taikhoan" role="tabpanel"
+                            aria-labelledby="nav-taikhoan-tab">
+                            <div class="mt-3">
+                                <h2 class="text-center account-header">ĐĂNG KÝ</h2>
+                            </div>
+                            <div class="container">
+                                <form th:action="@{/account/signup}" method="post" id="form-signup" class="form-signin my-5"
+                                    th:object="${customer}" onsubmit="return checkEmailUnique(this);">
+
+                                    <th:block th:replace="/client/fragments ::
+                                        register_row('fullname', 'text', 'Họ và tên', 'Nhập họ và tên')"></th:block>
+
+                                    <th:block th:replace="/client/fragments ::
+                                        register_row('phoneNumber', 'text', 'Số điện thoại', 'Nhập số điện thoại')">
+                                    </th:block>
+
+                                    <th:block th:replace="/client/fragments ::
+                                        register_row('email', 'text', 'Email', 'Nhập địa chỉ email')"></th:block>
+
+                                    <th:block th:replace="/client/fragments ::
+                                        register_row('password', 'password', 'Mật khẩu', 'Nhập mật khẩu')"></th:block>
+
+                                    <th:block
+                                        th:replace="/client/fragments ::
+                                        register_row('confirmPassword', 'password', 'Nhập lại mật khẩu', 'Nhập lại mật khẩu')">
+                                    </th:block>
+
+                                    <th:block th:replace="/client/fragments ::
+                                        register_row('birthday', 'date', 'Ngày sinh', 'Nhập mật khẩu')"></th:block>
+
+                                    <th:block th:replace="/client/fragments ::
+                                        register_row('address', 'text', 'Địa chỉ', 'Nhập địa chỉ')"></th:block>
+
+                                    <button class="btn btn-block btn-signin text-uppercase text-white mt-5"
+                                        type="submit" style="background: #F5A623">Đăng ký</button>
+                                    <hr class="mt-3 mb-2">
+                                    <div class="">
+                                        <p class="">Bằng việc đăng ký, bạn đã đồng ý với FTeam về
+                                            <a href="#" class="text-decoration-none text-center" style="color: #F5A623">
+                                                Điều khoản dịch vụ & Chính sách bảo mật</a>
+                                        </p>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- th:repalce footer -->
+    <div th:replace="/client/fragments :: page_footer"></div>
+
+    <script>
+        function checkEmailUnique(form) {
+            url = "[[@{/customer/check_email}]]";
+            userId = null;
+            userEmail = form.email.value;
+
+            params = {
+                id: userId,
+                email: userEmail
+            };
+
+            $.post(url, params, function (response) {
+                if (response == "OK") {
+                    form.submit();
+                } else if (response == "Duplicated") {
+                    form.email.setCustomValidity("Email này đã được sử dụng");
+                } else {
+                    alert("Giá trị trả về không đúng");
+                }
+            }).fail(function () {
+                alert("Đã có lỗi xảy ra!\nKhông thể kết nối đến server");
+            });
+
+            return false;
+        }
+    </script>
+
+</body>
+
+</html>

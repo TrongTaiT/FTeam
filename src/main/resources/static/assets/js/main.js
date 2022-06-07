@@ -158,48 +158,71 @@ $(function () {
     // validate
     $("#form-signup").validate({
         rules: {
-            name: {
+            fullname: {
                 required: true,
+                maxlength: 255
             },
-            phone: {
+            phoneNumber: {
                 required: true,
-                minlength: 8
-            },
-            password: {
-                required: true,
-                minlength: 6
-            },
-            confirm_password: {
-                required: true,
-                minlength: 6,
-                equalTo: "#inputPassword"
+                minlength: 10,
+                maxlength: 20
             },
             email: {
                 required: true,
-                email: true
+                email: true,
+                maxlength: 255
+            },
+            password: {
+                required: true,
+                minlength: 8,
+                maxlength: 64
+            },
+            confirmPassword: {
+                required: true,
+                minlength: 8,
+                maxlength: 64,
+                equalTo: "#password"
+            },
+            birthday: {
+                required: true
+            },
+            address: {
+                required: true,
+                maxlength: 255
             }
         },
         messages: {
-            name: {
+            fullname: {
                 required: "Vui lòng nhập họ và tên",
+                maxlength: "Họ và tên không quá 255 ký tự"
             },
-            phone: {
+            phoneNumber: {
                 required: "Vui lòng nhập số điện thoại",
-                minlength: "Số máy quý khách vừa nhập là số không có thực"
-            },
-            password: {
-                required: 'Vui lòng nhập mật khẩu',
-                minlength: 'Vui lòng nhập ít nhất 6 kí tự'
-            },
-            confirm_password: {
-                required: 'Vui lòng nhập lại mật khẩu',
-                minlength: 'Vui lòng nhập ít nhất 6 kí tự',
-                equalTo: 'Mật khẩu không trùng'
+                minlength: "Số máy quý khách vừa nhập là số không có thực",
+                maxlength: "Số máy quý khách vừa nhập là số không có thực"
             },
             email: {
                 required: "Vui lòng nhập email",
-                minlength: "Email không hợp lệ",
                 email: "Vui lòng nhập email",
+                maxlength: "Email không hợp lệ"
+            },
+            password: {
+                required: 'Vui lòng nhập mật khẩu',
+                minlength: 'Vui lòng nhập ít nhất 8 kí tự',
+                maxlength: 'Vui lòng nhập tối đa 64 kí tự'
+            },
+            confirmPassword: {
+                required: 'Vui lòng nhập lại mật khẩu',
+                minlength: 'Vui lòng nhập ít nhất 8 kí tự',
+                maxlength: 'Vui lòng nhập tối đa 64 kí tự',
+                equalTo: 'Mật khẩu không trùng'
+            },
+            birthday: {
+                required: 'Vui lòng chọn ngày sinh'
+            },
+            address: {
+                required: 'Vui lòng nhập địa chỉ',
+                maxlength: 'Vui lòng nhập tối đa 255 kí tự'
             }
         }
     });
@@ -218,12 +241,11 @@ $(function () {
         messages: {
             password: {
                 required: 'Vui lòng nhập mật khẩu',
-                minlength: 'Vui lòng nhập ít nhất 6 kí tự'
+                minlength: 'Vui lòng nhập ít nhất 8 kí tự'
             },
             email: {
                 required: "Vui lòng nhập email",
-                minlength: "Email không hợp lệ",
-                email: "Vui lòng nhập email",
+                email: "Vui lòng nhập email"
             }
         }
     });
