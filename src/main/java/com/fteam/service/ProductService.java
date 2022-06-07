@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.fteam.exception.ProductNotFoundException;
@@ -19,12 +20,21 @@ import com.fteam.repository.ProductRepository;
 public class ProductService {
 	
 	public static final int PRODUCTS_PER_PAGE = 3;
+	public static final int PRODUCTS_PER_MANAGEMENT_PAGE = 5;
 
 	@Autowired
 	private ProductRepository productRepo;
 	
 	public Product save(Product product) {
 		return productRepo.save(product);
+	}
+	
+	public void delete(Product product) {
+		productRepo.delete(product);
+	}
+	
+	public void updateInStock(Integer id, Boolean inStock) {
+		productRepo.updateInStock(id, inStock);
 	}
 
 	public List<Product> listAll() {
@@ -51,6 +61,24 @@ public class ProductService {
 		Pageable pageable = PageRequest.of(pageNum - 1, PRODUCTS_PER_PAGE);
 		
 		return productRepo.findAllByCategoryId(categoryId, pageable);
+	}
+	
+//	public Page<Product> listProductByPage(String keyword, int pageNum){
+//		Pageable pageable = PageRequest.of(pageNum - 1, PRODUCTS_PER_MANAGEMENT_PAGE);
+//		return productRepo.findByKeywords(keyword, pageable);
+//	}
+	
+	public  Page<Product> listByPageable(int pageNum, String sortField, String sortDir, String keyword) {
+		Sort sort = Sort.by(sortField);
+		sort = sortDir.equals("asc") ? sort.ascending() : sort.descending();
+
+		Pageable pageable = PageRequest.of(pageNum - 1, PRODUCTS_PER_MANAGEMENT_PAGE, sort);
+
+		if (keyword != null) {
+			return productRepo.findByKeywords(keyword, pageable);
+		}
+
+		return productRepo.findAll(pageable);
 	}
 
 }

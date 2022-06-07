@@ -4,7 +4,7 @@
 <head>
 <th:block
 	th:replace="/admin/fragments :: admin_head('Product - Management')"></th:block>
-	<link th:href="@{/assets/css/style.css}" rel="stylesheet">
+<link th:href="@{/assets/css/style.css}" rel="stylesheet">
 </head>
 
 <body class="fix-header fix-sidebar card-no-border">
@@ -21,21 +21,36 @@
 		<div class="page-wrapper">
 			<div class="container-fluid">
 				<div class="row page-titles justify-content-between">
-					<div class="col-md-6 col-8 align-self-center">
+					<div class="col-md-6 col-6 align-self-center">
 						<h3 class="text-themecolor m-b-0 m-t-0">Table</h3>
 						<ol class="breadcrumb">
-							<li class="breadcrumb-item"><a th:href="@{/admin}">Trang chủ</a></li>
-							<li class="breadcrumb-item"><a th:href="@{/admin/product}">Quản lý sản phẩm</a></li>
+							<li class="breadcrumb-item"><a th:href="@{/admin}">Trang
+									chủ</a></li>
+							<li class="breadcrumb-item"><a th:href="@{/admin/product}">Quản
+									lý sản phẩm</a></li>
 							<li class="breadcrumb-item active">Danh sách sản phẩm</li>
 						</ol>
 					</div>
-					<div th:if="${message != null}" class="col-md-2 col-2 align-self-center">[[${message}]]</div>
-					<div class="col-md-4 col-2 align-self-center">
-                        <a th:href="@{/admin/product/form}" class="btn waves-effect waves-light btn-success pull-right hidden-sm-down">Form Sản phẩm</a>
+					<div th:if="${message != null}"
+						class="col-md-4 col-4 align-self-center">[[${message}]]</div>
+					<div class="col-md-2 col-2 align-self-center">
+						<a th:href="@{/admin/product/form}"
+							class="btn waves-effect waves-light btn-success pull-right hidden-sm-down">Form
+							Sản phẩm</a>
 					</div>
 				</div>
-				
-				
+
+				<form th:action="@{'/admin/product/page/' + ${page.number}}" method="GET"
+					th:object="${product}">
+					<div class="input-group col-8 mx-auto mb-4">
+						<input name="keyword" th:value="${keyword}" class="form-control rounded mr-1"
+							placeholder="Search" aria-label="Search"
+							aria-describedby="search-addon" />
+						<button type="submit" class="btn btn-outline-primary">Tìm
+							kiếm</button>
+					</div>
+				</form>
+
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="card">
@@ -49,27 +64,87 @@
 									<table class="table">
 										<thead>
 											<tr>
-												<th>#</th>
-												<th>Product Name</th>
+												<th> 
+													<a th:if="${sortField != 'id'}" th:href="@{/product/page/1?sortField=id&sortDir=asc}">#</a> 
+													<a th:if="${sortField == 'id'}" th:href="@{'/product/page/' + ${currentPage} + '?sortField=id&sortDir=' + ${reverseSortDir}}">#</a>
+												</th>
+												<th> 
+													<a th:if="${sortField != 'productName'}" th:href="@{/product/page/1?sortField=productName&sortDir=asc}">Product Name</a> 
+													<a th:if="${sortField == 'productName'}" th:href="@{/product/page/${currentPage}?sortField=productName&sortDir=${reverseSortDir}}">Product Name</a>
+												</th>
 												<th>Procut Image</th>
-												<th>Day Of Manufacture</th>
+												<th>
+													<th> 
+													<a th:if="${sortField != 'price'}" th:href="@{/product/page/1?sortField=price&sortDir=asc}">#</a> 
+													<a th:if="${sortField == 'price'}" th:href="@{/product/page/${currentPage}?sortField=price&sortDir=${reverseSortDir}}">#</a>
+												</th>
+												<th>In Stock</th>
 												<th></th>
 											</tr>
 										</thead>
 										<tbody>
-											<tr th:each="product : ${products}">
+											<tr th:each="product : ${page.content}">
 												<td>[[${product.id}]]</td>
 												<td>[[${product.productName}]]</td>
 												<td><img style="width: 70px; height: 70px"
 													th:src="@{${product.mainImagePath}}"></td>
-												<td>[[${product.dayOfManufacture}]]</td>
+												<td>[[${product.price}]]</td>
 												<td>
-													<a th:href="@{'/admin/product/edit/' + ${product.id}}">Sửa</a>
+													<div>
+														<a th:if="${product.inStock == true}"
+															class="fa fa-check-circle fa-2x text-success"
+															th:href="@{'/admin/product/edit/' + ${product.id} + '/inStock/false'}"
+															title="Đã hết hàng?"></a> <a
+															th:if="${product.inStock == false}"
+															class="fa fa-circle fa-2x text-dark"
+															th:href="@{'/admin/product/edit/' + ${product.id} + '/inStock/true'}"
+															title="Đang còn hàng?"></a>
+													</div>
 												</td>
-												<td><a class="text-danger" th:href="@{'/admin/product/delete/' + ${product.id}}">Xóa</a></td>
+												<td><a
+													th:href="@{'/admin/product/edit/' + ${product.id}}"><i
+														class="fa fa-2x fa-edit"></i></a></td>
+												<td><a class="text-danger"
+													th:href="@{'/admin/product/delete/' + ${product.id}}"><i
+														class="fa fa-2x fa-trash"></i></a></td>
 											</tr>
 										</tbody>
 									</table>
+								</div>
+								<div class="d-flex justify-content-center">
+									<div
+										th:class="${page.number <= 0 ? 'page-item disabled' : 'page-item'}">
+										<a class="page-link" th:href="@{/admin/product/page/1}"><span
+											aria-hidden="true">&laquo;</span></a>
+									</div>
+
+									<div
+										th:class="${page.number <= 0 ? 'page-item disabled' : 'page-item'}">
+										<a class="page-link "
+											th:href="@{'/admin/product/page/' + ${page.number}}"><span
+											aria-hidden="true">&lsaquo;</span></a>
+									</div>
+
+									<div
+										th:class="${(page.number + 1) != i ? 'page-item' : 'page-item active'}"
+										th:each="i : ${#numbers.sequence(1, page.totalPages)}">
+										<a class="page-link"
+											th:href="@{'/admin/product/page/' + ${i}}">[[${i}]]</a>
+									</div>
+
+									<div
+										th:class="${page.number + 1 >= page.totalPages ? 'page-item disabled' : 'page-item'}">
+										<a class="page-link"
+											th:href="@{'/admin/product/page/' + ${page.number + 2}}"><span
+											aria-hidden="true">&rsaquo;</span></a>
+									</div>
+
+									<div
+										th:class="${page.number + 1 >= page.totalPages ? 'page-item disabled' : 'page-item'}">
+										<a class="page-link"
+											th:href="@{'/admin/product/page/' + ${page.totalPages}}"><span
+											aria-hidden="true">&raquo;</span></a>
+									</div>
 								</div>
 							</div>
 						</div>

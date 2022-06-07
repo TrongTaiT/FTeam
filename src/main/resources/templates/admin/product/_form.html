@@ -20,19 +20,19 @@
 		<div class="page-wrapper">
 			<div class="container-fluid">
 				<div class="row page-titles justify-content-between">
-					<div class="col-md-4 col-6 align-self-center">
+					<div class="col-md-6 col-6 align-self-center">
 						<h3 class="text-themecolor m-b-0 m-t-0">Table</h3>
 						<ol class="breadcrumb">
 							<li class="breadcrumb-item"><a th:href="@{/admin}">Trang
 									chủ</a></li>
-							<li class="breadcrumb-item"><a th:href="@{/dashboard/product}">Quản lý sản phẩm</a></li>
+							<li class="breadcrumb-item"><a th:href="@{/admin/product}">Quản lý sản phẩm</a></li>
 							<li class="breadcrumb-item active">Form sản phẩm</li>
 						</ol>
 					</div>
-					<div th:if="${message != null}" class="col-md-2 col-2 align-self-center">[[${message}]]</div>
-					<div class="col-md-6 col-4 align-self-center">
+					<div th:if="${message != null}" class="col-md-4 col-4 align-self-center text-center">[[${message}]]</div>
+					<div class="col-md-2 col-2 align-self-center">
 						<a th:href="@{/admin/product}"
-							class="btn waves-effect waves-light btn-success pull-right hidden-sm-down">Danh
+							class=" btn waves-effect waves-light btn-success pull-right hidden-sm-down">Danh
 							sách sản phẩm</a>
 					</div>
 				</div>
@@ -151,13 +151,13 @@
 													cols="30" rows="10"></textarea>
 											</div>
 											<div class="col-5 text-center">
-												<label for="">productImage</label> <img class="border border-danger"
-													id="output" height="220" width="220" alt="product image"
+												<img class="border border-danger"
+													id="output" height="220" width="220" alt="product's image"
 													th:src="@{${product.mainImagePath}}">
 											</div>
 										</div>
 										<div class="col-12">
-											<button type="submit">Lưu</button>
+											<button class="btn btn-primary float-right" type="submit">Lưu</button>
 										</div>
 									</form>
 								</div>
