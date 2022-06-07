@@ -34,6 +34,9 @@ public class Order {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdDate;
 	
+	@Column(name = "address")
+	private String address;
+	
 	@ManyToOne
 	@JoinColumn(name = "customer_id")
 	private Customer customer;

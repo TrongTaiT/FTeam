@@ -40,7 +40,7 @@
         <nav class="navbar navbar-expand-md bg-white navbar-light">
             <div class="container">
                 <!-- logo  -->
-                <a class="navbar-brand" href="/fteam" style="color: #CF111A;"><b>FT</b>eam</a>
+                <a class="navbar-brand" th:href="@{/}" style="color: #CF111A;"><b>FT</b>eam</a>
 
                 <!-- navbar-toggler  -->
                 <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse"
@@ -62,7 +62,8 @@
 
                     <!-- ô đăng nhập đăng ký giỏ hàng trên header  -->
                     <ul class="navbar-nav mb-1 ml-auto">
-                        <div class="dropdown">
+                        <!-- Chưa đăng nhập -->
+                        <div th:if="${session.customer == null}" class="dropdown">
                             <li class="nav-item account btn dropdown" type="button" data-toggle="dropdown">
                                 <a href="#" class="btn btn-secondary rounded-circle">
                                     <i class="fa fa-user"></i>
@@ -70,22 +71,38 @@
                                 <a class="nav-link text-dark text-uppercase" href="#" style="display:inline-block">Tài
                                     khoản</a>
                             </li>
-
-                            <!-- <th:block sec:authorize="!isAuthenticated()"></th:block> -->
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item nutdangky text-center mb-2" href="#" data-toggle="modal"
-                                    data-target="#formdangky">Đăng ký</a>
-                                <a class="dropdown-item nutdangnhap text-center" href="#" data-toggle="modal"
-                                    data-target="#formdangnhap">Đăng nhập</a>
+                                <a class="dropdown-item nutdangky text-center mb-2" th:href="@{/account/signup}">Đăng ký</a>
+                                <a class="dropdown-item nutdangnhap text-center" th:href="@{/account/signin}">Đăng nhập</a>
                             </div>
-                            <!-- </th:block> -->
-                            <!-- <th:block sec:authorize="isAuthenticated()"></th:block> -->
-                            <!-- <div>
-                            <a href="@{/account_details}"></a>
-                        </div> -->
-                            <!-- </th:block> -->
-
                         </div>
+
+                        <!-- Đã đăng nhập -->
+                        <div th:if="${session.customer != null}" class="dropdown">
+                            <li class="nav-item account btn dropdown" type="button" data-toggle="dropdown">
+                                <a href="#" class="btn btn-secondary rounded-circle">
+                                    <th:block th:if="${session.customer.photo != null}">
+                                        <img th:src="${session.customer.photo}" alt="${session.customer.fullname}">
+                                    </th:block>
+                                    <th:block th:else>
+                                        <i class="fa fa-user"></i>
+                                    </th:block>
+                                </a>
+                                <a class="nav-link text-dark text-uppercase" href="#" style="display:inline-block">
+                                    [[${session.customer.fullname}]]
+                                </a>
+                            </li>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item text-center mb-2" th:href="@{/account/edit}">Chỉnh sửa hồ sơ</a>
+                                <a class="dropdown-item text-center mb-2" th:href="@{/account/change-password}">Đổi mật khẩu</a>
+                                <a class="dropdown-item text-center" href="javascript:void(0)"
+                                    onclick="document.getElementById('form-signout').submit();"> 
+                                    Đăng xuất
+                                    <form th:action="@{/account/signout}" id="form-signout" method="post"></form>
+                                </a>
+                            </div>
+                        </div>
+
                         <li class="nav-item giohang mt-2">
                             <a href="gio-hang.html" class="btn btn-secondary rounded-circle">
                                 <i class="fa fa-shopping-cart"></i>
@@ -99,131 +116,6 @@
                 </div>
             </div>
         </nav>
-
-        <!-- form dang ky khi click vao button tren header-->
-        <div class="modal fade mt-5" id="formdangky" data-backdrop="static" tabindex="-1"
-            aria-labelledby="dangky_tieude" aria-hidden="true">
-            <div class="modal-dialog ">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <ul class="tabs d-flex justify-content-around list-unstyled mb-0">
-                            <li class="tab tab-dangnhap text-center">
-                                <a class=" text-decoration-none">Đăng nhập</a>
-                                <hr>
-                            </li>
-                            <li class="tab tab-dangky text-center">
-                                <a class="text-decoration-none">Đăng ký</a>
-                                <hr>
-                            </li>
-                        </ul>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form th:action="@{/signup}" method="post" id="form-signup" class="form-signin mt-2">
-                            <div class="form-label-group">
-                                <label for="fullname" class="form-label">Họ và tên:</label>
-                                <input name="fullname" id="fullname" type="text" class="form-control"
-                                    placeholder="Nhập họ và tên" required autofocus>
-                            </div>
-                            <div class="form-label-group">
-                                <label for="phoneNumber" class="form-label">Số điện thoại:</label>
-                                <input name="phoneNumber" id="phoneNumber" type="text" class="form-control"
-                                    placeholder="Nhập số điện thoại" required>
-                            </div>
-                            <div class="form-label-group">
-                                <label for="email" class="form-label">Email:</label>
-                                <input name="email" id="email" type="email" class="form-control"
-                                    placeholder="Nhập địa chỉ email" required>
-                            </div>
-                            <div class="form-label-group">
-                                <label for="password" class="form-label">Mật khẩu:</label>
-                                <input name="password" id="password" type="password" class="form-control"
-                                    placeholder="Nhập mật khẩu" required>
-                            </div>
-                            <div class="form-label-group mb-4">
-                                <label for="confirmPassword" class="form-label">Nhập lại mật khẩu:</label>
-                                <input name="confirmPassword" id="confirmPassword" type="password" class="form-control"
-                                    placeholder="Nhập lại mật khẩu" required>
-                            </div>
-                            <div class="form-label-group mb-4">
-                                <label for="birthday" class="form-label">Ngày sinh:</label>
-                                <input name="birthday" id="birthday" type="date" class="form-control" required>
-                            </div>
-                            <div class="form-label-group mb-4">
-                                <label for="address" class="form-label">Địa chỉ:</label>
-                                <input name="address" id="address" type="text" class="form-control"
-                                    placeholder="Nhập địa chỉ" required>
-                            </div>
-
-                            <button class="btn btn-lg btn-block btn-signin text-uppercase text-white mt-3" type="submit"
-                                style="background: #F5A623">Đăng ký</button>
-                            <hr class="mt-3 mb-2">
-                            <div class="custom-control custom-checkbox">
-                                <p class="text-center">Bằng việc đăng ký, bạn đã đồng ý với FTeam về</p>
-                                <a href="#" class="text-decoration-none text-center" style="color: #F5A623">Điều khoản
-                                    dịch
-                                    vụ & Chính sách bảo mật</a>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- form dang nhap khi click vao button tren header-->
-        <div class="modal fade mt-5" id="formdangnhap" data-backdrop="static" tabindex="-1"
-            aria-labelledby="dangnhap_tieude" aria-hidden="true">
-            <div class="modal-dialog ">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <ul class="tabs d-flex justify-content-around list-unstyled mb-0">
-                            <li class="tab tab-dangnhap text-center">
-                                <a class=" text-decoration-none">Đăng nhập</a>
-                                <hr>
-                            </li>
-                            <li class="tab tab-dangky text-center">
-                                <a class="text-decoration-none">Đăng ký</a>
-                                <hr>
-                            </li>
-                        </ul>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form th:action="@{/signin}" method="post" id="form-signin" class="form-signin mt-2">
-                            <div class="form-label-group">
-                                <input type="email" class="form-control" placeholder="Nhập địa chỉ email" name="email"
-                                    required autofocus>
-                            </div>
-
-                            <div class="form-label-group">
-                                <input type="password" class="form-control" placeholder="Mật khẩu" name="password"
-                                    required>
-                            </div>
-
-                            <div class="custom-control custom-checkbox mb-3">
-                                <input name="remember" type="checkbox" class="custom-control-input" id="customCheck1">
-                                <label class="custom-control-label" for="customCheck1">Nhớ mật khẩu</label>
-                                <a href="@{forget-password}" class="float-right text-decoration-none"
-                                    style="color: #F5A623">Quên mật
-                                    khẩu</a>
-                            </div>
-
-                            <button class="btn btn-lg btn-block btn-signin text-uppercase text-white" type="submit"
-                                style="background: #F5A623">Đăng nhập</button>
-                            <hr class="my-4">
-                            <button class="btn btn-lg btn-google btn-block text-uppercase" type="submit"><i
-                                    class="fab fa-google mr-2"></i> Đăng nhập bằng Google</button>
-                            <button class="btn btn-lg btn-facebook btn-block text-uppercase" type="submit"><i
-                                    class="fab fa-facebook-f mr-2"></i> Đăng nhập bằng Facebook</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- thanh "danh muc sach" đã được ẩn bên trong + hotline + ho tro truc tuyen -->
@@ -297,6 +189,30 @@
             </div>
         </div>
     </div>
+
+    <!-- form register row -->
+    <!-- <th:block th:replace="/client/fragments :: register_row('Email', 'email')"></th:block> -->
+    <th:block th:fragment="register_row(field, type, label, placeholder)">
+        <div class="form-group ">
+            <div class="row">
+                <label for="email" class="col-sm-3 col-form-label">[[${label}]]</label>
+                <div class="col-sm-9">
+                    <input th:field="*{__${field}__}" th:type="${type}" class="form-control"
+                        th:placeholder="${placeholder}">
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-3"></label>
+                <label th:if="${#fields.hasErrors(field)}" th:errors="*{__${field}__}" th:id="${field + '-error'}"
+                    class="error col-sm-9" th:for="${field}"></label>
+            </div>
+        </div>
+
+        <!-- <div th:if="${#fields.hasErrors(field)}" class="form-group row">
+            <label class="col-sm-3 col-form-label"></label>
+            <p class="col-sm-9 error" th:errors="*{__${field}__}"></p>
+        </div> -->
+    </th:block>
 
     <!-- footer & abovefooter  -->
     <!-- <div th:replace="/client/fragments :: page_footer"></div> -->
