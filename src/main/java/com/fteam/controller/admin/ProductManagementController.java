@@ -74,24 +74,24 @@ public class ProductManagementController {
 			Model model, //
 			@Param("sortField") String sortField, //
 			@Param("sortDir") String sortDir, //
-			@RequestParam(name = "keyword", required = false) String keyword) //
+			@RequestParam(name = "keyword") Optional<String> keyword) //
 	{
 		
-		Page<Product> page = productService.listByPageable(pageNum, sortField, sortDir, keyword);
+		Page<Product> page = productService.listByPageable(pageNum, sortField, sortDir, keyword.orElse(""));
 		
 		model.addAttribute("currentPage", pageNum);
-		model.addAttribute("totalPages", page.getTotalPages());
 		model.addAttribute("sortField", sortField);
 		model.addAttribute("sortDir", sortDir);
 		model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+		model.addAttribute("keyword", keyword.orElse(""));
 		model.addAttribute("page", page);
 		
-		return "admin/product/products";
+		return "admin/product/_table";
 	}
 	
 	@GetMapping("")
 	public String listFristPage(Model model) {
-		return listByPage(1, model, "id", "asc", null);
+		return listByPage(1, model, "id", "asc", Optional.empty());
 	}
 
 	@GetMapping("/form")

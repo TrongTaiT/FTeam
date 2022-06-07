@@ -40,9 +40,11 @@
 					</div>
 				</div>
 
-				<form th:action="@{'/admin/product/page/' + ${page.number}}" method="GET"
+				<form th:action="@{/admin/product/page/1}" method="GET"
 					th:object="${product}">
 					<div class="input-group col-8 mx-auto mb-4">
+						<input type="hidden" name="sortField" th:value="${sortField}">
+						<input type="hidden" name="sortDir" th:value="${sortDir}">
 						<input name="keyword" th:value="${keyword}" class="form-control rounded mr-1"
 							placeholder="Search" aria-label="Search"
 							aria-describedby="search-addon" />
@@ -65,18 +67,17 @@
 										<thead>
 											<tr>
 												<th> 
-													<a th:if="${sortField != 'id'}" th:href="@{/product/page/1?sortField=id&sortDir=asc}">#</a> 
-													<a th:if="${sortField == 'id'}" th:href="@{'/product/page/' + ${currentPage} + '?sortField=id&sortDir=' + ${reverseSortDir}}">#</a>
+													<a th:if="${sortField != 'id'}" th:href="@{'/admin/product/page/' + ${currentPage} + '?sortField=id&sortDir=asc&keyword=' + ${keyword}}">#</a> 
+													<a th:if="${sortField == 'id'}" th:href="@{'/admin/product/page/' + ${currentPage} + '?sortField=id&sortDir=' + ${reverseSortDir} + '&keyword=' + ${keyword}}">#</a>
 												</th>
 												<th> 
-													<a th:if="${sortField != 'productName'}" th:href="@{/product/page/1?sortField=productName&sortDir=asc}">Product Name</a> 
-													<a th:if="${sortField == 'productName'}" th:href="@{/product/page/${currentPage}?sortField=productName&sortDir=${reverseSortDir}}">Product Name</a>
+													<a th:if="${sortField != 'productName'}" th:href="@{'/admin/product/page/' + ${currentPage} + '?sortField=productName&sortDir=asc&keyword=' + ${keyword}}">Product Name</a> 
+													<a th:if="${sortField == 'productName'}" th:href="@{'/admin/product/page/' + ${currentPage} + '?sortField=productName&sortDir=' + ${reverseSortDir} + '&keyword=' + ${keyword}}">Product Name</a>
 												</th>
 												<th>Procut Image</th>
 												<th>
-													<th> 
-													<a th:if="${sortField != 'price'}" th:href="@{/product/page/1?sortField=price&sortDir=asc}">#</a> 
-													<a th:if="${sortField == 'price'}" th:href="@{/product/page/${currentPage}?sortField=price&sortDir=${reverseSortDir}}">#</a>
+													<a th:if="${sortField != 'price'}" th:href="@{'/admin/product/page/' + ${currentPage} + '?sortField=price&sortDir=asc&keyword=' + ${keyword}}">Price</a> 
+													<a th:if="${sortField == 'price'}" th:href="@{'/admin/product/page/' + ${currentPage} + '?sortField=price&sortDir=' + ${reverseSortDir}} + '&keyword=' + ${keyword}">Price</a>
 												</th>
 												<th>In Stock</th>
 												<th></th>
@@ -88,7 +89,7 @@
 												<td>[[${product.productName}]]</td>
 												<td><img style="width: 70px; height: 70px"
 													th:src="@{${product.mainImagePath}}"></td>
-												<td>[[${product.price}]]</td>
+												<td>[[${product.priceInVNFormat}]]</td>
 												<td>
 													<div>
 														<a th:if="${product.inStock == true}"
@@ -114,14 +115,14 @@
 								<div class="d-flex justify-content-center">
 									<div
 										th:class="${page.number <= 0 ? 'page-item disabled' : 'page-item'}">
-										<a class="page-link" th:href="@{/admin/product/page/1}"><span
+										<a class="page-link" th:href="@{'/admin/product/page/1' + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + '&keyword=' + ${keyword}}"><span
 											aria-hidden="true">&laquo;</span></a>
 									</div>
 
 									<div
 										th:class="${page.number <= 0 ? 'page-item disabled' : 'page-item'}">
 										<a class="page-link "
-											th:href="@{'/admin/product/page/' + ${page.number}}"><span
+											th:href="@{'/admin/product/page/' + ${page.number} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + '&keyword=' + ${keyword}}"><span
 											aria-hidden="true">&lsaquo;</span></a>
 									</div>
 
@@ -129,20 +130,20 @@
 										th:class="${(page.number + 1) != i ? 'page-item' : 'page-item active'}"
 										th:each="i : ${#numbers.sequence(1, page.totalPages)}">
 										<a class="page-link"
-											th:href="@{'/admin/product/page/' + ${i}}">[[${i}]]</a>
+											th:href="@{'/admin/product/page/' + ${i} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + '&keyword=' + ${keyword}}">[[${i}]]</a>
 									</div>
 
 									<div
 										th:class="${page.number + 1 >= page.totalPages ? 'page-item disabled' : 'page-item'}">
 										<a class="page-link"
-											th:href="@{'/admin/product/page/' + ${page.number + 2}}"><span
+											th:href="@{'/admin/product/page/' + ${page.number + 2} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + '&keyword=' + ${keyword}}"><span
 											aria-hidden="true">&rsaquo;</span></a>
 									</div>
 
 									<div
 										th:class="${page.number + 1 >= page.totalPages ? 'page-item disabled' : 'page-item'}">
 										<a class="page-link"
-											th:href="@{'/admin/product/page/' + ${page.totalPages}}"><span
+											th:href="@{'/admin/product/page/' + ${page.totalPages} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + '&keyword=' + ${keyword}}"><span
 											aria-hidden="true">&raquo;</span></a>
 									</div>
 								</div>

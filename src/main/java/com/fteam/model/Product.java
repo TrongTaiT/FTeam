@@ -132,10 +132,15 @@ public class Product {
 		return FormatUtil.dateToString(this.dayOfManufacture);
 	}
 	
-//	@Transient
-//	public String getPriceUsedInform() {
-//		return FormatUtil.toStringNumber(this.price);
-//	}
+	@Transient
+	public String getPriceInVNFormat() {
+		return FormatUtil.formatToVietnamCurrency(this.price);
+	}
+	
+	@Transient
+	public String getPriceUsedInform() {
+		return FormatUtil.toStringNumber(this.price);
+	}
 
 	@Override
 	public String toString() {
