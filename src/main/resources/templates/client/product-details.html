@@ -4,8 +4,6 @@
 <head>
     <th:block th:replace="/client/fragments :: common_head(title=${product.productName})"></th:block>
     <link rel="stylesheet" th:href="@{/assets/css/product-item.css}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
-    <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
 </head>
 
 <body>
@@ -102,7 +100,7 @@
                                         </div>
                                     </div>
                                 </form>
-                                <div class="nutmua btn w-100 text-uppercase">Chọn mua</div>
+                                <div class="nutmua btn w-100 text-uppercase">Thêm vào giỏ hàng</div>
                                 <a class="huongdanmuahang text-decoration-none" href="#">(Vui lòng xem hướng dẫn mua
                                     hàng)</a>
                             </div>
@@ -235,6 +233,30 @@
     </section>
 
     <div th:replace="/client/fragments :: page_footer"></div>
+
+    <script>
+        $(document).ready(function() {
+            $('.nutmua').click(function() {
+                addToCart();
+            });
+        });
+
+        function addToCart() {
+            quantity = $('.soluongsp').val();
+
+            url = '/fteam/cart/add/' + "[[${product.id}]]" + '/' + quantity;
+            console.log(url);
+    
+            $.ajax({
+                type: "POST",
+                url: url
+            }).done(function(response) {
+                alert(response);
+            }).fail(function() {
+                alert('Thêm giỏ hàng thất bại');
+            });
+        }
+    </script>
 
 </body>
 
