@@ -1,5 +1,6 @@
 package com.fteam.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,6 +17,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fteam.utilities.FormatUtil;
 
@@ -47,6 +50,7 @@ public class Product {
 
 	@Column(name = "day_of_manufacture", nullable = false)
 	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date dayOfManufacture;
 
 	@Column(name = "average_rating")
@@ -60,6 +64,9 @@ public class Product {
 
 	@Column(nullable = false)
 	private Integer insurance;
+	
+	@Column(name = "discount_percent")
+	private Float discountPercent;
 
 	@ManyToOne
 	@JoinColumn(name = "category_id")
@@ -70,7 +77,7 @@ public class Product {
 	private Brand brand;
 
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<ProductImage> productImages;
+	private List<ProductImage> productImages = new ArrayList<>();
 
 	@ManyToOne
 	@JoinColumn(name = "shell_material_id")
@@ -93,13 +100,10 @@ public class Product {
 	private Style style;
 
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<ProductDetail> productDetails;
+	private List<ProductDetail> productDetails = new ArrayList<>();
 
 	@OneToMany(mappedBy = "product")
 	private List<Rating> ratings;
-
-	@Column(name = "discount_percent")
-	private float discountPercent;
 
 	@Transient
 	public String getMainImagePath() {
@@ -126,6 +130,16 @@ public class Product {
 	@Transient
 	public String getFormatDayOfManufacture() {
 		return FormatUtil.dateToString(this.dayOfManufacture);
+	}
+	
+	@Transient
+	public String getPriceInVNFormat() {
+		return FormatUtil.formatToVietnamCurrency(this.price);
+	}
+	
+	@Transient
+	public String getPriceUsedInform() {
+		return FormatUtil.toStringNumber(this.price);
 	}
 
 	@Override
