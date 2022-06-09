@@ -9,24 +9,27 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-
-        <script type="text/javascript" th:src="@{/assets/js/main.js}"></script>
         <link rel="stylesheet" th:href="@{/assets/fontawesome_free_5.13.0/css/all.css}">
 
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap"
             rel="stylesheet">
+
+        <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script type="text/javascript" th:src="@{/assets/js/main.js}"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 
         <link rel="stylesheet" type="text/css" th:href="@{/assets/slick/slick.css}" />
         <link rel="stylesheet" type="text/css" th:href="@{/assets/slick/slick-theme.css}" />
         <script type="text/javascript" th:src="@{/assets/slick/slick.min.js}"></script>
         <script type="text/javascript"
             src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+        <link rel="stylesheet"
+            href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+
         <link rel="icon" type="image/png" sizes="16x16" th:href="@{/assets/images/favicon-16x16.png}">
         <link rel="manifest" th:href="@{/assets/favicon_io/site.webmanifest}">
     </th:block>
@@ -72,8 +75,10 @@
                                     khoản</a>
                             </li>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item nutdangky text-center mb-2" th:href="@{/account/signup}">Đăng ký</a>
-                                <a class="dropdown-item nutdangnhap text-center" th:href="@{/account/signin}">Đăng nhập</a>
+                                <a class="dropdown-item nutdangky text-center mb-2" th:href="@{/account/signup}">Đăng
+                                    ký</a>
+                                <a class="dropdown-item nutdangnhap text-center" th:href="@{/account/signin}">Đăng
+                                    nhập</a>
                             </div>
                         </div>
 
@@ -82,7 +87,7 @@
                             <li class="nav-item account btn dropdown" type="button" data-toggle="dropdown">
                                 <a href="#" class="btn btn-secondary rounded-circle">
                                     <th:block th:if="${session.customer.photo != null}">
-                                        <img th:src="${session.customer.photo}" alt="${session.customer.fullname}">
+                                        <img th:src="${session.customer.photo}">
                                     </th:block>
                                     <th:block th:else>
                                         <i class="fa fa-user"></i>
@@ -94,9 +99,10 @@
                             </li>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item text-center mb-2" th:href="@{/account/edit}">Chỉnh sửa hồ sơ</a>
-                                <a class="dropdown-item text-center mb-2" th:href="@{/account/change-password}">Đổi mật khẩu</a>
+                                <a class="dropdown-item text-center mb-2" th:href="@{/account/change-password}">Đổi mật
+                                    khẩu</a>
                                 <a class="dropdown-item text-center" href="javascript:void(0)"
-                                    onclick="document.getElementById('form-signout').submit();"> 
+                                    onclick="document.getElementById('form-signout').submit();">
                                     Đăng xuất
                                     <form th:action="@{/account/signout}" id="form-signout" method="post"></form>
                                 </a>
@@ -104,13 +110,12 @@
                         </div>
 
                         <li class="nav-item giohang mt-2">
-                            <a href="gio-hang.html" class="btn btn-secondary rounded-circle">
+                            <a th:href="@{/cart}" class="btn btn-secondary rounded-circle">
                                 <i class="fa fa-shopping-cart"></i>
-                                <div class="cart-amount">0</div>
+                                <!-- <div class="cart-amount">&nbsp;</div> -->
                             </a>
-                            <a class="nav-link text-dark giohang text-uppercase" href="gio-hang.html"
-                                style="display:inline-block">Giỏ
-                                Hàng</a>
+                            <a class="nav-link text-dark giohang text-uppercase" th:href="@{/cart}"
+                                style="display:inline-block">Giỏ Hàng</a>
                         </li>
                     </ul>
                 </div>
@@ -236,8 +241,7 @@
                             <img th:src="@{/assets/images/icons/icon-ship.png}" alt="icon-ship">
                             <div class="noidung">
                                 <h3 class="tieude font-weight-bold">MIỄN PHÍ GIAO HÀNG</h3>
-                                <p class="detail">Từ 150.000đ ở TP.HCM</p>
-                                <p class="detail">Từ 300.000đ ở tỉnh thành khác</p>
+                                <p class="detail">Đơn từ 300.000đ trên tất cả các tỉnh thành</p>
                             </div>
                         </div>
                     </div>

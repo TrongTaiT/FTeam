@@ -109,6 +109,11 @@ public class Product {
 	public String getMainImagePath() {
 		return "/images/products/" + this.id + "/" + this.mainImage;
 	}
+	
+	@Transient
+	public Float getRealPrice() {
+		return this.price - (this.price * this.discountPercent / 100);
+	}
 
 	@Transient
 	public String getOldPrice() {
@@ -117,14 +122,12 @@ public class Product {
 
 	@Transient
 	public String getNewPrice() {
-		Float realPrice = this.price - (this.price * this.discountPercent / 100);
-		return FormatUtil.formatToVietnamCurrency(realPrice);
+		return FormatUtil.formatToVietnamCurrency(this.getRealPrice());
 	}
 	
 	@Transient
 	public String getDiscountAmount() {
-		Float realPrice = this.price - (this.price * this.discountPercent / 100);
-		return FormatUtil.formatToVietnamCurrency(this.price - realPrice);
+		return FormatUtil.formatToVietnamCurrency(this.price - this.getRealPrice());
 	}
 	
 	@Transient
