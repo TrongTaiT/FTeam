@@ -20,7 +20,7 @@ import com.fteam.repository.ProductRepository;
 @Service
 public class ProductService {
 	
-	public static final int PRODUCTS_PER_PAGE = 3;
+	public static final int PRODUCTS_PER_PAGE = 8;
 	public static final int PRODUCTS_PER_MANAGEMENT_PAGE = 10;
 
 	@Autowired

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fteam.model.Staff;
@@ -67,7 +68,7 @@ public class AccountStaffController {
 		return "admin/login";
 	}
 	
-	@PostMapping("/admin/logout")
+	@RequestMapping("/admin/logout")
 	public String logout() {
 		sessionService.remove("staff");
 		return "redirect:/admin";

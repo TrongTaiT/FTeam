@@ -217,7 +217,7 @@
             console.log(newSubtotal);
             newSubtotal = toFloat(newSubtotal);
             console.log(newSubtotal);
-            $('#subtotal' + productId).text(formatToCurrency(newSubtotal) + ' ₫');
+            $('#subtotal' + productId).text(formatToCurrency(newSubtotal) + '₫');
         }
 
         function updateTamTinh() {
@@ -261,12 +261,16 @@
         }
 
         function formatToCurrency(amount) {
-            return (amount).toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$&.');
+            return (amount).toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$&,');
         }
 
         function toFloat(amount) {
-            let regex = /[.,\s]/g;
-            return parseFloat(amount.replace(regex, ''));
+            let regex = /[.,₫\s]/g;
+            if (amount.endsWith('.0₫')) {
+	            return parseFloat(amount.replace(regex, '') / 10);
+            } else {
+                return parseFloat(amount.replace(regex, ''));
+           	}
         }
     </script>
 </body>
