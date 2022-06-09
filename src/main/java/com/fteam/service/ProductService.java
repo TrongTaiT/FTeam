@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fteam.exception.ProductNotFoundException;
 import com.fteam.model.Category;
@@ -20,7 +21,7 @@ import com.fteam.repository.ProductRepository;
 public class ProductService {
 	
 	public static final int PRODUCTS_PER_PAGE = 3;
-	public static final int PRODUCTS_PER_MANAGEMENT_PAGE = 5;
+	public static final int PRODUCTS_PER_MANAGEMENT_PAGE = 10;
 
 	@Autowired
 	private ProductRepository productRepo;

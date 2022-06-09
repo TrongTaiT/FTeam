@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import com.fteam.model.Staff;
 import com.fteam.repository.StaffRepository;
+import com.fteam.service.StaffService;
 import com.fteam.utilities.SessionService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,16 +12,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class AccountStaffController {
 
 	@Autowired
-	StaffRepository repo;
+	StaffService staffService;
 
 	@Autowired
-	SessionService session;
+	SessionService sessionService;
 
 	@GetMapping("/admin/login")
 	public String loginForm() {
@@ -34,26 +36,26 @@ public class AccountStaffController {
 			@RequestParam("password") String password, //
 			@RequestParam("error") Optional<String> errorMessage) {
 		if (errorMessage.isPresent()) {
-			String message = errorMessage.get();
-			if (message.equals("accessDenied")) {
-				message = "Không có quyền truy cập";
-			} else if (message.equals("loginRequired")) {
-				message = "Vui lòng đăng nhập";
+			String error = errorMessage.get();
+			if (error.equals("accessDenied")) {
+				error = "Không có quyền truy cập";
+			} else if (error.equals("loginRequired")) {
+				error = "Vui lòng đăng nhập";
 			}
-			model.addAttribute("message", message);
-			System.out.println("Lỗi: " + message);
+			model.addAttribute("message", error);
+			System.out.println("Lỗi: " + error);
 			return "admin/login";
 		}
 
 		try {
-			Staff staff = repo.getStaffByEmail(email);
+			Staff staff = staffService.getStaffByEmail(email);
 			if (!staff.getPassword().equals(password)) {
 				model.addAttribute("message", "Mật khẩu không hợp lệ");
 			}
 			// Đăng nhập thành công
 			else {
-				session.set("staff", staff);
-				String uri = session.get("security-uri");
+				sessionService.set("staff", staff);
+				String uri = sessionService.get("security-uri");
 				if (uri != null) {
 					return "redirect:" + uri;
 				} else {
@@ -66,5 +68,11 @@ public class AccountStaffController {
 		}
 		return "admin/login";
 	}
-
+	
+	@RequestMapping("/admin/logout")
+	public String logout() {
+		sessionService.remove("staff");
+		return "redirect:/admin";
+	}
+	
 }

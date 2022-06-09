@@ -72,6 +72,38 @@ File: scss
 /******************* 
 Global Styles 
 *******************/
+
+.upload{
+  width: 200px;
+  margin: auto;
+  position: relative;
+    /* top: 100px;
+    left: 50px; */
+}
+.upload img{
+  border-radius: 50%;
+  border: 6px solid #eaeaea;
+}
+
+.upload .round{
+  background: #00B4FF;
+  width: 32px;
+  height: 32px;
+  line-height: 33px;
+  text-align: center;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+  float: right;
+  position: absolute;
+  bottom: 0;
+  right: 30px;
+}
+
+.upload .round > input{
+	opacity: 0;
+}
+
 * {
   outline: none; }
 
@@ -1965,8 +1997,9 @@ File: scss
     .topbar .top-navbar .navbar-nav > .nav-item.show {
       background: rgba(0, 0, 0, 0.05); }
   .topbar .profile-pic {
-    width: 30px;
-    border-radius: 100%; }
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; }
   .topbar .dropdown-menu {
     box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
     -webkit-box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
