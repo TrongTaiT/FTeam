@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -45,6 +46,11 @@ public class Staff {
 	
 	@OneToMany(mappedBy = "staff")
 	private List<Order> orders;
+	
+	@Transient
+	public String getPhotoPath() {
+		return "/images/staffs/" + this.id + "/" + this.photo;
+	}
 
 }
 

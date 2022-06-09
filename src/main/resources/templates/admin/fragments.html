@@ -70,7 +70,10 @@
 	                    </ul>
 	                    <ul class="navbar-nav my-lg-0">
 	                        <li class="nav-item dropdown">
-	                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img th:src="@{/assets/images/users/1.jpg}" alt="user" class="profile-pic m-r-10" />Markarn Doe</a>
+	                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	                            <img th:if="${session.staff.photo != null}" th:src="@{${session.staff.photoPath}}" alt="user" class="profile-pic m-r-10" />
+	                            <img th:if="${session.staff.photo == null}" th:src="@{/images/staffs/default/avt_default.png}" alt="user" class="profile-pic m-r-10" />
+	                            [[${session.staff.fullname}]]</a>
 	                        </li>
 	                    </ul>
 	                </div>
@@ -88,7 +91,7 @@
 	                    <ul id="sidebarnav">
 	                        <li> <a class="waves-effect waves-dark" th:href="@{/admin/}" aria-expanded="false"><i class="mdi mdi-gauge"></i><span class="hide-menu">Dashboard</span></a>
 	                        </li>
-	                        <li> <a class="waves-effect waves-dark" href="pages-profile.html" aria-expanded="false"><i class="mdi mdi-account-check"></i><span class="hide-menu">Profile</span></a>
+	                        <li> <a class="waves-effect waves-dark" th:href="@{'/admin/my-account/' + ${session.staff.id}}" aria-expanded="false"><i class="mdi mdi-account-check"></i><span class="hide-menu">Profile</span></a>
 	                        </li>
 	                        <li> <a class="waves-effect waves-dark" th:href="@{/admin/product}" aria-expanded="false"><i class="mdi mdi-table"></i><span class="hide-menu">Quản lý sản phẩm</span></a>
 	                        </li>
@@ -109,7 +112,7 @@
 	            <div class="sidebar-footer">
 	                <!-- item--><a href="" class="link" data-toggle="tooltip" title="Settings"><i class="ti-settings"></i></a>
 	                <!-- item--><a href="" class="link" data-toggle="tooltip" title="Email"><i class="mdi mdi-gmail"></i></a>
-	                <!-- item--><a href="" class="link" data-toggle="tooltip" title="Logout"><i class="mdi mdi-power"></i></a> 
+	                <!-- item--><a th:href="@{/admin/logout}" class="link" data-toggle="tooltip" title="Logout"><i class="mdi mdi-power"></i></a> 
 	            </div>
             </aside>
         </div>
