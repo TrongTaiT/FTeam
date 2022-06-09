@@ -13,20 +13,19 @@ public class InterceptorConfig implements WebMvcConfigurer {
 
 	@Autowired
 	private CategoryInterceptor categoryInterceptor;
+
 	@Autowired
-	AuthInterceptor auth;
+	private AuthInterceptor auth;
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(categoryInterceptor) //
 				.addPathPatterns("/**") //
 				.excludePathPatterns("/assets/**", "/images/**");
-		
+
 		registry.addInterceptor(auth)//
-				.addPathPatterns("/order**", "/admin/**")
+				.addPathPatterns("/order**", "/admin/**")//
 				.excludePathPatterns("/assets/**", "/admin/login");
 	}
-	
-	
 
 }

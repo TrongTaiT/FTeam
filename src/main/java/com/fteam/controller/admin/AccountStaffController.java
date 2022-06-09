@@ -2,18 +2,16 @@ package com.fteam.controller.admin;
 
 import java.util.Optional;
 
-import com.fteam.model.Staff;
-import com.fteam.repository.StaffRepository;
-import com.fteam.service.StaffService;
-import com.fteam.utilities.SessionService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.fteam.model.Staff;
+import com.fteam.service.StaffService;
+import com.fteam.utilities.SessionService;
 
 @Controller
 public class AccountStaffController {
@@ -69,7 +67,7 @@ public class AccountStaffController {
 		return "admin/login";
 	}
 	
-	@RequestMapping("/admin/logout")
+	@PostMapping("/admin/logout")
 	public String logout() {
 		sessionService.remove("staff");
 		return "redirect:/admin";
