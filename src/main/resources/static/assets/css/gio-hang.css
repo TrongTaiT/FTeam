@@ -492,6 +492,9 @@ footer .header {
     color: #282828;
     display: block;
 }
+.item-info .ten:hover {
+    color: #f13636;
+}
 
 .item-price .remove {
     cursor: pointer;
