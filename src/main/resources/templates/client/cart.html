@@ -11,9 +11,6 @@
 
     <section th:replace="/client/fragments :: below_navbar_hide_categories"></section>
 
-    <span th:if="${cartItems.size > 0}">have items</span>
-    <span th:unless="${cartItems.size > 0}">no items</span>
-
     <!-- giao diện giỏ hàng  -->
     <section class="content my-3">
         <div class="container-lg">
@@ -23,7 +20,7 @@
                     <div th:unless="${cartItems.size > 0}" class="col-lg-10 cart-empty mx-auto">
                         <!-- col-12 d-none -->
                         <div class="py-3 pl-3">
-                            <h6 class="header-gio-hang">GIỎ HÀNG CỦA BẠN <span>(0 sản phẩm)</span></h6>
+                            <h6 class="header-gio-hang">GIỎ HÀNG CỦA BẠN</h6>
                             <div class="cart-empty-content w-100 text-center justify-content-center">
                                 <img th:src="@{assets/images/icons/shopping-cart-not-product.png}"
                                     alt="shopping-cart-not-product">
@@ -36,10 +33,10 @@
                     <!-- giao diện giỏ hàng khi có hàng (phần comment màu xanh bên dưới là phần 2 sản phẩm trong giỏ hàng nhưng giờ đã demo bằng jquery) -->
                     <div th:if="${cartItems.size > 0}" class="col-lg-10 cart mx-auto">
                         <div class="cart-content py-3 pl-3 ">
-                            <h6 class="header-gio-hang">GIỎ HÀNG CỦA BẠN <span>([[${cartItems.size}]] sản phẩm)</span>
+                            <h6 class="header-gio-hang">GIỎ HÀNG CỦA BẠN</span>
                             </h6>
                             <div class="cart-list-items">
-                                <div th:each="item, status : ${cartItems}" class="cart-item d-flex my-3">
+                                <div th:each="item, status : ${cartItems}" th:id="'row' + ${status.count}" class="cart-item d-flex my-3">
                                     <span class="d-flex align-items-center" style="min-width: 20px;">
                                         [[${status.count}]]
                                     </span>
@@ -54,26 +51,35 @@
                                             <div class="soluong d-flex">
                                                 <div class="input-number input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text btn-spin btn-dec">-</span>
+                                                        <span th:pid="${item.product.id}"
+                                                            class="input-group-text btn-spin btn-decrease">-</span>
                                                     </div>
                                                     <input type="text" th:value="${item.quantity}"
                                                         class="soluongsp text-center"
                                                         th:id="'quantity' + ${item.product.id}"
                                                         onkeydown="return false;">
                                                     <div class="input-group-append">
-                                                        <span class="input-group-text btn-spin btn-inc">+</span>
+                                                        <span th:pid="${item.product.id}"
+                                                            class="input-group-text btn-spin btn-increase">+</span>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="item-price ml-auto mr-5 d-flex flex-column align-items-end">
-                                            <div class="giamoi"><b>[[${item.product.newPrice}]]₫</b></div>
+                                            <div class="giamoi font-weight-bold">[[${item.product.newPrice}]]₫</div>
                                             <div class="giacu">[[${item.product.oldPrice}]]₫</div>
                                         </div>
                                         <div class="item-price ml-auto d-flex flex-column align-items-end">
-                                            <div class="giamoi"><b class="h5">[subtotal}]]₫</b></div>
+                                            <div class="">
+                                                <b th:id="'subtotal' + ${item.product.id}" class="productSubtotal h5">
+                                                    [[${item.formatSubtotal}]]₫
+                                                </b>
+                                            </div>
                                             <span class="remove mt-auto">
-                                                <a th:href="@{/}"><i class="far fa-trash-alt text-dark"></i></a>
+                                                <a th:href="@{'/cart/delete/' + ${item.product.id}}"
+                                                    class="link-remove" th:rowNumber="${status.count}">
+                                                    <i class="far fa-trash-alt text-dark"></i>
+                                                </a>
                                             </span>
                                         </div>
                                     </div>
@@ -88,11 +94,15 @@
                                     <div class="tonggiatien">
                                         <div class="group d-flex justify-content-between">
                                             <p class="label">Tạm tính:</p>
-                                            <p class="tamtinh">328.000 ₫</p>
+                                            <b>
+                                                <p class="tamtinh">328.000 ₫</p>
+                                            </b>
                                         </div>
                                         <div class="group d-flex justify-content-between">
                                             <p class="label">Giảm giá:</p>
-                                            <p class="giamgia">0 ₫</p>
+                                            <del>
+                                                <p class="giamgia ">0 ₫</p>
+                                            </del>
                                         </div>
                                         <div class="group d-flex justify-content-between">
                                             <p class="label">Phí vận chuyển:</p>
@@ -104,7 +114,7 @@
                                         </div>
                                         <div class="group d-flex justify-content-between align-items-center">
                                             <strong class="text-uppercase">Tổng cộng:</strong>
-                                            <p class="tongcong">328.000 ₫</p>
+                                            <p class="tongcong"></p>
                                         </div>
                                         <small class="note d-flex justify-content-end text-muted">
                                             (Giá đã bao gồm VAT)
@@ -130,7 +140,134 @@
     <div th:replace="/client/fragments :: page_footer"></div>
 
     <script>
+        $(document).ready(function () {
+            updateBill();
 
+            $('.btn-increase').click(function () {
+                let productId = $(this).attr('pid');
+                let qtyInput = $("#quantity" + productId);
+                let newVal = parseFloat(qtyInput.val()) + 1;
+                updateQuantity(productId, newVal);
+                qtyInput.val(newVal);
+            });
+
+            $('.btn-decrease').click(function () {
+                let productId = $(this).attr('pid');
+                let qtyInput = $("#quantity" + productId);
+                let oldValue = parseFloat(qtyInput.val());
+                if (oldValue > 1) {
+                    let newVal = parseFloat(oldValue) - 1;
+                    updateQuantity(productId, newVal);
+                    qtyInput.val(newVal);
+                }
+            });
+
+            $('.link-remove').click(function (e) {
+                e.preventDefault();
+                if (confirm('Bạn muốn xoá sản phẩm này khỏi giỏ hàng?')) {
+                    removeFromCart($(this));
+                }
+            });
+        });
+
+        function removeFromCart(button) {
+            url = button.attr('href');
+            console.log(url);
+
+            $.ajax({
+                type: "POST",
+                url: url
+            }).done(function (response) {
+                updateBill();
+                if (response.includes("Đã")) {
+                    rowNumber = button.attr('rowNumber');
+                    $('#row' + rowNumber).remove();
+                    updateBill();
+                    alert(response);
+                }
+            }).fail(function () {
+                alert('Xoá khỏi giỏ hàng thất bại');
+            });
+        }
+
+        function updateQuantity(productId, quantity) {
+            let contextPath = "[[@{/}]]";
+            url = contextPath + 'cart/update/' + productId + '/' + quantity;
+            console.log(url);
+
+            $.ajax({
+                type: "POST",
+                url: url
+            }).done(function (newSubtotal) {
+                updateSubtotal(productId, newSubtotal);
+                updateBill();
+            }).fail(function () {
+                alert('Cập nhật giỏ hàng thất bại');
+            });
+        }
+
+        // calculate bill
+        function updateBill() {
+            updateTamTinh();
+            updateDiscount();
+            updateTotal();
+        }
+
+        function updateSubtotal(productId, newSubtotal) {
+            console.log(newSubtotal);
+            newSubtotal = toFloat(newSubtotal);
+            console.log(newSubtotal);
+            $('#subtotal' + productId).text(formatToCurrency(newSubtotal) + ' ₫');
+        }
+
+        function updateTamTinh() {
+            let tamTinh = 0;
+            $('.giacu').each(function () {
+                let qty = $(this).parent().parent().find('input').val();
+                tamTinh += parseInt(toFloat($(this).text()) * qty);
+            });
+            $('.tamtinh').text(formatToCurrency(tamTinh) + ' ₫');
+        }
+
+        function updateDiscount() {
+            let tongGiaCu = 0;
+            let tongGiaMoi = 0;
+            $('.giacu').each(function () {
+                let qty = $(this).parent().parent().find('input').val();
+                tongGiaCu += parseInt(toFloat($(this).text()) * qty);
+            });
+            $('.giamoi').each(function () {
+                let qty = $(this).parent().parent().find('input').val();
+                tongGiaMoi += parseInt(toFloat($(this).text()) * qty);
+            });
+            let giamGia = tongGiaCu - tongGiaMoi;
+            $('.giamgia').text(formatToCurrency(giamGia) + ' ₫');
+        }
+
+        function updateTotal() {
+            let total = 0;
+            $('.productSubtotal').each(function () {
+                total += parseInt(toFloat($(this).text()));
+            });
+
+            // shipping fee
+            if (total > 300000) {
+                $('.phivanchuyen').text('0 ₫');
+            } else {
+                $('.phivanchuyen').text('30.000 ₫');
+            }
+
+            $('.tongcong').text(formatToCurrency(total) + ' ₫');
+        }
+
+        function formatToCurrency(amount) {
+            return (amount).toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$&.');
+        }
+
+        function toFloat(amount) {
+            let regex = /[.,\s]/g;
+            return parseFloat(amount.replace(regex, ''));
+        }
     </script>
 </body>
 

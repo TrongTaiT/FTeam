@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fteam.model.CartItem;
 import com.fteam.model.Customer;
@@ -12,6 +13,7 @@ import com.fteam.repository.CartItemRepository;
 import com.fteam.repository.ProductRepository;
 
 @Service
+@Transactional
 public class ShoppingCartService {
 	
 	@Autowired
@@ -33,6 +35,7 @@ public class ShoppingCartService {
 		
 		if (cartItem != null) {
 			addedQuantity = cartItem.getQuantity() + quantity;
+			cartItem.setQuantity(addedQuantity);
 		} else {
 			cartItem = new CartItem();
 			cartItem.setQuantity(quantity);
@@ -42,7 +45,19 @@ public class ShoppingCartService {
 		
 		cartRepo.save(cartItem);
 		
-		return addedQuantity;
+		return quantity;
+	}
+	
+	public float updateQuantity(Integer productId, Integer quantity, Customer customer) {
+		cartRepo.updateQuantity(quantity, productId, customer.getId());		
+		Product product = productRepo.findById(productId).get();
+		
+		float subtotal = product.getRealPrice() * quantity;
+		return subtotal;
+	}
+	
+	public void removeProduct(Integer productId, Customer customer) {
+		cartRepo.deleteByCustomerAndProduct(customer.getId(), productId);
 	}
 
 }

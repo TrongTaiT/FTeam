@@ -14,6 +14,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap"
             rel="stylesheet">
 
+        <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script type="text/javascript" th:src="@{/assets/js/main.js}"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
@@ -111,7 +112,7 @@
                         <li class="nav-item giohang mt-2">
                             <a th:href="@{/cart}" class="btn btn-secondary rounded-circle">
                                 <i class="fa fa-shopping-cart"></i>
-                                <div class="cart-amount">0</div>
+                                <!-- <div class="cart-amount">&nbsp;</div> -->
                             </a>
                             <a class="nav-link text-dark giohang text-uppercase" th:href="@{/cart}"
                                 style="display:inline-block">Giỏ Hàng</a>
@@ -240,8 +241,7 @@
                             <img th:src="@{/assets/images/icons/icon-ship.png}" alt="icon-ship">
                             <div class="noidung">
                                 <h3 class="tieude font-weight-bold">MIỄN PHÍ GIAO HÀNG</h3>
-                                <p class="detail">Từ 150.000đ ở TP.HCM</p>
-                                <p class="detail">Từ 300.000đ ở tỉnh thành khác</p>
+                                <p class="detail">Đơn từ 300.000đ trên tất cả các tỉnh thành</p>
                             </div>
                         </div>
                     </div>

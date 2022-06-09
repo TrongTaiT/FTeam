@@ -29,7 +29,6 @@ public class ShoppingCartController {
 		List<CartItem> cartItems = cartService.listCartItems(customer);
 		
 		model.addAttribute("cartItems", cartItems);
-//		model.addAttribute("cartItems.size", cartItems.size());
 		
 		return "client/cart";
 	}
