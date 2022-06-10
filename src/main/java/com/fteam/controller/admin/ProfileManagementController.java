@@ -61,7 +61,7 @@ public class ProfileManagementController {
 			staff.setPhoto(staffInDB.getPhoto());
 		}
 		
-		if (staff.getPassword() == null) {
+		if (staff.getPassword() == null || staff.getPassword().isBlank()) {
 			staff.setPassword(staffInDB.getPassword());
 		}
 		if (staff.getAdmin() == null) {
@@ -71,6 +71,7 @@ public class ProfileManagementController {
 			staff.setEnabled(staffInDB.getEnabled());
 		}
 		Staff savedStaff = staffService.save(staff);
+		sessionService.set("staff", savedStaff);
 
 		model.addAttribute("staff", savedStaff);
 		return "admin/pages-profile";
