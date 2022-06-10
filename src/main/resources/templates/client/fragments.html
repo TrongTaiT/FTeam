@@ -9,6 +9,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+        <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
+        <script type="text/javascript" th:src="@{/assets/js/main.js}"></script>
         <link rel="stylesheet" th:href="@{/assets/fontawesome_free_5.13.0/css/all.css}">
 
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap"
@@ -87,7 +96,7 @@
                             <li class="nav-item account btn dropdown" type="button" data-toggle="dropdown">
                                 <a href="#" class="btn btn-secondary rounded-circle">
                                     <th:block th:if="${session.customer.photo != null}">
-                                        <img th:src="${session.customer.photo}">
+                                        <img th:src="${session.customer.photo}" alt="${session.customer.fullname}">
                                     </th:block>
                                     <th:block th:else>
                                         <i class="fa fa-user"></i>
@@ -200,9 +209,9 @@
     <th:block th:fragment="register_row(field, type, label, placeholder)">
         <div class="form-group ">
             <div class="row">
-                <label for="email" class="col-sm-3 col-form-label">[[${label}]]</label>
+                <label th:for="${field}" class="col-sm-3 col-form-label">[[${label}]]</label>
                 <div class="col-sm-9">
-                    <input th:field="*{__${field}__}" th:type="${type}" class="form-control"
+                    <input th:field="*{__${field}__}" th:value="${param.field}" th:type="${type}" class="form-control"
                         th:placeholder="${placeholder}">
                 </div>
             </div>
@@ -212,11 +221,6 @@
                     class="error col-sm-9" th:for="${field}"></label>
             </div>
         </div>
-
-        <!-- <div th:if="${#fields.hasErrors(field)}" class="form-group row">
-            <label class="col-sm-3 col-form-label"></label>
-            <p class="col-sm-9 error" th:errors="*{__${field}__}"></p>
-        </div> -->
     </th:block>
 
     <!-- footer & abovefooter  -->

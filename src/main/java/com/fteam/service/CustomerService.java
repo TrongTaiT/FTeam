@@ -43,6 +43,24 @@ public class CustomerService {
 		return true;
 	}
 
+	public boolean isPhoneNumberUnique(Integer id, String phoneNumber) {
+		Customer customer = repo.getCustomerByPhoneNumber(phoneNumber);
+
+		if (customer == null)
+			return true;
+
+		boolean isCreatingNew = (id == null);
+		if (isCreatingNew) {
+			if (customer != null)
+				return false;
+		} else {
+			if (customer.getId() != id)
+				return false;
+		}
+
+		return true;
+	}
+
 	public Customer convertToEntity(CustomerDTO customerDTO) {
 		return mapper.map(customerDTO, Customer.class);
 	}

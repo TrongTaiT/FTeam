@@ -1,7 +1,9 @@
 package com.fteam.dto;
 
 import java.util.Date;
+import java.util.Objects;
 
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -25,15 +27,14 @@ public class CustomerDTO {
 
 	private Integer id;
 
+	@NotBlank
 	@Email
-	@NotNull
 	@Size(max = 255)
 	private String email;
 
 	@Pattern(regexp = RegexValidation.PASSWORD_REGEX)
 	private String password;
-	
-	@Pattern(regexp = RegexValidation.PASSWORD_REGEX)
+
 	private String confirmPassword;
 
 	@Size(max = 255)
@@ -43,15 +44,19 @@ public class CustomerDTO {
 	@Size(max = 20)
 	@Pattern(regexp = RegexValidation.PHONE_REGEX)
 	private String phoneNumber;
-	
+
 	@NotNull
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date birthday;
-	
+
 	@NotBlank
 	@Size(max = 255)
 	private String address;
-	
+
 	private String photo;
 
+	@AssertTrue
+	public boolean isPasswordsEqual() {
+		return Objects.equals(this.password, this.confirmPassword);
+	}
 }

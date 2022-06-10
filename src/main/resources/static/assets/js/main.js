@@ -215,7 +215,7 @@ $(function () {
                 required: 'Vui lòng nhập lại mật khẩu',
                 minlength: 'Vui lòng nhập ít nhất 8 kí tự',
                 maxlength: 'Vui lòng nhập tối đa 64 kí tự',
-                equalTo: 'Mật khẩu không trùng'
+                equalTo: 'Mật khẩu không khớp'
             },
             birthday: {
                 required: 'Vui lòng chọn ngày sinh'
@@ -504,16 +504,16 @@ $(function () {
         itemSelector:'.item',
     })
 
-    $('.tag a').click(function (e) { 
-        var tacgia = $(this).data('tacgia');
+    // $('.tag a').click(function (e) { 
+    //     var tacgia = $(this).data('tacgia');
         
-        if(tacgia == 'all'){
-            $('.items .row').isotope({filter:'*'})
-        }else{
-            $('.items .row').isotope({filter:tacgia});
-        }
-        return false;
-    });
+    //     if(tacgia == 'all'){
+    //         $('.items .row').isotope({filter:'*'})
+    //     }else{
+    //         $('.items .row').isotope({filter:tacgia});
+    //     }
+    //     return false;
+    // });
 
     $('.thay-doi-mk').hide();
     $("#changepass").click(function (e) { 

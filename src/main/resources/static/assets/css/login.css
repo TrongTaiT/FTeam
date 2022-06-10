@@ -466,6 +466,12 @@ label.valid {
   display: inline-block;
   margin-right: 15px; }
 
+.error-messge {
+  color: red;
+  font-size: 1rem;
+  font-style: italic;
+}
+
 .socials li {
   padding: 5px; }
   .socials li:last-child {

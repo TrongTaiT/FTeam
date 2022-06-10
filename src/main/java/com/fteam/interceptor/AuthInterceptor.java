@@ -14,7 +14,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 public class AuthInterceptor implements HandlerInterceptor {
 
 	@Autowired
-	SessionService session;
+	private SessionService session;
 
 	public boolean preHandle(HttpServletRequest req, HttpServletResponse resp, Object handler) throws Exception {
 		String uri = req.getRequestURI().substring(req.getContextPath().length());

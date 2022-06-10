@@ -104,20 +104,20 @@
     <div th:replace="/client/fragments :: page_footer"></div>
 
     <script>
-        var isUniqueEmail = false;
         var isUniquePhoneNumber = false;
+        var isUniqueEmail = false;
 
         $(document).ready(function () {
+
             $("#form-signup").submit(function (e) {
                 e.preventDefault();
 
                 const form = $(this);
                 checkEmailUnique();
                 checkPhoneUnique();
-
                 let condition = [isUniqueEmail, isUniquePhoneNumber, form.valid()];
-                console.log(condition);
 
+                console.log(condition);
                 if (condition.includes(false)) {
                     console.log('not submit')
                     return;
@@ -133,7 +133,6 @@
             url = "[[@{/customer/check_email}]]";
             customerEmail = $("#email").val();
 
-            isUniqueEmail = false;
             if (customerEmail == "") {
                 return;
             }
@@ -143,9 +142,11 @@
             $.post(url, params, function (response) {
                 if (response === "OK") {
                     isUniqueEmail = true;
+                    return;
                 } else if (response === "Duplicated") {
-                    $("#form-signup").validate()//
-                        .showErrors({ email: "Email này đã được sử dụng" });
+                    isUniqueEmail = false;
+                    let $validator = $("#form-signup").validate();
+                    $validator.showErrors({ email: "Email này đã được sử dụng" });
                 } else {
                     alert("Giá trị trả về không xác định");
                 }
@@ -158,7 +159,6 @@
             url = "[[@{/customer/check_phone_number}]]";
             customerPhoneNumber = $("#phoneNumber").val();
 
-            isUniquePhoneNumber = false;
             if (customerPhoneNumber == "") {
                 return;
             }
@@ -168,9 +168,11 @@
             $.post(url, params, function (response) {
                 if (response === "OK") {
                     isUniquePhoneNumber = true;
+                    return;
                 } else if (response === "Duplicated") {
-                    $("#form-signup").validate()//
-                        .showErrors({ phoneNumber: "Số điện thoại này đã được sử dụng" });
+                    isUniquePhoneNumber = false;
+                    let $validator = $("#form-signup").validate();
+                    $validator.showErrors({ phoneNumber: "Số điện thoại này đã được sử dụng" });
                 } else {
                     alert("Giá trị trả về không xác định");
                 }

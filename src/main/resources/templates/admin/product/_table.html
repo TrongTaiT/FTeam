@@ -32,8 +32,6 @@
 							<li class="breadcrumb-item active">Danh sách sản phẩm</li>
 						</ol>
 					</div>
-					<div th:if="${message != null}"
-						class="col-md-4 col-4 align-self-center">[[${message}]]</div>
 					<div class="col-md-2 col-2 align-self-center">
 						<a th:href="@{/admin/product/form}"
 							class="btn waves-effect waves-light btn-success pull-right hidden-sm-down">Form
@@ -54,6 +52,9 @@
 					</div>
 				</form>
 
+				<div th:if="${message != null}"
+					class="alert-message">[[${message}]]
+				</div>
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="card">

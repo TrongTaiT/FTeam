@@ -70,7 +70,7 @@
 	                    </ul>
 	                    <ul class="navbar-nav my-lg-0">
 	                        <li class="nav-item dropdown">
-	                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" th:href="@{'/admin/my-account/' + ${session.staff.id}}">
 	                            <img th:if="${session.staff.photo != null}" th:src="@{${session.staff.photoPath}}" alt="user" class="profile-pic m-r-10" />
 	                            <img th:if="${session.staff.photo == null}" th:src="@{/images/staffs/default/avt_default.png}" alt="user" class="profile-pic m-r-10" />
 	                            [[${session.staff.fullname}]]</a>

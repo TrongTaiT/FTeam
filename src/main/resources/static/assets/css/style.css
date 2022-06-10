@@ -5741,6 +5741,33 @@ File: scss
   border-top: 1px solid rgba(120, 130, 140, 0.13);
   padding-top: 15px; }
 
+.alert-message {
+  padding: 10px 20px;
+  margin-bottom: 20px;
+  border: 1px solid grey;
+  border-radius: 4px;
+  color: green;
+  font-style: italic;
+}
+  .alert-message .alert-title {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 0; }
+  .alert-message .alert-subtitle {
+    font-size: 12px;
+    font-weight: 500;
+    margin-bottom: 0; }
+  .alert-message .alert-close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 12px;
+    color: #a9a9a9;
+    cursor: pointer; }
+    .alert-message .alert-close:hover {
+      color: #ffffff; }
+
+
 .mailbox .message-center {
   height: 200px;
   overflow: auto;

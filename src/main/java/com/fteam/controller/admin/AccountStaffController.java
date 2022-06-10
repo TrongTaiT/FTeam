@@ -24,7 +24,21 @@ public class AccountStaffController {
 	SessionService sessionService;
 
 	@GetMapping("/admin/login")
-	public String loginForm() {
+	public String loginForm( //
+			Model model, //
+			@RequestParam("error") Optional<String> errorMessage) //
+	{
+		if (errorMessage.isPresent()) {
+			String error = errorMessage.get();
+			if (error.equals("accessDenied")) {
+				error = "Không có quyền truy cập";
+			} else if (error.equals("loginRequired")) {
+				error = "Vui lòng đăng nhập";
+			}
+			model.addAttribute("message", error);
+			return "admin/login";
+		}
+
 		return "admin/login";
 	}
 
@@ -42,7 +56,6 @@ public class AccountStaffController {
 				error = "Vui lòng đăng nhập";
 			}
 			model.addAttribute("message", error);
-			System.out.println("Lỗi: " + error);
 			return "admin/login";
 		}
 
@@ -65,13 +78,14 @@ public class AccountStaffController {
 		} catch (Exception e) {
 			model.addAttribute("message", "Email không hợp lệ");
 		}
+		
 		return "admin/login";
 	}
-	
+
 	@RequestMapping("/admin/logout")
 	public String logout() {
 		sessionService.remove("staff");
 		return "redirect:/admin";
 	}
-	
+
 }

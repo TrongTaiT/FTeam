@@ -7,6 +7,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.fteam.interceptor.AuthInterceptor;
 import com.fteam.interceptor.CategoryInterceptor;
+import com.fteam.interceptor.StaffManagementInterceptor;
 
 @Configuration
 public class InterceptorConfig implements WebMvcConfigurer {
@@ -17,14 +18,21 @@ public class InterceptorConfig implements WebMvcConfigurer {
 	@Autowired
 	private AuthInterceptor auth;
 
+	@Autowired
+	private StaffManagementInterceptor staffManagementInterceptor;
+
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(categoryInterceptor) //
-				.addPathPatterns("/**") //
-				.excludePathPatterns("/assets/**", "/images/**");
+				.addPathPatterns("/**", "/admin/product/**") //
+				.excludePathPatterns("/assets/**", "/images/**", "/admin/**");
 
-		registry.addInterceptor(auth)//
-				.addPathPatterns("/order**", "/admin/**")//
+		registry.addInterceptor(auth) //
+				.addPathPatterns("/order**", "/admin/**") //
+				.excludePathPatterns("/assets/**", "/admin/login");
+
+		registry.addInterceptor(staffManagementInterceptor) //
+				.addPathPatterns("/admin/staff/**") //
 				.excludePathPatterns("/assets/**", "/admin/login");
 	}
 

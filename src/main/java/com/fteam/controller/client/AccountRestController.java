@@ -16,5 +16,10 @@ public class AccountRestController {
 	public String checkDuplicateEmail(Integer id, String email) {
 		return service.isEmailUnique(id, email) ? "OK" : "Duplicated";
 	}
+	
+	@PostMapping("/customer/check_phone_number")
+	public String checkDuplicatePhoneNumber(Integer id, String phoneNumber) {
+		return service.isPhoneNumberUnique(id, phoneNumber) ? "OK" : "Duplicated";
+	}
 
 }
