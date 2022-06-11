@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<th:block th:replace="/admin/fragments :: admin_head('Staff - Management')"></th:block>
+	<link th:href="@{/assets/css/style.css}" rel="stylesheet">
+</head>
+
+<body class="fix-header fix-sidebar card-no-border">
+	<div class="preloader">
+		<svg class="circular" viewBox="25 25 50 50">
+			<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+		</svg>
+	</div>
+	<div id="main-wrapper">
+		<div th:replace="/admin/fragments :: top_navbar"></div>
+
+		<div th:replace="/admin/fragments :: left_navbar"></div>
+
+		<div class="page-wrapper">
+			<div class="container-fluid">
+				<div class="row page-titles justify-content-between">
+					<div class="col-md-6 col-6 align-self-center">
+						<h3 class="text-themecolor m-b-0 m-t-0">Table</h3>
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item"><a th:href="@{/admin}">Trang
+									chủ</a></li>
+							<li class="breadcrumb-item"><a th:href="@{/admin/staff}">Quản lý nhân viên</a></li>
+							<li class="breadcrumb-item active">Form nhân viên</li>
+						</ol>
+					</div>
+					<div class="col-md-2 col-2 align-self-center">
+						<a th:href="@{/admin/staff}"
+							class=" btn waves-effect waves-light btn-success pull-right hidden-sm-down">Danh
+							sách nhân viên</a>
+					</div>
+				</div>
+				<div th:if="${message != null}"
+					class="alert-message">[[${message}]]
+				</div>
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="card">
+							<div class="card-block">
+								<h4 class="card-title mb-4">Form Nhân Viên</h4>
+								<div class="table-responsive">
+									<form th:action="@{/admin/staff/save}" method="POST" th:object="${staff}"
+										enctype="multipart/form-data">
+										<input hidden th:field="*{id}">
+										<div class="form-group d-flex">
+											<div class="col-12">
+												<label>Tên nhân viên</label> <input th:field="*{fullname}" type="text"
+													class="form-control" placeholder="Tên nhân viên">
+											</div>
+										</div>
+										<div class="form-group d-flex">
+											<div class="col-12">
+												<label>Email</label>
+												<input th:field="*{email}" type="email" class="form-control" placeholer="Email">
+											</div>
+										</div>
+										<div class="form-group d-flex">
+											<div class="col-6">
+												<label>Password</label>
+												<input th:field="*{password}" type="password" class="form-control" placeholer="Mật khẩu">
+											</div>
+											<div class="col-6">
+												<label>Password</label>
+												<input name="confirmPassword" type="password" class="form-control" placeholer="Xác nhận mật khẩu">
+											</div>
+										</div>
+										<div class="form-group d-flex">
+											<div class="col-5">
+												<label>Số điện thoại</label>
+												<input th:field="*{phoneNumber}" type="number" class="form-control" placeholer="Số điện thoại">
+											</div>
+											<div class="col-2 form-check">
+												<label th:for="*{enabled}">Admin?:</label>
+												<p>Kích hoạt <input th:field="*{enabled}" th:value="true" type="checkbox" /> </p>
+											</div>
+											<div class="col-5">
+												<label>Hình</label>
+												<input name="image" type="file" class="form-control" id="image"
+													accept="image/*" th:required="${staff.id == null}"
+													onchange="document.getElementById('output').src = window.URL.createObjectURL(this.files[0])">
+											</div>
+										</div>
+										<div class="form-group d-flex text-center">
+											<div class="col-12 text-center">
+												<img class="border border-danger"
+													id="output" height="220" width="220" alt="staff's image"
+													th:src="@{${staff.photoPath}}">
+											</div>
+										</div>
+										<div class="col-12">
+											<button class="btn btn-primary float-right" type="submit">Lưu</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div th:replace="/admin/fragments :: footer"></div>
+		</div>
+	</div>
+</body>
+
+</html>
