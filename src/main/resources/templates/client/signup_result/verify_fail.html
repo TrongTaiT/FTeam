@@ -9,9 +9,13 @@
 </head>
 <body>
 
+	<nav th:replace="/client/fragments :: page_navbar"></nav>
+
+    <section th:replace="/client/fragments :: below_navbar_hide_categories"></section>
+	
 	<div class="text-center">
-		<h2>Customer Registration</h2>
-		<p>Please check your email</p>
+		<h2>Customer Verification</h2>
+		<h4>Your account was already verified, or the verification code is invalid</h4>
 	</div>
 
 </body>

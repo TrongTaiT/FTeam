@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.UnsupportedEncodingException;
 
@@ -16,6 +17,7 @@ import com.fteam.model.Customer;
 import com.fteam.repository.CustomerRepository;
 
 @Service
+@Transactional
 public class CustomerService {
 
 	@Autowired
@@ -61,6 +63,16 @@ public class CustomerService {
 		return mapper.map(customer, CustomerDTO.class);
 	}
 	
+	public Boolean verify(String verificationCode) {
+		Customer customer = repo.findByVerificationCode(verificationCode);
+		if(customer == null || customer.getEnabled()) {
+			return false;
+		} else {
+			repo.updateEnabled(customer.getId());
+			return true;
+		}
+	}
+	
 	public void sendVerificationEmail(Customer customer, String siteURL) throws UnsupportedEncodingException, MessagingException {
 		String subject = "Please verify your registraton";
 		String senderName = "FTeam";
@@ -68,7 +80,7 @@ public class CustomerService {
 		String mailContent = "<p>Dear " + customer.getFullname() + ",</p>";
 		mailContent += "<p>Please click the link below to verify to your registration:</p>";
 		
-		String verifyURL = siteURL + "/verify?code=" + customer.getVerificationCode();
+		String verifyURL = siteURL + "/account/verify?code=" + customer.getVerificationCode();
 		mailContent += "<h3><a href=\"" + verifyURL + "\">VERIFY</a></h3>";
 		
 		mailContent += "<p>Thank you <br>The Fteam</p>";

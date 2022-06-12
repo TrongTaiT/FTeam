@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -47,7 +48,16 @@ public class AccountController {
 	
 	@GetMapping("/account/create-customer")
 	public String verification() {
-		return "client/verificationAccount";
+		return "client/signup_result/verificationAccount";
+	}
+	
+	@GetMapping("/account/verify")
+	public String verifyAccount(@Param("code") String code, Model model) {
+		boolean verified = service.verify(code);
+		
+		String pageTitle = verified ? "Verification Successded" : "Verification Failed";
+		model.addAttribute("pageTitle", pageTitle);
+		return "client/signup_result/" + (verified ? "verify_success" : "verify_fail");
 	}
 
 	@PostMapping("/account/signup")
@@ -73,7 +83,7 @@ public class AccountController {
 		String siteURL = Utility.getSiteURL(req);
 		service.sendVerificationEmail(savedCustomer, siteURL);
 
-		session.set("customer", savedCustomer);
+//		session.set("customer", savedCustomer);
 
 		return "redirect:/account/create-customer";
 	}
