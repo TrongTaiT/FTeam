@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head>
+<head>    
     <!-- <th:block th:replace="/client/fragments :: common_head('Lỗi')"></th:block> -->
     <th:block th:fragment="common_head(title)">
         <title>FTeam - [[${title}]]</title>
@@ -9,15 +9,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-
-        <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
-        <script type="text/javascript" th:src="@{/assets/js/main.js}"></script>
         <link rel="stylesheet" th:href="@{/assets/fontawesome_free_5.13.0/css/all.css}">
 
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap"
@@ -96,7 +87,7 @@
                             <li class="nav-item account btn dropdown" type="button" data-toggle="dropdown">
                                 <a href="#" class="btn btn-secondary rounded-circle">
                                     <th:block th:if="${session.customer.photo != null}">
-                                        <img th:src="${session.customer.photo}" alt="${session.customer.fullname}">
+                                        <img th:src="${session.customer.photo}">
                                     </th:block>
                                     <th:block th:else>
                                         <i class="fa fa-user"></i>
