@@ -29,6 +29,7 @@
         <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
         <link rel="stylesheet"
             href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+        <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
 
         <link rel="icon" type="image/png" sizes="16x16" th:href="@{/assets/images/favicon-16x16.png}">
         <link rel="manifest" th:href="@{/assets/favicon_io/site.webmanifest}">
@@ -98,9 +99,7 @@
                                 </a>
                             </li>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item text-center mb-2" th:href="@{/account/edit}">Chỉnh sửa hồ sơ</a>
-                                <a class="dropdown-item text-center mb-2" th:href="@{/account/change-password}">Đổi mật
-                                    khẩu</a>
+                                <a class="dropdown-item text-center mb-2" th:href="@{/account/edit}">Hồ sơ</a>
                                 <a class="dropdown-item text-center" href="javascript:void(0)"
                                     onclick="document.getElementById('form-signout').submit();">
                                     Đăng xuất

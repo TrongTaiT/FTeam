@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import net.bytebuddy.utility.RandomString;
 
@@ -34,7 +35,7 @@ public class AccountController {
 
 	@Autowired
 	private SessionService session;
-	
+
 	@Autowired
 	private CookieService cookieService;
 
@@ -100,7 +101,7 @@ public class AccountController {
 		if (!password.isBlank()) {
 			model.addAttribute("password", password);
 		}
-		
+
 		return "client/signin";
 	}
 
@@ -119,7 +120,7 @@ public class AccountController {
 		} else {
 			session.set("customer", customer);
 		}
-		
+
 		if (remember.orElse(false) == true) {
 			cookieService.add("email", email.get(), 7);
 			cookieService.add("password", password.get(), 7);
@@ -139,6 +140,76 @@ public class AccountController {
 	public String signout() {
 		session.remove("customer");
 		return "redirect:/";
+	}
+
+	@GetMapping("/account/edit")
+	public String viewAccount( //
+			RedirectAttributes ra, //
+			Model model) //
+	{
+		Customer customer = session.get("customer");
+
+		if (customer == null) {
+			ra.addFlashAttribute("message", "Bạn chưa đăng nhập");
+			return "redirect:/account/signin";
+		}
+
+		model.addAttribute("customer", customer);
+
+		return "client/account";
+	}
+
+	@PostMapping("/account/update")
+	public String viewAccount( //
+			RedirectAttributes ra, //
+			Model model, //
+			@ModelAttribute("customer") Customer customer, //
+			@RequestParam("oldPassword") Optional<String> oldPassword, //
+			@RequestParam("newPassword") Optional<String> newPassword, //
+			@RequestParam("confirmNewPassword") Optional<String> confirmNewPassword) //
+	{
+		System.out.println(customer);
+		Customer customerInDB = null;
+
+		try {
+			// change password
+			if (oldPassword.isPresent() && !oldPassword.get().isBlank() //
+					&& newPassword.isPresent() && !newPassword.get().isBlank() //
+					&& confirmNewPassword.isPresent() && !confirmNewPassword.get().isBlank()) {
+				customerInDB = service.getAccount(customer.getEmail(), oldPassword.get());
+
+				// old password wrong
+				if (customerInDB == null) {
+					model.addAttribute("message", "Sai mật khẩu cũ");
+					return "client/account";
+				}
+				// check equality of newPassword and confirmNewPassword
+				else {
+					if (newPassword.get().equals(confirmNewPassword.get())) {
+						customer.setPassword(newPassword.get());
+					} else {
+						model.addAttribute("message", "Mật khẩu mới không trùng");
+						return "client/account";
+					}
+				}
+			}
+			// not change password
+			else {
+				customerInDB = service.findByEmail(customer.getEmail());
+				customer.setPassword(customerInDB.getPassword());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		customer.setEnabled(true);
+		Customer savedCustomer = service.save(customer);
+
+		session.set("customer", savedCustomer);
+
+		ra.addFlashAttribute("message", "Cập nhật tài khoản thành công!");
+
+		return "redirect:/account/edit";
 	}
 
 }

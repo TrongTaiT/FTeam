@@ -37,6 +37,10 @@ public class CustomerService {
 		return repo.getByEmailAndPassword(email, password);
 	}
 
+	public Customer findByEmail(String email) {
+		return repo.findByEmail(email);
+	}
+
 	public boolean isEmailUnique(Integer id, String email) {
 		Customer customerByEmail = repo.getCustomerByEmail(email);
 

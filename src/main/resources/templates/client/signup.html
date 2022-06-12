@@ -103,7 +103,7 @@
     <!-- th:repalce footer -->
     <div th:replace="/client/fragments :: page_footer"></div>
 
-    <script>
+    <!-- <script>
         var isUniqueEmail = false;
         var isUniquePhoneNumber = false;
 
@@ -143,6 +143,7 @@
             $.post(url, params, function (response) {
                 if (response === "OK") {
                     isUniqueEmail = true;
+                    return;
                 } else if (response === "Duplicated") {
                     $("#form-signup").validate()//
                         .showErrors({ email: "Email này đã được sử dụng" });
@@ -168,6 +169,7 @@
             $.post(url, params, function (response) {
                 if (response === "OK") {
                     isUniquePhoneNumber = true;
+                    return;
                 } else if (response === "Duplicated") {
                     $("#form-signup").validate()//
                         .showErrors({ phoneNumber: "Số điện thoại này đã được sử dụng" });
@@ -178,7 +180,7 @@
                 alert("Đã có lỗi xảy ra!\nKhông thể kết nối đến server");
             });
         }
-    </script>
+    </script> -->
 
 </body>
 
