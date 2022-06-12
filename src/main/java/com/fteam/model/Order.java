@@ -15,6 +15,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,27 +31,32 @@ public class Order {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@Column(name = "created_date")
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date createdDate;
-	
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private Date createdDate = new Date();
+
 	@Column(name = "address")
 	private String address;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "customer_id")
 	private Customer customer;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "staff_id")
 	private Staff staff;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "status_id")
 	private Status status;
-	
+
 	@OneToMany(mappedBy = "order")
 	private List<OrderDetail> orderDetails;
+
+//	public static void main(String[] args) {
+//		System.out.println(new Order().getCreatedDate());
+//	}
 
 }
