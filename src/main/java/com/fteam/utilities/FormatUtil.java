@@ -22,4 +22,9 @@ public class FormatUtil {
 		return fmt.format(date);
 	}
 	
+	public static String dateTimeToString(Date date) {
+		SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		return fmt.format(date);		
+	}
+	
 }

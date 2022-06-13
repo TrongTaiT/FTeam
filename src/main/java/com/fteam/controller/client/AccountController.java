@@ -1,6 +1,7 @@
 package com.fteam.controller.client;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.util.Optional;
 
 import javax.mail.MessagingException;
@@ -18,26 +19,31 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import net.bytebuddy.utility.RandomString;
-
 import com.fteam.Utility;
 import com.fteam.dto.CustomerDTO;
 import com.fteam.model.Customer;
+import com.fteam.model.Order;
 import com.fteam.service.CustomerService;
+import com.fteam.service.OrderService;
 import com.fteam.utilities.CookieService;
 import com.fteam.utilities.SessionService;
+
+import net.bytebuddy.utility.RandomString;
 
 @Controller
 public class AccountController {
 
 	@Autowired
-	private CustomerService service;
+	private CustomerService customerService;
 
 	@Autowired
 	private SessionService session;
 
 	@Autowired
 	private CookieService cookieService;
+	
+	@Autowired
+	private OrderService orderService;
 
 	@GetMapping("/account/signup")
 	public String viewSignup(Model model) {
@@ -54,7 +60,7 @@ public class AccountController {
 	
 	@GetMapping("/account/verify")
 	public String verifyAccount(@Param("code") String code, Model model) {
-		boolean verified = service.verify(code);
+		boolean verified = customerService.verify(code);
 		
 		String pageTitle = verified ? "Verification Successded" : "Verification Failed";
 		model.addAttribute("pageTitle", pageTitle);
@@ -72,17 +78,17 @@ public class AccountController {
 			return "client/signup";
 		}
 
-		Customer customer = service.convertToEntity(customerDTO);
+		Customer customer = customerService.convertToEntity(customerDTO);
 		customer.setEnabled(false);
 		
 		String randomCode = RandomString.make(64);
 		customer.setVerificationCode(randomCode);
 		
 		
-		Customer savedCustomer = service.save(customer);
+		Customer savedCustomer = customerService.save(customer);
 		
 		String siteURL = Utility.getSiteURL(req);
-		service.sendVerificationEmail(savedCustomer, siteURL);
+		customerService.sendVerificationEmail(savedCustomer, siteURL);
 
 //		session.set("customer", savedCustomer);
 
@@ -112,7 +118,7 @@ public class AccountController {
 			@RequestParam("password") Optional<String> password, //
 			@RequestParam("remember") Optional<Boolean> remember) //
 	{
-		Customer customer = service.getAccount(email.orElse(""), password.orElse(""));
+		Customer customer = customerService.getAccount(email.orElse(""), password.orElse(""));
 
 		if (customer == null) {
 			model.addAttribute("message", "Sai tên tài khoản hoặc mật khẩu!");
@@ -176,7 +182,7 @@ public class AccountController {
 			if (oldPassword.isPresent() && !oldPassword.get().isBlank() //
 					&& newPassword.isPresent() && !newPassword.get().isBlank() //
 					&& confirmNewPassword.isPresent() && !confirmNewPassword.get().isBlank()) {
-				customerInDB = service.getAccount(customer.getEmail(), oldPassword.get());
+				customerInDB = customerService.getAccount(customer.getEmail(), oldPassword.get());
 
 				// old password wrong
 				if (customerInDB == null) {
@@ -195,7 +201,7 @@ public class AccountController {
 			}
 			// not change password
 			else {
-				customerInDB = service.findByEmail(customer.getEmail());
+				customerInDB = customerService.findByEmail(customer.getEmail());
 				customer.setPassword(customerInDB.getPassword());
 			}
 		} catch (Exception e) {
@@ -203,13 +209,32 @@ public class AccountController {
 		}
 
 		customer.setEnabled(true);
-		Customer savedCustomer = service.save(customer);
+		Customer savedCustomer = customerService.save(customer);
 
 		session.set("customer", savedCustomer);
 
 		ra.addFlashAttribute("message", "Cập nhật tài khoản thành công!");
 
 		return "redirect:/account/edit";
+	}
+	
+	@GetMapping("/account/order")
+	public String viewOrders( //
+			Model model, //
+			RedirectAttributes ra) //
+	{
+		Customer customer = session.get("customer");
+
+		if (customer == null) {
+			ra.addFlashAttribute("message", "Bạn chưa đăng nhập");
+			return "redirect:/account/signin";
+		}
+		
+		List<Order> orders = orderService.listAllByCustomer(customer);
+		
+		model.addAttribute("orders", orders);
+		
+		return "client/order";
 	}
 
 }

@@ -7,6 +7,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.fteam.utilities.FormatUtil;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,5 +37,15 @@ public class OrderDetail {
 	@ManyToOne
 	@JoinColumn(name = "product_id")
 	private Product product;
+	
+	@Transient
+	public String getFormatPrice() {
+		return FormatUtil.formatToVietnamCurrency(this.price);
+	}
+	
+	@Transient
+	public String getFormatSubtotal() {
+		return FormatUtil.formatToVietnamCurrency(this.price * this.quantity);
+	}
 
 }
