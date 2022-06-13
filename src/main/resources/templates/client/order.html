@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:replace="/client/fragments :: common_head('Đơn hàng')"></th:block>
+    <link rel="stylesheet" th:href="@{/assets/css/tai-khoan.css}">
+</head>
+
+<body>
+    <nav th:replace="/client/fragments :: page_navbar"></nav>
+
+    <section th:replace="/client/fragments :: below_navbar_hide_categories"></section>
+
+    <!-- breadcrumb  -->
+    <section class="breadcrumbbar">
+        <div class="container">
+            <ol class="breadcrumb mb-0 p-0 bg-transparent">
+                <li class="breadcrumb-item"><a th:href="@{/}">Trang chủ</a></li>
+                <li class="breadcrumb-item active">
+                    <a th:href="@{/account/order}">Đơn hàng</a>
+                </li>
+            </ol>
+        </div>
+    </section>
+
+    <!-- nội dung của trang  -->
+    <section class="account-page my-3">
+        <div class="container">
+            <div class="page-content bg-white">
+                <div class="account-page-tab-content m-4">
+                    <!-- 2 tab: Đăng ký , Đăng nhập  -->
+                    <nav>
+                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                            <a th:href="@{/account/edit}" class="nav-item nav-link" id="nav-taikhoan-tab">Hồ sơ</a>
+                            <a th:href="@{/account/order}" class="nav-item nav-link active" id="nav-donhang-tab">Đơn
+                                hàng</a>
+                        </div>
+                    </nav>
+
+                    <!-- nội dung 2 tab -->
+                    <div class="tab-content">
+
+                        <!-- nội dung tab 2: Đăng nhập -->
+                        <div class="tab-pane fade show active pl-4 " aria-labelledby="nav-taikhoan-tab">
+                            <div class="mt-3 mb-5">
+                                <h3 class="text-center account-header">ĐƠN HÀNG</h3>
+                            </div>
+                            <!-- nội dung tab 2: danh sách đơn hàng -->
+                            <div class="tab-pane py-3" id="nav-donhang" role="tabpanel"
+                                aria-labelledby="nav-donhang-tab">
+                                <div class="donhang-table">
+                                    <table class="m-auto">
+                                        <tr>
+                                            <th>Mã đơn hàng</th>
+                                            <th>Ngày mua</th>
+                                            <th>Sản phẩm</th>
+                                            <th>Tổng tiền</th>
+                                            <th>Trạng thái đơn hàng</th>
+                                        </tr>
+                                        <div th:unless="${orders.size > 0}" style="min-height: 40vh;">
+                                            <h3 class="alert alert-primary" role="alert">
+                                                Không có đơn hàng nào
+                                            </h3>
+                                        </div>
+                                        <tr th:if="${orders.size > 0}" th:each="order : ${orders}">
+                                            <td>
+                                                <a
+                                                    th:href="@{'/account/order/detail/' + ${order.id}}">[[${order.id}]]</a>
+                                            </td>
+                                            <td>[[${order.formatCreateDate}]]</td>
+                                            <!-- list san pham -->
+                                            <td>
+                                                <ul class="list-unstyled">
+                                                    <li th:each="orderDetail : ${order.orderDetails}">
+                                                        <a th:href="@{'/product-details/' + ${orderDetail.product.id}}">
+                                                            [[${orderDetail.product.productName}]]
+                                                        </a>
+                                                        <div class="small">
+                                                            <span class="text-danger">[[${orderDetail.quantity}]] x
+                                                            </span>
+                                                            <span>[[${orderDetail.formatPrice}]]</span>
+                                                            <span> = [[${orderDetail.formatSubtotal}]]</span>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                            <td>[[${order.formatTotal}]]</td>
+                                            <td>[[${order.status.name}]]</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- th:repalce footer -->
+    <div th:replace="/client/fragments :: page_footer"></div>
+
+</body>
+
+</html>
