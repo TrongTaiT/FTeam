@@ -92,7 +92,7 @@ public class ProductManagementController {
 	}
 	
 	@GetMapping("")
-	public String listFristPage(Model model) {
+	public String listFirstPage(Model model) {
 		return listByPage(1, model, "id", "asc", Optional.empty());
 	}
 
