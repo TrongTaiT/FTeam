@@ -57,9 +57,15 @@
                                             <th>Tổng tiền</th>
                                             <th>Trạng thái đơn hàng</th>
                                         </tr>
-                                        <tr th:each="order : ${orders}">
+                                        <div th:unless="${orders.size > 0}" style="min-height: 40vh;">
+                                            <h3 class="alert alert-primary" role="alert">
+                                                Không có đơn hàng nào
+                                            </h3>
+                                        </div>
+                                        <tr th:if="${orders.size > 0}" th:each="order : ${orders}">
                                             <td>
-                                                <a th:href="@{'/account/order/detail/' + ${order.id}}">[[${order.id}]]</a>
+                                                <a
+                                                    th:href="@{'/account/order/detail/' + ${order.id}}">[[${order.id}]]</a>
                                             </td>
                                             <td>[[${order.formatCreateDate}]]</td>
                                             <!-- list san pham -->
@@ -70,10 +76,11 @@
                                                             [[${orderDetail.product.productName}]]
                                                         </a>
                                                         <div class="small">
-                                                            <span class="text-danger">[[${orderDetail.quantity}]] x </span>
+                                                            <span class="text-danger">[[${orderDetail.quantity}]] x
+                                                            </span>
                                                             <span>[[${orderDetail.formatPrice}]]</span>
                                                             <span> = [[${orderDetail.formatSubtotal}]]</span>
-                                                        </div>                                                        
+                                                        </div>
                                                     </li>
                                                 </ul>
                                             </td>

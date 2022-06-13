@@ -11,12 +11,16 @@ import com.fteam.repository.OrderRepository;
 
 @Service
 public class OrderService {
-	
+
 	@Autowired
 	private OrderRepository orderRepo;
-	
+
 	public List<Order> listAllByCustomer(Customer customer) {
 		return orderRepo.listAllByCustomer(customer);
+	}
+
+	public Order save(Order order) {
+		return orderRepo.save(order);
 	}
 
 }

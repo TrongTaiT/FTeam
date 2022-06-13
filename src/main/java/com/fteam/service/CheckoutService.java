@@ -2,57 +2,58 @@ package com.fteam.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.fteam.dto.CheckoutInfo;
 import com.fteam.model.CartItem;
+import com.fteam.model.Customer;
+import com.fteam.model.Order;
+import com.fteam.model.OrderDetail;
 
 @Service
 public class CheckoutService {
 
-	public CheckoutInfo prepareCheckout(List<CartItem> cartItems) {
-		CheckoutInfo checkoutInfo = new CheckoutInfo();
+	@Autowired
+	private OrderService orderService;
 
-		float productCost = calculateProductCost(cartItems);
-		float productTotal = calculateProductTotal(cartItems);
-		float shippingCost = calculateShippingCost(productTotal);
-		
-		checkoutInfo.setProductCost(productCost);
-		checkoutInfo.setProductTotal(productTotal);
-		checkoutInfo.setDeliverDays(5);
-		checkoutInfo.setShippingCost(shippingCost);
-
-		return checkoutInfo;
-	}
-
-	private float calculateShippingCost(float productTotal) {
-		if (productTotal < 300000) {
-            return 30000;
-        }		
-		
-		return 0;
-	}
-
-	private float calculateProductTotal(List<CartItem> cartItems) {
-		float total = 0.0f;
-
-		for (CartItem item : cartItems) {
-			total += item.getQuantity() * item.getProduct().getRealPrice();
-		}
-
-		return total;
-	}
-
-	private float calculateProductCost(List<CartItem> cartItems) {
-		float cost = 0.0f;
-
-		for (CartItem item : cartItems) {
-			cost += item.getQuantity() * item.getProduct().getRealPrice();
-		}
-
-		return cost;
-	}
+	@Autowired
+	private OrderDetailService orderDetailService;
 	
+	@Autowired
+	private ShoppingCartService cartService;
 	
+	@Autowired
+	private StatusService statusService;
+
+	public void doCheckout(Customer customer) {
+		Order savedOrder = saveOrder(customer);
+		
+		List<CartItem> cartItems = cartService.listCartItems(customer);
+		
+		createOrderDetailsAndRemoveCartItems(cartItems, savedOrder);		
+	}
+
+	private Order saveOrder(Customer customer) {
+		Order order = new Order();
+		order.setCustomer(customer);
+		order.setAddress(customer.getAddress());
+		order.setStatus(statusService.findById(3));
+		
+		return orderService.save(order);
+	}
+
+	private void createOrderDetailsAndRemoveCartItems(List<CartItem> cartItems, Order savedOrder) {		
+		for (CartItem item : cartItems) {
+			OrderDetail orderDetail = new OrderDetail();
+			
+			orderDetail.setPrice(item.getProduct().getRealPrice());
+			orderDetail.setQuantity(item.getQuantity());
+			orderDetail.setOrder(savedOrder);
+			orderDetail.setProduct(item.getProduct());
+			
+			orderDetailService.save(orderDetail);
+			cartService.remove(item);
+		}
+	}
 
 }
