@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -41,7 +42,7 @@ public class AccountController {
 
 	@Autowired
 	private CookieService cookieService;
-	
+
 	@Autowired
 	private OrderService orderService;
 
@@ -52,16 +53,16 @@ public class AccountController {
 
 		return "client/signup";
 	}
-	
+
 	@GetMapping("/account/create-customer")
 	public String verification() {
 		return "client/signup_result/verificationAccount";
 	}
-	
+
 	@GetMapping("/account/verify")
 	public String verifyAccount(@Param("code") String code, Model model) {
 		boolean verified = customerService.verify(code);
-		
+
 		String pageTitle = verified ? "Verification Successded" : "Verification Failed";
 		model.addAttribute("pageTitle", pageTitle);
 		return "client/signup_result/" + (verified ? "verify_success" : "verify_fail");
@@ -80,13 +81,12 @@ public class AccountController {
 
 		Customer customer = customerService.convertToEntity(customerDTO);
 		customer.setEnabled(false);
-		
+
 		String randomCode = RandomString.make(64);
 		customer.setVerificationCode(randomCode);
-		
-		
+
 		Customer savedCustomer = customerService.save(customer);
-		
+
 		String siteURL = Utility.getSiteURL(req);
 		customerService.sendVerificationEmail(savedCustomer, siteURL);
 
@@ -217,7 +217,7 @@ public class AccountController {
 
 		return "redirect:/account/edit";
 	}
-	
+
 	@GetMapping("/account/order")
 	public String viewOrders( //
 			Model model, //
@@ -229,12 +229,45 @@ public class AccountController {
 			ra.addFlashAttribute("message", "Bạn chưa đăng nhập");
 			return "redirect:/account/signin";
 		}
-		
+
 		List<Order> orders = orderService.listAllByCustomer(customer);
-		
+
 		model.addAttribute("orders", orders);
-		
+
 		return "client/order";
+	}
+
+	@GetMapping("/account/order/detail/{orderId}")
+	public String viewOrderDetail( //
+			@PathVariable("orderId") Integer orderId, //
+			Model model) //
+	{
+		Order order = orderService.getById(orderId);
+		
+		model.addAttribute("order", order);
+
+		return "client/order-details";
+	}
+
+	@GetMapping("/account/order/cancel/{orderId}")
+	public String cancelOrder( //
+			@PathVariable("orderId") Integer orderId, //
+			RedirectAttributes ra) //
+	{
+		int statusId = orderService.getById(orderId).getStatus().getId();
+		if (statusId == 8) {
+			ra.addFlashAttribute("message", "Đơn của bạn đã được huỷ trước đó");
+		} else if (statusId == 7) {
+			ra.addFlashAttribute("message", "Đơn của bạn đã hoàn thành");
+		} else if (statusId > 3) {
+			ra.addFlashAttribute("message", "Đơn của bạn đang được xử lý, không thể huỷ đơn hàng");
+		} else {
+			orderService.cancelOrder(orderId);
+			
+			ra.addFlashAttribute("message", "Đã huỷ đơn hàng");			
+		}
+		
+		return "redirect:/account/order/detail/" + orderId;
 	}
 
 }

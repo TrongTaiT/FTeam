@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:replace="/client/fragments :: common_head('Chi tiết đơn hàng')"></th:block>
+    <link rel="stylesheet" th:href="@{/assets/css/gio-hang.css}">
+</head>
+
+<body>
+    <nav th:replace="/client/fragments :: page_navbar"></nav>
+
+    <section th:replace="/client/fragments :: below_navbar_hide_categories"></section>
+
+    <!-- breadcrumb  -->
+    <section class="breadcrumbbar mt-3">
+        <div class="container">
+            <ol class="breadcrumb mb-0 p-0 bg-transparent">
+                <li class="breadcrumb-item"><a th:href="@{/}">Trang chủ</a></li>
+                <li class="breadcrumb-item">
+                    <a th:href="@{/account/order}">Đơn hàng</a>
+                </li>
+                <li class="breadcrumb-item active">
+                    <a th:href="@{'/account/order/detail/' + ${order.id}}">Chi tiết đơn hàng</a>
+                </li>
+                <a th:href="@{/account/order}" class="btn btn-primary ml-auto">Danh sách đơn hàng</a>
+            </ol>
+        </div>
+    </section>
+
+    <div th:if="${message != null}" class="form-label-group mx-auto col-5">
+        <div class="alert alert-primary" role="alert">[[${message}]]</div>
+    </div>
+
+    <!-- giao diện giỏ hàng  -->
+    <section class="content my-3">
+        <div class="container-lg">
+            <div class="cart-page bg-white">
+                <div class="row">
+                    <!-- giao diện giỏ hàng khi có hàng (phần comment màu xanh bên dưới là phần 2 sản phẩm trong giỏ hàng nhưng giờ đã demo bằng jquery) -->
+                    <div class="col-lg-10 cart mx-auto">
+                        <div class="cart-content py-3 pl-3 ">
+                            <h6 class="header-gio-hang">CHI TIẾT ĐƠN HÀNG MÃ ĐƠN [[${order.id}]]</h6>
+                            <span class="text-secondary">([[${order.status.name}]])</span>
+                            <div class="cart-list-items">
+                                <div th:each="orderDetail, status : ${order.orderDetails}" class="cart-item d-flex my-3">
+                                    <span class="d-flex align-items-center" style="min-width: 20px;">
+                                        [[${status.count}]]
+                                    </span>
+                                    <a th:href="@{'/product-details/' + ${orderDetail.product.id}}" class="img">
+                                        <img th:src="@{${orderDetail.product.mainImagePath}}" class="img-fluid"
+                                            th:alt="${orderDetail.product.productName}">
+                                    </a>
+                                    <div class="item-caption d-flex w-100">
+                                        <div class="item-info ml-3">
+                                            <a th:href="@{'/product-details/' + ${orderDetail.product.id}}"
+                                                class="ten">[[${orderDetail.product.productName}]]</a>
+                                        </div>
+                                        <div class="item-info ml-3">
+                                            <span>[[${orderDetail.quantity}]] &times;</span>
+                                        </div>
+                                        <div class="item-price ml-auto mr-5 d-flex flex-column align-items-end">
+                                            <div class="giamoi font-weight-bold">[[${orderDetail.formatPrice}]]₫</div>
+                                        </div>
+                                        <div class="item-price ml-auto d-flex flex-column align-items-end">
+                                            <div class="">
+                                                <b th:id="'subtotal' + ${orderDetail.product.id}" class="productSubtotal h5">
+                                                    [[${orderDetail.formatSubtotal}]]₫
+                                                </b>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                </div>
+                                <div class="col-md-5 offset-md-4">
+                                    <div class="tonggiatien">
+                                        <div class="group d-flex justify-content-between">
+                                            <p class="label">Phí vận chuyển:</p>
+                                            <p class="phivanchuyen">0 ₫</p>
+                                        </div>
+                                        <div class="group d-flex justify-content-between">
+                                            <p class="label">Phí dịch vụ:</p>
+                                            <p class="phidicvu">0 ₫</p>
+                                        </div>
+                                        <div class="group d-flex justify-content-between align-items-center">
+                                            <strong class="text-uppercase">Tổng cộng:</strong>
+                                            <p class="tongcong"></p>
+                                        </div>
+                                        <small class="note d-flex justify-content-end text-muted">
+                                            (Giá đã bao gồm VAT)
+                                        </small>
+                                        <div th:if="${order.status.id <= 3}" class="d-flex justify-content-end mt-3">
+                                            <a th:href="@{'/account/order/cancel/' + ${order.id}}" id="btn-cancel" class="btn btn-outline-danger">Huỷ đơn hàng</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- het row  -->
+            </div>
+            <!-- het cart-page  -->
+        </div>
+        <!-- het container  -->
+    </section>
+    <!-- het khoi content  -->
+
+    <!-- th:repalce footer -->
+    <div th:replace="/client/fragments :: page_footer"></div>
+
+    <script>
+        $(document).ready(function () {
+            updateTotal();
+
+            $('#btn-cancel').click(function(e) {
+                e.preventDefault();
+                if (confirm('Bạn có chắc chắn muốn hủy đơn hàng này?')) {
+                    window.location.href = $(this).attr('href');
+                }
+            });
+        });
+
+        function updateTotal() {
+            let total = 0;
+            $('.productSubtotal').each(function () {
+                total += parseInt(toFloat($(this).text()));
+            });
+
+            // shipping fee
+            if (total == 0 || total == null) {
+                total = 0;
+            } else if (total > 300000) {
+                $('.phivanchuyen').text('0 ₫');
+            } else {
+                $('.phivanchuyen').text('30.000 ₫');
+                total += 30000;
+            }
+
+            $('.tongcong').text(formatToCurrency(total) + ' ₫');
+        }
+
+        function formatToCurrency(amount) {
+            return (amount).toFixed(1).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+        }
+
+        function toFloat(amount) {
+            let regex = /[.,₫\s]/g;
+            if (amount.endsWith('.0₫')) {
+	            return parseFloat(amount.replace(regex, '') / 10);
+            } else {
+                return parseFloat(amount.replace(regex, ''));
+           	}
+        }
+    </script>
+</body>
+
+</html>

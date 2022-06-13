@@ -9,12 +9,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.fteam.exception.ProductNotFoundException;
-import com.fteam.model.Category;
 import com.fteam.model.Product;
-import com.fteam.repository.CategoryRepository;
 import com.fteam.repository.ProductRepository;
 
 @Service

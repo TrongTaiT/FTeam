@@ -20,15 +20,20 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "statuses")
 public class Status {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@Column(length = 50, nullable = false)
 	private String name;
-	
+
 	@OneToMany(mappedBy = "status")
 	private List<Order> orders;
+
+	public Status(Integer id) {
+		super();
+		this.id = id;
+	}
 
 }
