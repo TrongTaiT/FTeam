@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="/client/fragments :: common_head('Đăng ký')"></th:block>
+    <link rel="stylesheet" th:href="@{/assets/css/tai-khoan.css}">
+    <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
+</head>
+<body>
+
+	<nav th:replace="/client/fragments :: page_navbar"></nav>
+
+    <section th:replace="/client/fragments :: below_navbar_hide_categories"></section>
+	
+	<div class="text-center">
+		<h2>Customer Verification</h2>
+		<h4>Your account was already verified, or the verification code is invalid</h4>
+	</div>
+
+</body>
+</html>

@@ -56,6 +56,9 @@ public class Customer {
 	@Column(length = 255)
 	private String photo;
 	
+	@Column(name = "verification_code", updatable = false)
+	private String  verificationCode;
+	
 	@OneToMany(mappedBy = "customer")
 	private List<Rating> ratings;
 	
