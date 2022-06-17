@@ -10,8 +10,10 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fteam.service.CustomerService;
 import com.fteam.utilities.RegexValidation;
 
 import lombok.AllArgsConstructor;
@@ -58,5 +60,15 @@ public class CustomerDTO {
 	@AssertTrue
 	public boolean isPasswordsEqual() {
 		return Objects.equals(this.password, this.confirmPassword);
+	}
+	
+	@AssertTrue
+	public boolean isUniqueEmail(@Autowired CustomerService service) {
+		return service.isEmailUnique(this.id, this.email);
+	}
+	
+	@AssertTrue
+	public boolean isUniquePhoneNumber(@Autowired CustomerService service) {
+		return service.isPhoneNumberUnique(this.id, this.phoneNumber);
 	}
 }

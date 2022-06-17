@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head>    
+<head>
     <!-- <th:block th:replace="/client/fragments :: common_head('Lỗi')"></th:block> -->
     <th:block th:fragment="common_head(title)">
         <title>FTeam - [[${title}]]</title>
@@ -197,22 +197,20 @@
 
     <!-- form register row -->
     <!-- <th:block th:replace="/client/fragments :: register_row('Email', 'email')"></th:block> -->
-    <th:block th:fragment="register_row(field, type, label, placeholder)">
-        <div class="form-group ">
-            <div class="row">
-                <label th:for="${field}" class="col-sm-3 col-form-label">[[${label}]]</label>
-                <div class="col-sm-9">
-                    <input th:field="*{__${field}__}" th:value="${param.field}" th:type="${type}" class="form-control"
-                        th:placeholder="${placeholder}">
-                </div>
-            </div>
-            <div class="row">
-                <label class="col-sm-3"></label>
-                <label th:if="${#fields.hasErrors(field)}" th:errors="*{__${field}__}" th:id="${field + '-error'}"
-                    class="error col-sm-9" th:for="${field}"></label>
+    <div th:fragment="register_row(field, type, label, placeholder)" class="form-group">
+        <div class="row">
+            <label th:for="${field}" class="col-sm-3 col-form-label">[[${label}]]</label>
+            <div class="col-sm-9">
+                <input th:field="*{__${field}__}" th:value="${param.field}" th:type="${type}" class="form-control"
+                    th:placeholder="${placeholder}">
             </div>
         </div>
-    </th:block>
+        <div th:fragment="show_server_error(field)" th:if="${#fields.hasErrors(field)}" class="row">
+            <label class="col-sm-3"></label>
+            <label th:errors="*{__${field}__}" th:id="${field + '-error'}" class="error col-sm-9"
+                th:for="${field}"></label>
+        </div>
+    </div>
 
     <!-- footer & abovefooter  -->
     <!-- <div th:replace="/client/fragments :: page_footer"></div> -->

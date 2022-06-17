@@ -4,8 +4,6 @@
 <head>
     <th:block th:replace="/client/fragments :: common_head('Đăng ký')"></th:block>
     <link rel="stylesheet" th:href="@{/assets/css/tai-khoan.css}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
-    <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
 </head>
 
 <body>
@@ -50,36 +48,33 @@
                             </div>
                             <div class="container">
                                 <form th:action="@{/account/signup}" method="post" id="form-signup"
-                                    class="form-signin my-5" th:object="${customer}">
+                                    class="form-signin my-5" th:object="${customer}" validated>
 
-                                    <th:block th:replace="/client/fragments ::
-                                        register_row('fullname', 'text', 'Họ và tên', 'Nhập họ và tên')"></th:block>
+                                    <div th:replace="/client/fragments ::
+                                        register_row('fullname', 'text', 'Họ và tên', 'Nhập họ và tên')"></div>
 
-                                    <th:block th:replace="/client/fragments ::
+                                    <div th:replace="/client/fragments ::
                                         register_row('phoneNumber', 'text', 'Số điện thoại', 'Nhập số điện thoại')">
-                                    </th:block>
-
-                                    <th:block th:replace="/client/fragments ::
-                                        register_row('email', 'text', 'Email', 'Nhập địa chỉ email')"></th:block>
-
-                                    <th:block th:replace="/client/fragments ::
-                                        register_row('password', 'password', 'Mật khẩu', 'Nhập mật khẩu')"></th:block>
-
-                                    <th:block
-                                        th:replace="/client/fragments ::
-                                        register_row('confirmPassword', 'password', 'Nhập lại mật khẩu', 'Nhập lại mật khẩu')">
-                                    </th:block>
-                                    <div class="row">
-                                        <label class="col-sm-3"></label>
-                                        <label th:if="${#fields.hasErrors('passwordsEqual')}"
-                                            th:errors="*{passwordsEqual}" class="error col-sm-9 mt-n4"></label>
                                     </div>
 
-                                    <th:block th:replace="/client/fragments ::
-                                        register_row('birthday', 'date', 'Ngày sinh', 'Nhập mật khẩu')"></th:block>
+                                    <div th:replace="/client/fragments ::
+                                        register_row('email', 'text', 'Email', 'Nhập địa chỉ email')"></div>
+                                    <div th:replace="/client/fragments :: show_server_error('passwordsEqual')"></div>
 
-                                    <th:block th:replace="/client/fragments ::
-                                        register_row('address', 'text', 'Địa chỉ', 'Nhập địa chỉ')"></th:block>
+                                    <div th:replace="/client/fragments ::
+                                        register_row('password', 'password', 'Mật khẩu', 'Nhập mật khẩu')"></div>
+
+                                    <div
+                                        th:replace="/client/fragments ::
+                                        register_row('confirmPassword', 'password', 'Nhập lại mật khẩu', 'Nhập lại mật khẩu')">
+                                    </div>
+                                    <div th:replace="/client/fragments :: show_server_error('passwordsEqual')"></div>
+
+                                    <div th:replace="/client/fragments ::
+                                        register_row('birthday', 'date', 'Ngày sinh', 'Nhập mật khẩu')"></div>
+
+                                    <div th:replace="/client/fragments ::
+                                        register_row('address', 'text', 'Địa chỉ', 'Nhập địa chỉ')"></div>
 
                                     <button id="btn-signup" class="btn btn-block text-uppercase text-white mt-5"
                                         type="submit" style="background: #F5A623">Đăng ký</button>
@@ -103,39 +98,43 @@
     <!-- th:repalce footer -->
     <div th:replace="/client/fragments :: page_footer"></div>
 
-    <!-- <script>
-        var isUniqueEmail = false;
-        var isUniquePhoneNumber = false;
-
+    <script>
         $(document).ready(function () {
-            $("#form-signup").submit(function (e) {
+            let isUniqueEmail = false;
+            let isUniquePhoneNumber = false;
+
+            $("#btn-signup").click(function (e) {
                 e.preventDefault();
 
-                const form = $(this);
-                checkEmailUnique();
-                checkPhoneUnique();
-
-                let condition = [isUniqueEmail, isUniquePhoneNumber, form.valid()];
-                console.log(condition);
-
-                if (condition.includes(false)) {
-                    console.log('not submit')
-                    return;
-                } else {
-                    console.log('submiting')
-                    form.submit();
-                    return;
+                if (true) {
+                    $("#form-signup").submit();
                 }
+
+                // const form = $('#form-signup');
+                // isUniqueEmail = checkEmailUnique(isUniqueEmail);
+                // isUniquePhoneNumber = checkPhoneUnique(isUniquePhoneNumber);
+
+                // let condition = [isUniqueEmail, isUniquePhoneNumber, form.valid()];
+                // console.log(condition);
+
+                // if (condition.includes(false)) {
+                //     console.log('not submit')
+                //     return;
+                // } else {
+                //     console.log('submiting')
+                //     form.submit();
+                //     return;
+                // }
             });
         });
 
         function checkEmailUnique() {
-            url = "[[@{/customer/check_email}]]";
-            customerEmail = $("#email").val();
+            let url = "[[@{/customer/check_email}]]";
+            let customerEmail = $("#email").val();
 
-            isUniqueEmail = false;
+            let isUniqueEmail = false;
             if (customerEmail == "") {
-                return;
+                return false;
             }
 
             params = { id: null, email: customerEmail };
@@ -143,7 +142,7 @@
             $.post(url, params, function (response) {
                 if (response === "OK") {
                     isUniqueEmail = true;
-                    return;
+                    return true;
                 } else if (response === "Duplicated") {
                     $("#form-signup").validate()//
                         .showErrors({ email: "Email này đã được sử dụng" });
@@ -153,15 +152,17 @@
             }).fail(function () {
                 alert("Đã có lỗi xảy ra!\nKhông thể kết nối đến server");
             });
+
+            return false;
         }
 
-        function checkPhoneUnique() {
+        function checkPhoneUnique(isUniquePhoneNumber) {
             url = "[[@{/customer/check_phone_number}]]";
             customerPhoneNumber = $("#phoneNumber").val();
 
             isUniquePhoneNumber = false;
             if (customerPhoneNumber == "") {
-                return;
+                return false;
             }
 
             params = { id: null, phoneNumber: customerPhoneNumber };
@@ -169,7 +170,7 @@
             $.post(url, params, function (response) {
                 if (response === "OK") {
                     isUniquePhoneNumber = true;
-                    return;
+                    return true;
                 } else if (response === "Duplicated") {
                     $("#form-signup").validate()//
                         .showErrors({ phoneNumber: "Số điện thoại này đã được sử dụng" });
@@ -179,8 +180,10 @@
             }).fail(function () {
                 alert("Đã có lỗi xảy ra!\nKhông thể kết nối đến server");
             });
+
+            return false;
         }
-    </script> -->
+    </script>
 
 </body>
 

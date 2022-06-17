@@ -156,76 +156,76 @@ $(function () {
     // });
 
     // validate
-    $("#form-signup").validate({
-        rules: {
-            fullname: {
-                required: true,
-                maxlength: 255
-            },
-            phoneNumber: {
-                required: true,
-                minlength: 10,
-                maxlength: 20
-            },
-            email: {
-                required: true,
-                email: true,
-                maxlength: 255
-            },
-            password: {
-                required: true,
-                minlength: 8,
-                maxlength: 64
-            },
-            confirmPassword: {
-                required: true,
-                minlength: 8,
-                maxlength: 64,
-                equalTo: "#password"
-            },
-            birthday: {
-                required: true
-            },
-            address: {
-                required: true,
-                maxlength: 255
-            }
-        },
-        messages: {
-            fullname: {
-                required: "Vui lòng nhập họ và tên",
-                maxlength: "Họ và tên không quá 255 ký tự"
-            },
-            phoneNumber: {
-                required: "Vui lòng nhập số điện thoại",
-                minlength: "Số máy quý khách vừa nhập là số không có thực",
-                maxlength: "Số máy quý khách vừa nhập là số không có thực"
-            },
-            email: {
-                required: "Vui lòng nhập email",
-                email: "Vui lòng nhập email",
-                maxlength: "Email không hợp lệ"
-            },
-            password: {
-                required: 'Vui lòng nhập mật khẩu',
-                minlength: 'Vui lòng nhập ít nhất 8 kí tự',
-                maxlength: 'Vui lòng nhập tối đa 64 kí tự'
-            },
-            confirmPassword: {
-                required: 'Vui lòng nhập lại mật khẩu',
-                minlength: 'Vui lòng nhập ít nhất 8 kí tự',
-                maxlength: 'Vui lòng nhập tối đa 64 kí tự',
-                equalTo: 'Mật khẩu không khớp'
-            },
-            birthday: {
-                required: 'Vui lòng chọn ngày sinh'
-            },
-            address: {
-                required: 'Vui lòng nhập địa chỉ',
-                maxlength: 'Vui lòng nhập tối đa 255 kí tự'
-            }
-        }
-    });
+    // $("#form-signup").validate({
+    //     rules: {
+    //         fullname: {
+    //             required: true,
+    //             maxlength: 255
+    //         },
+    //         phoneNumber: {
+    //             required: true,
+    //             minlength: 10,
+    //             maxlength: 20
+    //         },
+    //         email: {
+    //             required: true,
+    //             email: true,
+    //             maxlength: 255
+    //         },
+    //         password: {
+    //             required: true,
+    //             minlength: 8,
+    //             maxlength: 64
+    //         },
+    //         confirmPassword: {
+    //             required: true,
+    //             minlength: 8,
+    //             maxlength: 64,
+    //             equalTo: "#password"
+    //         },
+    //         birthday: {
+    //             required: true
+    //         },
+    //         address: {
+    //             required: true,
+    //             maxlength: 255
+    //         }
+    //     },
+    //     messages: {
+    //         fullname: {
+    //             required: "Vui lòng nhập họ và tên",
+    //             maxlength: "Họ và tên không quá 255 ký tự"
+    //         },
+    //         phoneNumber: {
+    //             required: "Vui lòng nhập số điện thoại",
+    //             minlength: "Số máy quý khách vừa nhập là số không có thực",
+    //             maxlength: "Số máy quý khách vừa nhập là số không có thực"
+    //         },
+    //         email: {
+    //             required: "Vui lòng nhập email",
+    //             email: "Vui lòng nhập email",
+    //             maxlength: "Email không hợp lệ"
+    //         },
+    //         password: {
+    //             required: 'Vui lòng nhập mật khẩu',
+    //             minlength: 'Vui lòng nhập ít nhất 8 kí tự',
+    //             maxlength: 'Vui lòng nhập tối đa 64 kí tự'
+    //         },
+    //         confirmPassword: {
+    //             required: 'Vui lòng nhập lại mật khẩu',
+    //             minlength: 'Vui lòng nhập ít nhất 8 kí tự',
+    //             maxlength: 'Vui lòng nhập tối đa 64 kí tự',
+    //             equalTo: 'Mật khẩu không khớp'
+    //         },
+    //         birthday: {
+    //             required: 'Vui lòng chọn ngày sinh'
+    //         },
+    //         address: {
+    //             required: 'Vui lòng nhập địa chỉ',
+    //             maxlength: 'Vui lòng nhập tối đa 255 kí tự'
+    //         }
+    //     }
+    // });
 
     $("#form-signin").validate({
         rules: {
